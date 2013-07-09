@@ -1,4 +1,5 @@
 routingService = require './services/routingService'
+mongoService = require './services/mongoService'
 eventController = require './controllers/eventController'
 CONFIG = require('config')
 
@@ -10,4 +11,8 @@ routes = [
   ['get', '/event/:id/secret', eventController, {handler: 'getSecret'}]
 ]
 
+
+
 routingService.init server, routes
+
+mongoService.init()
