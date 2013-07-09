@@ -16,6 +16,6 @@
   },
   "scripts": {
     "test": "cake test",
-    "start": "coffee app.coffee"
+    "start": "cake dev"
   }
 }
