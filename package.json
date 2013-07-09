@@ -7,6 +7,7 @@
   "dependencies": {
   	"coffee-script" : "*",
     "restify": "1.4.x",
-    "mongoose": "2.6.x"
+    "mongoose": "2.6.x",
+    "config" : "0.4.x"
   }
 }
