@@ -1,3 +1,5 @@
+console.log 'Starting Ruckus.io API'
+
 routingService = require './services/routingService'
 mongoService = require './services/mongoService'
 eventController = require './controllers/eventController'
@@ -10,8 +12,6 @@ routes = [
   ['get', '/event/:id', eventController]
   ['get', '/event/:id/secret', eventController, {handler: 'getSecret'}]
 ]
-
-
 
 routingService.init server, routes
 
