@@ -8,8 +8,14 @@
   	"coffee-script" : "*",
     "restify": "1.4.x",
     "mongoose": "2.6.x",
-    "config" : "0.4.x",
-    "mocha" : "*",
+    "config" : "0.4.x"
+  },
+  "devDependencies": {
+    "mocha": "*",
     "should" : "*"
+  },
+  "scripts": {
+    "test": "cake test",
+    "start": "coffee app.coffee"
   }
 }
