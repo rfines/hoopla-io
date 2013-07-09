@@ -1,0 +1,12 @@
+{
+  "name": "ruckus.io-api",
+  "version": "0.0.0",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "dependencies": {
+  	"coffee-script" : "*",
+    "restify": "1.4.x",
+    "mongoose": "2.6.x"
+  }
+}
