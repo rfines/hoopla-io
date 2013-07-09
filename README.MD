@@ -18,4 +18,8 @@ npm install
 
 ## Running your development server
 
-cake dev
+npm start
+
+## Running the tests
+
+npm test
