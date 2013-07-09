@@ -10,6 +10,8 @@ npm install -g coffee-script
 
 npm install -g supervisor
 
+npm install -g mocha
+
 ## Installing product dependencies
 
 npm install
