@@ -1,7 +1,6 @@
-ruckus.io API
-====================
+# ruckus.io API
 
-Installation steps
+## Before You Begin:
 
 Install Node
 
@@ -9,9 +8,12 @@ Install Mongo
 
 npm install -g coffee-script
 
-npm install -g forever
+npm install -g supervisor
 
+## Installing product dependencies
 
-To Run:
+npm install
 
-forever start -w -c coffee app.coffee
+## Running your development server
+
+cake dev
