@@ -2,7 +2,7 @@ cp = require('child_process')
 
 task "dev", ->
   console.log 'run dev server'
-  cp.spawn 'supervisor', ['./src/app.coffee'], customFds: [0..2]
+  cp.spawn 'nodemon', ['./src/app.coffee'], customFds: [0..2]
 
 task "test", "run tests", ->
   REPORTER = "nyan"

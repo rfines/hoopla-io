@@ -1,5 +1,5 @@
 get = (req, res, next) ->
-	res.send {Hello : 'World5'}
+	res.send {Hello : 'World6'}
 	next()
 
 getSecret = (req, res, next) ->

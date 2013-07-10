@@ -6,12 +6,6 @@ UserSchema = new mongoose.Schema
     required: true
     lowercase: true
     trim: true
-  password:
-  	type: String
-  	required: true
-  encryptionMethod:
-    type: String
-    enum: ['SHA1','BCRYPT']
 
 module.exports = 
-  User : mongoose.model('User', UserSchema)
+  User : mongoose.model('user', UserSchema)
