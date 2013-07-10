@@ -12,6 +12,4 @@ describe "Sha1 Utilities for Password Integration", ->
       done()
     onFail = ->
       false.should.be.true
-    console.log password
-    console.log hash
     service.check password, hash, onPass, onFail

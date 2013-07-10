@@ -17,3 +17,5 @@ task "test", "run tests", ->
   ", (err, output) ->
     throw err if err
     console.log output
+
+#mocha --recursive --compilers coffee:coffee-script --require coffee-script --require test/test_helper.coffee
