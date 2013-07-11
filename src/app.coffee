@@ -11,6 +11,7 @@ routes = [
   ['get', '/event/:id', eventController]
   ['get', '/event/:id/secret', eventController, {handler: 'getSecret'}]
   ['post', '/user', userController]
+  ['del', '/user/:id', userController]
 ]
 
 routingService.init server, routes

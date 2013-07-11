@@ -1,22 +1,33 @@
 restify = require 'restify'
 ApiUsage = require('../models/apiUsage').ApiUsage
 
+methodRewrite = 
+  del : 'destroy'
+  post : 'create'
+
+
 init = (server, routes) ->
   for x in routes
     method = x[0]
     handlerFunction = x[0]
     path = x[1]
     controller = x[2]
-    if x[3]
-      handlerFunction = x[3].handler || handlerFunction
+    handlerFunction = getHandlerFunction(method, x[3])
     server[method] path, controller[handlerFunction]
 
   server.on "after", (request, response, route, error) ->
     u = new ApiUsage()
-    u.method = route.method if route.method
+    u.method = route.methods[0] if route.methods and route.methods.length > 0
     u.status = response.statusCode if response.statusCode
-    u.url = route._url if route._url
+    u.url = route.spec.path if route.spec.path
     u.save()
+
+getHandlerFunction = (method, options) ->
+  handlerFunction = method
+  handlerFunction = methodRewrite[method] if methodRewrite[method]
+  if options
+    handlerFunction = options.handler || handlerFunction
+  handlerFunction
 
 module.exports =
 	init : init
