@@ -2,6 +2,8 @@ routingService = require './services/routingService'
 mongoService = require './services/mongoService'
 eventController = require './controllers/eventController'
 userController = require './controllers/userController'
+console.log(userController)
+
 CONFIG = require('config')
 
 server = require("restify").createServer(name: "ruckus.io-api")
