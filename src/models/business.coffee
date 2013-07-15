@@ -3,12 +3,10 @@ Schema = mongoose.Schema
 ObjectId = mongoose.Schema.ObjectId
 Contact = require('./contact')
 Address = require('./address')
-Ticket = require('./ticket')
 SocialMediaLinks = require('./socialMediaLinks')
 Media = require('./media')
-Business = require('./business')
 
-EventSchema = new Schema
+BusinessSchema = new Schema
   name: 
     type: String
     required: true
@@ -19,24 +17,19 @@ EventSchema = new Schema
     required: true
     lowercase: false
     trim: true
-  startDate:
-    type: Date
-    required: true
-    default: Date.now
-  endDate:
-    type: Date
-    required: false
-    default: Date.now
+  hours:
+    type:String
   createdAt: 
     type: Date
-    required: true
     default: Date.now 
   lastModifiedAt:
     type: Date
-    required: true
     default: Date.now
   categories:
     type: [String]
+    required: true
+  subCategories:
+    type:[String]
     required: true
   website:
     type: String
@@ -46,24 +39,13 @@ EventSchema = new Schema
   createdBy:
     type:Number
     required:true
-  eventType:
-    type: [String]
-    required: false
-  bands: 
-    type:[String]
-    required: false
   media:[Media]
   contact: [Contact]
   address: Address
-  ticket:Ticket
+  
   socialMediaLinks:[SocialMediaLinks]
 
-  venue:
-    type: ObjectId
-    required:false
-
-
 module.exports = 
-  Event : mongoose.model('event', EventSchema)
+  Business : mongoose.model('business', BusinessSchema)
 
 
