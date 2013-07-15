@@ -16,6 +16,16 @@ UserSchema = new Schema
     required: true
     lowercase: true
     trim: true
+  username:
+    type:String
+    required:false
+  name:
+    type:String
+    required:false
+  password:
+    type:String
+    required:true
+  legacyProfiles:[String] 
   userCredential:
     type: ObjectId
   businessPrivileges: [BusinessPrivileges]
