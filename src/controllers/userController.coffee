@@ -6,7 +6,6 @@ class UserController
   create: (req, res, next) =>
     res.status(201)
     model = new @Model({email: 'adamIsTheBestEver@gmail.com '})
-    console.log(@Model)
     model.businessPrivileges.push
       businessId : new mongoose.Types.ObjectId()
       role : 'OWNER'

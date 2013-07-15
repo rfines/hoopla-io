@@ -1,11 +1,16 @@
-get = (req, res, next) ->
-	res.send {Hello : 'World6'}
-	next()
+mongoose = require 'mongoose'
 
-getSecret = (req, res, next) ->
-	res.send {Hello : 'Secret'}
-	next()	
+class EventController
+  #Model : require('../models/event').Event
 
-module.exports = 
-	get : get
-	getSecret : getSecret
+  constructor : (@name) ->
+
+  get : (req, res, next) =>
+  	res.send {Hello : 'World6'}
+  	next()
+
+  getSecret : (req, res, next) =>
+  	res.send {Hello : 'Secret'}
+  	next()	
+
+module.exports = new EventController()
