@@ -2,6 +2,14 @@ mongoose = require('mongoose')
 Schema = mongoose.Schema
 ObjectId = mongoose.Schema.ObjectId
 
+GeoSchema = new Schema
+  'type':
+    type: String,
+    required: true,
+    enum: ['Point', 'LineString', 'Polygon'],
+    default: 'Point'
+  coordinates: [Number]
+
 PostalCodeSchema = new Schema
   code:
     type: String
@@ -9,10 +17,7 @@ PostalCodeSchema = new Schema
     type: String
   state:
     type: String
-  latitude:
-    type: Number
-  longitude:
-    type: Number
+  geo: [GeoSchema]
 
 module.exports = 
   PostalCode : mongoose.model('postalCode', PostalCodeSchema)
