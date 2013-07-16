@@ -6,5 +6,7 @@ MediaSchema= new Schema
   url:
     type:String
     required:false
-modeul.export=
+
+module.exports=
   Media: mongoose.model('media',MediaSchema)
+  MediaSchema : MediaSchema

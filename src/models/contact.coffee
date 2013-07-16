@@ -15,3 +15,4 @@ ContactSchema = new Schema
 
 module.export = 
   Contact : mongoose.model('contact', ContactSchema)
+  ContactSchema : ContactSchema

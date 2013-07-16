@@ -16,7 +16,6 @@ UserSchema = new Schema
     required: true
     lowercase: true
     trim: true
-  username: String
   name: String
   password:
     type: String
