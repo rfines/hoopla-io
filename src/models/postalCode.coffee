@@ -1,14 +1,7 @@
 mongoose = require('mongoose')
 Schema = mongoose.Schema
 ObjectId = mongoose.Schema.ObjectId
-
-GeoSchema = new Schema
-  'type':
-    type: String,
-    required: true,
-    enum: ['Point', 'LineString', 'Polygon'],
-    default: 'Point'
-  coordinates: [Number]
+GeoSchema = require('./geo').GeoSchema
 
 PostalCodeSchema = new Schema
   code:

@@ -16,19 +16,18 @@ UserSchema = new Schema
     required: true
     lowercase: true
     trim: true
-  username:
-    type:String
-    required:false
-  name:
-    type:String
-    required:false
+  username: String
+  name: String
   password:
-    type:String
-    required:true
-  legacyProfiles:[String] 
-  userCredential:
-    type: ObjectId
+    type: String
+    required: true
+  encryptionMethod:
+    type: String
+    enum: ['SHA1','BCRYPT']
   businessPrivileges: [BusinessPrivileges]
+
+  #Items for migration only
+  legacyProfiles:[String] 
     
 
 module.exports = 

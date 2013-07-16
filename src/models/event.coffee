@@ -2,11 +2,11 @@ mongoose = require('mongoose')
 Schema = mongoose.Schema
 ObjectId = mongoose.Schema.ObjectId
 Contact = require('./contact')
-Address = require('./address')
-Ticket = require('./ticket')
-SocialMediaLinks = require('./socialMediaLinks')
+TicketingLink = require('./ticket').TicketingLinkSchema
+SocialMediaLinks = require('./socialMediaLinks').SocialMediaLinkSchema
 Media = require('./media')
 Business = require('./business')
+GeoSchema = require('./geo').GeoSchema
 
 EventSchema = new Schema
   name: 
@@ -53,14 +53,33 @@ EventSchema = new Schema
     type:[String]
     required: false
   media:[Media]
-  contact: [Contact]
-  address: Address
-  ticket:Ticket
+  contacts: [Contact]
+  address: {
+    line1:
+      type: String
+      required: true
+      trim: true
+    line2:
+      type: String
+      trim: true
+    city:
+      type: String
+      required: true
+      trim: true
+    state_province:
+      type: String
+      required: true
+      trim: true
+    postal_code:
+      type: String
+      required: true
+      trim: true
+  }
+  geo: [GeoSchema]
+  ticketingLinks:[TicketingLink]
   socialMediaLinks:[SocialMediaLinks]
-
   venue:
     type: ObjectId
-    required:false
 
 
 module.exports = 

@@ -2,23 +2,21 @@ mongoose = require('mongoose')
 Schema = mongoose.Schema
 ObjectId = mongoose.Schema.ObjectId
 Contact = require('./contact')
-Address = require('./address')
 SocialMediaLinks = require('./socialMediaLinks')
 Media = require('./media')
+GeoSchema = require('./geo').GeoSchema
 
 BusinessSchema = new Schema
   name: 
     type: String
     required: true
-    lowercase: false
     trim: true
   description:
     type: String
     required: true
-    lowercase: false
     trim: true
   hours:
-    type:String
+    type: String
   createdAt: 
     type: Date
     default: Date.now 
@@ -34,15 +32,34 @@ BusinessSchema = new Schema
   website:
     type: String
     required: false
-    lowercase: false
     trim: true
   createdBy:
-    type:Number
-    required:true
-  media:[Media]
-  contact: [Contact]
-  address: Address
-  
+    type: Number
+    required: true
+  media: [Media]
+  contacts: [Contact]
+  address: {
+    line1:
+      type: String
+      required: true
+      trim: true
+    line2:
+      type: String
+      trim: true
+    city:
+      type: String
+      required: true
+      trim: true
+    state_province:
+      type: String
+      required: true
+      trim: true
+    postal_code:
+      type: String
+      required: true
+      trim: true
+  }
+  geo: [GeoSchema]
   socialMediaLinks:[SocialMediaLinks]
 
 module.exports = 
