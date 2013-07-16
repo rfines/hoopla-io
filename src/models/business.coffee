@@ -1,7 +1,7 @@
 mongoose = require('mongoose')
 Schema = mongoose.Schema
 ObjectId = mongoose.Schema.ObjectId
-Contact = require('./contact').ContactSchema
+Contact = require('./contact')
 SocialMediaLink = require('./socialMediaLink').SocialMediaLinkSchema
 Media = require('./media').MediaSchema
 GeoSchema = require('./geo').GeoSchema
@@ -31,6 +31,7 @@ BusinessSchema = new Schema
     required: true
   website:
     type: String
+    required: false
     trim: true
   createdBy:
     type: Number
@@ -60,6 +61,9 @@ BusinessSchema = new Schema
   }
   geo: [GeoSchema]
   socialMediaLinks:[SocialMediaLink]
+  legacyId:
+    type:Number
+    required:true
 
 module.exports = 
   Business : mongoose.model('business', BusinessSchema)

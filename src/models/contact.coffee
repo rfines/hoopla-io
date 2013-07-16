@@ -3,16 +3,15 @@ Schema = mongoose.Schema
 ObjectId = mongoose.Schema.ObjectId
 
 ContactSchema = new Schema
-  contactName:
+  name:
     type: String
     trim: true
-  contactPhone:
+  phone:
     type: String
     trim: true
-  contactEmail:
+  email:
     type: String
     trim: true
 
 module.export = 
   Contact : mongoose.model('contact', ContactSchema)
-  ContactSchema : ContactSchema
