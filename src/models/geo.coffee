@@ -1,3 +1,4 @@
+mongoose = require('mongoose')
 Schema = mongoose.Schema
 
 GeoSchema = new Schema
