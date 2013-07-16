@@ -1,1 +1,1 @@
-indexes.js
+db.postalcodes.ensureIndex( { geo : "2dsphere" } )
