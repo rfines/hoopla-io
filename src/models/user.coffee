@@ -26,6 +26,7 @@ UserSchema = new Schema
   businessPrivileges: [BusinessPrivileges]
 
   #Items for migration only
+  legacyId:String
   legacyProfiles:[String] 
     
 
