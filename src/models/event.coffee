@@ -6,7 +6,6 @@ TicketingLink = require('./ticket').TicketingLinkSchema
 SocialMediaLinks = require('./socialMediaLinks').SocialMediaLinkSchema
 Media = require('./media')
 Business = require('./business')
-GeoSchema = require('./geo').GeoSchema
 
 EventSchema = new Schema
   name: 
@@ -75,7 +74,14 @@ EventSchema = new Schema
       required: true
       trim: true
   }
-  geo: [GeoSchema]
+  geo: {
+    'type':
+      type: String,
+      required: true,
+      enum: ['Point', 'LineString', 'Polygon'],
+      default: 'Point'
+    coordinates: [Number]
+  }
   ticketingLinks:[TicketingLink]
   socialMediaLinks:[SocialMediaLinks]
   venue:

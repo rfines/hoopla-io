@@ -4,7 +4,6 @@ ObjectId = mongoose.Schema.ObjectId
 Contact = require('./contact')
 SocialMediaLink = require('./socialMediaLink').SocialMediaLinkSchema
 Media = require('./media').MediaSchema
-GeoSchema = require('./geo').GeoSchema
 
 BusinessSchema = new Schema
   name: 
@@ -59,7 +58,14 @@ BusinessSchema = new Schema
       required: true
       trim: true
   }
-  geo: [GeoSchema]
+  geo: {
+    'type':
+      type: String,
+      required: true,
+      enum: ['Point', 'LineString', 'Polygon'],
+      default: 'Point'
+    coordinates: [Number]
+  }
   socialMediaLinks:[SocialMediaLink]
   legacyId:
     type:Number
