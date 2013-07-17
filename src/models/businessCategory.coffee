@@ -1,7 +1,7 @@
 mongoose = require('mongoose')
 Schema = mongoose.Schema
 ObjectId = mongoose.Schema.ObjectId
-BusinessSubCategory = require("../models/businessSubCatgeory").SubCategory
+BusinessSubCategory = require("./businessSubCategory").Schema
 
 BusinessCategorySchema = new Schema
   name: 
@@ -9,5 +9,6 @@ BusinessCategorySchema = new Schema
     required: true
     trim: true
   subCategories:[BusinessSubCategory]
-module.export = 
+
+module.exports = 
   BusinessCategory : mongoose.model("businessCategory", BusinessCategorySchema)

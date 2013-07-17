@@ -7,5 +7,6 @@ EventCategorySchema = new Schema
     type: String
     required: true
     trim: true
-module.export = 
-  EventCategory = mongoose.model("eventCategory", EventCategorySchema)
+
+module.exports = 
+  EventCategory : mongoose.model("eventCategory", EventCategorySchema)

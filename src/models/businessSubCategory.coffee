@@ -10,3 +10,4 @@ BusinessSubCategorySchema = new Schema
 
 module.exports = 
   BusinessSubCategory : mongoose.model('businessSubCategory', BusinessSubCategorySchema)
+  Schema : BusinessSubCategorySchema
