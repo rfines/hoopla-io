@@ -19,4 +19,4 @@ PostalCodeSchema = new Schema
   }
 
 module.exports = 
-  PostalCode : mongoose.model('postalCode', PostalCodeSchema)
+  PostalCode : mongoose.model('postalCode', PostalCodeSchema, 'postalCode')

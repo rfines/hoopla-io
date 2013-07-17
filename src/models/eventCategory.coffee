@@ -9,4 +9,4 @@ EventCategorySchema = new Schema
     trim: true
 
 module.exports = 
-  EventCategory : mongoose.model("eventCategory", EventCategorySchema)
+  EventCategory : mongoose.model("eventCategory", EventCategorySchema, 'eventCategory')

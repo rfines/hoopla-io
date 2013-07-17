@@ -89,6 +89,6 @@ EventSchema = new Schema
 
 
 module.exports = 
-  Event : mongoose.model('event', EventSchema)
+  Event : mongoose.model('event', EventSchema, 'event')
 
 

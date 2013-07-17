@@ -23,8 +23,6 @@ UserSchema = new Schema
     type: String
     enum: ['SHA1','BCRYPT']
   businessPrivileges: [BusinessPrivileges]
-
-  #Items for migration only
   legacyId:String
   legacyProfiles:[String] 
     

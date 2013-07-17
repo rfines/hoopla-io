@@ -70,6 +70,6 @@ BusinessSchema = new Schema
   legacyId: String
 
 module.exports = 
-  Business : mongoose.model('business', BusinessSchema)
+  Business : mongoose.model('business', BusinessSchema,'business')
 
 

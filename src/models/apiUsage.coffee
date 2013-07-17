@@ -12,4 +12,4 @@ ApiUsageSchema = new mongoose.Schema
     required: true        
 
 module.exports = 
-  ApiUsage : mongoose.model('apiUsage', ApiUsageSchema)
+  ApiUsage : mongoose.model('apiUsage', ApiUsageSchema, 'apiUsage')
