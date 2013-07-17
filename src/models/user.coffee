@@ -19,7 +19,6 @@ UserSchema = new Schema
   name: String
   password:
     type: String
-    required: true
   encryptionMethod:
     type: String
     enum: ['SHA1','BCRYPT']

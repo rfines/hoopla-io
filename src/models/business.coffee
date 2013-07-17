@@ -67,9 +67,7 @@ BusinessSchema = new Schema
     coordinates: [Number]
   }
   socialMediaLinks:[SocialMediaLink]
-  legacyId:
-    type:Number
-    required:true
+  legacyId: String
 
 module.exports = 
   Business : mongoose.model('business', BusinessSchema)
