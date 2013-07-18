@@ -1,2 +1,2 @@
-db.postalcodes.ensureIndex( { geo : "2dsphere" } )
-db.businesses.ensureIndex( { geo : "2dsphere" } )
+db.postalCode.ensureIndex( { geo : "2dsphere" } )
+db.business.ensureIndex( { geo : "2dsphere" } )

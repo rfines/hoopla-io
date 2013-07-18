@@ -2,11 +2,13 @@ routingService = require './services/routingService'
 mongoService = require './services/mongoService'
 eventController = require './controllers/eventController'
 userController = require './controllers/userController'
-console.log(userController)
+businessController = require './controllers/businessController'
 
 CONFIG = require('config')
 
-server = require("restify").createServer(name: "ruckus.io-api")
+restify = require("restify")
+server = restify.createServer(name: "ruckus.io-api")
+server.use(restify.queryParser())
 server.listen process.env.PORT || CONFIG.port
 
 routes = [
@@ -14,6 +16,7 @@ routes = [
   ['get', '/event/:id/secret', eventController, {handler: 'getSecret'}]
   ['post', '/user', userController]
   ['del', '/user/:id', userController]
+  ['get', '/business', businessController, {handler : 'search'}]
 ]
 
 routingService.init server, routes
