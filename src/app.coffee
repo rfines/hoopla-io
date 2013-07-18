@@ -17,6 +17,7 @@ routes = [
   ['post', '/user', userController]
   ['del', '/user/:id', userController]
   ['get', '/business', businessController, {handler : 'search'}]
+  ['get', '/business/:id', businessController]
 ]
 
 routingService.init server, routes
