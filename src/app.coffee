@@ -13,11 +13,11 @@ server.listen process.env.PORT || CONFIG.port
 
 routes = [
   ['get', '/event/:id', eventController]
-  ['get', '/event/:id/secret', eventController, {handler: 'getSecret'}]
   ['post', '/user', userController]
   ['del', '/user/:id', userController]
   ['get', '/business', businessController, {handler : 'search'}]
   ['get', '/business/:id', businessController]
+  ['del', '/business/:id', businessController]
 ]
 
 routingService.init server, routes

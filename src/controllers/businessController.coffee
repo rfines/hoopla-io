@@ -17,8 +17,4 @@ class BusinessController extends RestfulController
       res.send data
       next()
 
-  getSecret : (req, res, next) =>
-    res.send {Hello : 'Secret'}
-    next()  
-
 module.exports = new BusinessController()
