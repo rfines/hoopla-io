@@ -16,12 +16,16 @@ routes = [
   ['get', '/event/:id', eventController]
   ['post', '/user', userController]
   ['del', '/user/:id', userController]
-  ['get', '/business', businessController, {handler : 'search'}]
-  ['get', '/business/:id', businessController]
-  ['del', '/business/:id', businessController]
-  ['put', '/business/:id', businessController]
-  ['post', '/business', businessController]
 ]
+
+scaffold = (resource, controller) ->
+  routes.push ['get', "/#{resource}", controller, {handler : 'search'}]
+  routes.push ['get', "/#{resource}/:id", controller]
+  routes.push ['del', "/#{resource}/:id", controller]
+  routes.push ['put', "/#{resource}/:id", controller]
+  routes.push ['post', "/#{resource}", controller]
+
+scaffold('business', businessController)
 
 routingService.init server, routes
 
