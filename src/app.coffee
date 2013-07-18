@@ -13,7 +13,6 @@ server.use(restify.bodyParser({ mapParams: false }));
 server.listen process.env.PORT || CONFIG.port
 
 routes = [
-  ['get', '/event/:id', eventController]
   ['post', '/user', userController]
   ['del', '/user/:id', userController]
 ]
@@ -26,6 +25,7 @@ scaffold = (resource, controller) ->
   routes.push ['post', "/#{resource}", controller]
 
 scaffold('business', businessController)
+scaffold('event', eventController)
 
 routingService.init server, routes
 

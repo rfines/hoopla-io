@@ -1,16 +1,19 @@
 mongoose = require 'mongoose'
+RestfulController = require('./restfulController')
 
-class EventController
-  #Model : require('../models/event').Event
+class EventController  extends RestfulController
+  Model : require('../models/event').Event
 
   constructor : (@name) ->
+    super(@name)
 
-  get : (req, res, next) =>
-  	res.send {Hello : 'World6'}
-  	next()
-
-  getSecret : (req, res, next) =>
-  	res.send {Hello : 'Secret'}
-  	next()	
+  search : (req, res, next) =>
+    nearZip = req.params.nearZip
+    distance = parseInt(req.params.distance)
+    query = { 'geo' :{ $near :{ $geometry :{ type : "Point" ,coordinates : [ -94.595033,  39.102704 ] } , $maxDistance : distance} } }
+    console.log @Model
+    @Model.find query, (err, data) ->
+      res.send data
+      next()
 
 module.exports = new EventController()

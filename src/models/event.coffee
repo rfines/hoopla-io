@@ -2,9 +2,9 @@ mongoose = require('mongoose')
 Schema = mongoose.Schema
 ObjectId = mongoose.Schema.ObjectId
 Contact = require('./contact')
-TicketingLink = require('./ticket').TicketingLinkSchema
-SocialMediaLinks = require('./socialMediaLinks').SocialMediaLinkSchema
-Media = require('./media')
+TicketingLink = require('./ticketingLink').TicketingLinkSchema
+SocialMediaLinks = require('./socialMediaLink').SocialMediaLinkSchema
+Media = require('./media').MediaSchema
 Business = require('./business')
 
 EventSchema = new Schema
