@@ -81,3 +81,14 @@ describe "Base Operations for RESTful Routes", ->
     controller.destroy req, res, ->
       spy.calledWith(204).should.be.true
       done()    
+
+  it 'should update a resource by id', (done) ->
+        spy = sinon.spy(controller.Model, "remove")
+    req = 
+      params : 
+        id : new mongoose.Types.ObjectId()
+    res = 
+      send: ( (status, body) ->)
+    controller.update req, res, ->
+      spy.calledWith({'_id' : req.params.id}).should.be.true
+      done()  

@@ -9,6 +9,7 @@ CONFIG = require('config')
 restify = require("restify")
 server = restify.createServer(name: "ruckus.io-api")
 server.use(restify.queryParser())
+server.use(restify.bodyParser({ mapParams: false }));
 server.listen process.env.PORT || CONFIG.port
 
 routes = [
@@ -18,6 +19,8 @@ routes = [
   ['get', '/business', businessController, {handler : 'search'}]
   ['get', '/business/:id', businessController]
   ['del', '/business/:id', businessController]
+  ['put', '/business/:id', businessController]
+  ['post', '/business', businessController]
 ]
 
 routingService.init server, routes

@@ -32,9 +32,7 @@ BusinessSchema = new Schema
     type: String
     required: false
     trim: true
-  createdBy:
-    type: Number
-    required: true
+  createdBy: ObjectId
   media: [Media]
   contacts: [Contact]
   address: {
@@ -68,6 +66,9 @@ BusinessSchema = new Schema
   }
   socialMediaLinks:[SocialMediaLink]
   legacyId: String
+  legacyCreatedBy:
+    type: Number
+    required: true  
 
 module.exports = 
   Business : mongoose.model('business', BusinessSchema,'business')

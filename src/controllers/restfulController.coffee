@@ -24,6 +24,19 @@ class RestfulController
   destroy: (req, res, next) =>
     @Model.remove {'_id' : req.params.id}, (err, doc) ->
       res.send(204)
-      next()        
+      next()     
+
+  update: (req, res, next) =>
+    @Model.findByIdAndUpdate req.params.id, JSON.parse(req._body), (err, doc) ->
+      res.send(200, doc)
+      next()    
+
+  create: (req, res, next) =>
+    m = new @Model(JSON.parse(req._body))
+    console.log m
+    m.save (err, doc) ->
+      console.log err
+      res.send(201, doc)
+      next()                    
 
 module.exports = RestfulController

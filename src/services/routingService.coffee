@@ -4,7 +4,7 @@ ApiUsage = require('../models/apiUsage').ApiUsage
 methodRewrite = 
   del : 'destroy'
   post : 'create'
-
+  put : 'update'
 
 init = (server, routes) ->
   for x in routes
