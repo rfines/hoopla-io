@@ -13,6 +13,8 @@ describe "Base Operations for RESTful Routes", ->
       cb(null, {})
     remove : (query, cb) ->
       cb(null, {})
+    findByIdAndUpdate : (id, body, cb) ->
+      cb(null, {})
 
   before (done) ->  
     done()
@@ -83,12 +85,13 @@ describe "Base Operations for RESTful Routes", ->
       done()    
 
   it 'should update a resource by id', (done) ->
-        spy = sinon.spy(controller.Model, "remove")
+    spy = sinon.spy(controller.Model, "findByIdAndUpdate")
     req = 
       params : 
         id : new mongoose.Types.ObjectId()
+      _body : JSON.stringify({data:'1'})
     res = 
       send: ( (status, body) ->)
     controller.update req, res, ->
-      spy.calledWith({'_id' : req.params.id}).should.be.true
+      spy.calledWith(req.params.id, {data:'1'}).should.be.true
       done()  
