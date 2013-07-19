@@ -15,11 +15,11 @@ class RestfulController
     id = req.params.id
     checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$")
     if not checkForHexRegExp.test(id)
-      @Model.findOne {legacyId : req.params.id}, @getFields, (err, data) ->
+      @Model.findOne {legacyId : req.params.id}, @getFields, {lean : true}, (err, data) ->
         res.send 200, data
         next()
     else
-      @Model.findById req.params.id, @getFields, (err, data) ->
+      @Model.findById req.params.id, @getFields, {lean : true}, (err, data) ->
         res.send 200, data
         next()
 

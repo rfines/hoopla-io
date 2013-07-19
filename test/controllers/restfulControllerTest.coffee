@@ -7,9 +7,9 @@ describe "Base Operations for RESTful Routes", ->
   controller = {}
 
   modelSpy = 
-    findById : (id, fields, cb) ->
+    findById : (id, fields, options, cb) ->
       cb(null, {})  
-    findOne : (query, fields, cb) ->
+    findOne : (query, fields, options, cb) ->
       cb(null, {})
     remove : (query, cb) ->
       cb(null, {})
