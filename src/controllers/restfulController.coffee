@@ -13,26 +13,17 @@ class RestfulController
       res.send data
       next()
 
-
-  authorizeAndExecute: (req, res, next, success) =>
-    authorizationService.authorize req.authorization, ( =>
-      success()
-    ), (message) =>
-      return next new restify.NotAuthorizedError(message)  
-
-
   get : (req, res, next) =>
-    @authorizeAndExecute req, res, next, =>
-      id = req.params.id
-      checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$")
-      if not checkForHexRegExp.test(id)
-        @Model.findOne {legacyId : req.params.id}, @getFields, {lean : true}, (err, data) ->
-          res.send 200, data
-          next()
-      else
-        @Model.findById req.params.id, @getFields, {lean : true}, (err, data) ->
-          res.send 200, data
-          next()  
+    id = req.params.id
+    checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$")
+    if not checkForHexRegExp.test(id)
+      @Model.findOne {legacyId : req.params.id}, @getFields, {lean : true}, (err, data) ->
+        res.send 200, data
+        next()
+    else
+      @Model.findById req.params.id, @getFields, {lean : true}, (err, data) ->
+        res.send 200, data
+        next()  
 
   destroy: (req, res, next) =>
     @Model.remove {'_id' : req.params.id}, (err, doc) ->
