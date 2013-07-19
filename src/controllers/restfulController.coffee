@@ -3,6 +3,8 @@ _ = require 'lodash'
 
 class RestfulController
 
+  getFields : {}
+
   search : (req, res, next) =>
     query = {}
     @Model.find query, (err, data) ->
@@ -13,11 +15,11 @@ class RestfulController
     id = req.params.id
     checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$")
     if not checkForHexRegExp.test(id)
-      @Model.findOne {legacyId : req.params.id}, (err, data) ->
+      @Model.findOne {legacyId : req.params.id}, @getFields, (err, data) ->
         res.send 200, data
         next()
     else
-      @Model.findById req.params.id, (err, data) ->
+      @Model.findById req.params.id, @getFields, (err, data) ->
         res.send 200, data
         next()
 

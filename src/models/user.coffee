@@ -23,9 +23,18 @@ UserSchema = new Schema
     type: String
     enum: ['SHA1','BCRYPT']
   businessPrivileges: [BusinessPrivileges]
+  applications : [
+    {
+      name : String
+      legacyKey : String
+      apiKey : String
+      apiSecret : String
+    }
+  ]
   legacyId:String
   legacyProfiles:[String] 
+
     
 
 module.exports = 
-  User : mongoose.model('user', UserSchema)
+  User : mongoose.model('user', UserSchema, 'user')

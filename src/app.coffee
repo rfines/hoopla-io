@@ -12,10 +12,7 @@ server.use(restify.queryParser())
 server.use(restify.bodyParser({ mapParams: false }));
 server.listen process.env.PORT || CONFIG.port
 
-routes = [
-  ['post', '/user', userController]
-  ['del', '/user/:id', userController]
-]
+routes = []
 
 scaffold = (resource, controller) ->
   routes.push ['get', "/#{resource}", controller, {handler : 'search'}]
@@ -26,6 +23,7 @@ scaffold = (resource, controller) ->
 
 scaffold('business', businessController)
 scaffold('event', eventController)
+scaffold('user', userController)
 
 routingService.init server, routes
 
