@@ -15,7 +15,13 @@
   "devDependencies": {
     "mocha": "*",
     "should" : "*",
-    "sinon" : "*"
+    "sinon" : "*",
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "*",
+    "grunt-cafe-mocha": "*",
+    "grunt-contrib-watch" : "*",
+    "grunt-simple-mocha": "*",
+    "grunt-contrib-coffee" : "*"
   },
   "scripts": {
     "test": "cake test",
