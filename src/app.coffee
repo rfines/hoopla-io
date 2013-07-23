@@ -9,6 +9,8 @@ CONFIG = require('config')
 restify = require("restify")
 
 server = restify.createServer(name: "ruckus.io-api")
+server.use(restify.CORS());
+server.use(restify.fullResponse());
 server.use(restify.authorizationParser());
 server.use(restify.queryParser())
 server.use(restify.bodyParser({ mapParams: false }));

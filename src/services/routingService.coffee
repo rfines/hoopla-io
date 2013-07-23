@@ -23,6 +23,21 @@ init = (server, routes) ->
       u.url = route.spec.path if route.spec.path
       u.save()
 
+  unknownMethodHandler = (req, res) ->
+    if req.method.toLowerCase() is "options"
+      console.log "received an options method request"
+      allowHeaders = ["Accept", "Accept-Version", "Content-Type", "Api-Version", "Origin", "X-Requested-With", 'Authorization']
+      res.methods.push "OPTIONS"  if res.methods.indexOf("OPTIONS") is -1
+      res.header "Access-Control-Allow-Credentials", true
+      res.header "Access-Control-Allow-Headers", allowHeaders.join(", ")
+      res.header "Access-Control-Allow-Methods", res.methods.join(", ")
+      res.header "Access-Control-Allow-Origin", req.headers.origin
+      res.send 204
+    else
+      res.send new restify.MethodNotAllowedError()
+
+  server.on "MethodNotAllowed", unknownMethodHandler      
+
 getHandlerFunction = (method, options) ->
   handlerFunction = method
   handlerFunction = methodRewrite[method] if methodRewrite[method]
