@@ -34,17 +34,12 @@ EventSchema = new Schema
     type: Date
     required: true
     default: Date.now
-  categories:
-    type: [String]
-    required: true
+  categories: [ObjectId]
   website:
     type: String
     required: false
     lowercase: false
     trim: true
-  createdBy:
-    type:Number
-    required:true
   eventType:
     type: [String]
     required: false
@@ -86,6 +81,8 @@ EventSchema = new Schema
   socialMediaLinks:[SocialMediaLinks]
   venue:
     type: ObjectId
+  legacyId: String
+  legacyBusinessId: String  
 
 
 module.exports = 

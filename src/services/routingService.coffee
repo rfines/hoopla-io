@@ -25,7 +25,6 @@ init = (server, routes) ->
 
   unknownMethodHandler = (req, res) ->
     if req.method.toLowerCase() is "options"
-      console.log "received an options method request"
       allowHeaders = ["Accept", "Accept-Version", "Content-Type", "Api-Version", "Origin", "X-Requested-With", 'Authorization']
       res.methods.push "OPTIONS"  if res.methods.indexOf("OPTIONS") is -1
       res.header "Access-Control-Allow-Credentials", true
