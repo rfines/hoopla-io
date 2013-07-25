@@ -79,9 +79,13 @@ EventSchema = new Schema
   socialMediaLinks:[SocialMediaLinks]
   venue:
     type: ObjectId
-  schedule: {
-
-  }
+  schedules: [
+    {
+      days: [Number]
+      dayOfWeekCount : [Number]
+      dayOfWeek: [Number]
+    }
+  ]
   legacySchedule: {
     "dayNum": Number
     "period": Number
