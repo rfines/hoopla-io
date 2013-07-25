@@ -1,7 +1,7 @@
 mongoose = require('mongoose')
 Schema = mongoose.Schema
 ObjectId = mongoose.Schema.ObjectId
-Contact = require('./contact')
+Contact = require('./contact').ContactSchema
 TicketingLink = require('./ticketingLink').TicketingLinkSchema
 SocialMediaLinks = require('./socialMediaLink').SocialMediaLinkSchema
 Media = require('./media').MediaSchema
@@ -43,9 +43,7 @@ EventSchema = new Schema
   eventType:
     type: [String]
     required: false
-  bands: 
-    type:[String]
-    required: false
+  bands: [String]
   media:[Media]
   contacts: [Contact]
   address: {
@@ -81,6 +79,18 @@ EventSchema = new Schema
   socialMediaLinks:[SocialMediaLinks]
   venue:
     type: ObjectId
+  schedule: {
+
+  }
+  legacySchedule: {
+    "dayNum": Number
+    "period": Number
+    "periodDay": Number
+    "ordinal": Number
+    "recurrenceInterval": Number
+    "dayofweek": Number
+    days: String
+  }
   legacyId: String
   legacyBusinessId: String  
 
