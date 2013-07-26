@@ -86,6 +86,12 @@ EventSchema = new Schema
       dayOfWeek: [Number]
     }
   ]
+  fixedOccurrences: [
+    {
+      start: Date
+      end: Date
+    }
+  ]  
   legacySchedule: {
     "dayNum": Number
     "period": Number
