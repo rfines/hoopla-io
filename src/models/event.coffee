@@ -11,21 +11,11 @@ EventSchema = new Schema
   name: 
     type: String
     required: true
-    lowercase: false
     trim: true
   description:
     type: String
     required: true
-    lowercase: false
     trim: true
-  startDate:
-    type: Date
-    required: true
-    default: Date.now
-  endDate:
-    type: Date
-    required: false
-    default: Date.now
   createdAt: 
     type: Date
     required: true
@@ -38,7 +28,6 @@ EventSchema = new Schema
   website:
     type: String
     required: false
-    lowercase: false
     trim: true
   eventType:
     type: [String]
@@ -77,8 +66,6 @@ EventSchema = new Schema
   }
   ticketingLinks:[TicketingLink]
   socialMediaLinks:[SocialMediaLinks]
-  venue:
-    type: ObjectId
   schedules: [
     {
       days: [Number]
@@ -100,6 +87,8 @@ EventSchema = new Schema
     "recurrenceInterval": Number
     "dayofweek": Number
     days: String
+    start: Date
+    end: Date
   }
   legacyId: String
   legacyBusinessId: String  
