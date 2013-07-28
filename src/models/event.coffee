@@ -4,7 +4,6 @@ ObjectId = mongoose.Schema.ObjectId
 Contact = require('./contact').ContactSchema
 TicketingLink = require('./ticketingLink').TicketingLinkSchema
 SocialMediaLinks = require('./socialMediaLink').SocialMediaLinkSchema
-Media = require('./media').MediaSchema
 Business = require('./business')
 
 EventSchema = new Schema
@@ -33,7 +32,7 @@ EventSchema = new Schema
     type: [String]
     required: false
   bands: [String]
-  media:[Media]
+  media:[ObjectId]
   contacts: [Contact]
   address: {
     line1:
@@ -71,6 +70,8 @@ EventSchema = new Schema
       days: [Number]
       dayOfWeekCount : [Number]
       dayOfWeek: [Number]
+      start: Date
+      end: Date
     }
   ]
   fixedOccurrences: [
@@ -92,6 +93,7 @@ EventSchema = new Schema
   }
   legacyId: String
   legacyBusinessId: String  
+  legacyImage: String
 
 
 module.exports = 
