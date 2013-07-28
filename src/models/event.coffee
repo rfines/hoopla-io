@@ -4,7 +4,6 @@ ObjectId = mongoose.Schema.ObjectId
 Contact = require('./contact').ContactSchema
 TicketingLink = require('./ticketingLink').TicketingLinkSchema
 SocialMediaLinks = require('./socialMediaLink').SocialMediaLinkSchema
-Business = require('./business')
 
 EventSchema = new Schema
   name: 
@@ -23,6 +22,7 @@ EventSchema = new Schema
     type: Date
     required: true
     default: Date.now
+  business : ObjectId
   categories: [ObjectId]
   website:
     type: String
