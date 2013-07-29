@@ -9,12 +9,14 @@ class BusinessController extends RestfulController
     super(@name)
 
   search : (req, res, next) =>
-    nearZip = req.params.nearZip
-    distance = parseInt(req.params.distance)
-    query = { 'geo' :{ $near :{ $geometry :{ type : "Point" ,coordinates : [ -94.595033,  39.102704 ] } , $maxDistance : distance} } }
-    console.log @Model
-    @Model.find query, (err, data) ->
+    @Model.find @buildSearchQuery(req.params) , (err, data) ->
       res.send data
       next()
+
+  buildSearchQuery : (params) =>
+    ll = params.ll.split(',')
+    longitude = parseFloat(ll[0])
+    latitude = parseFloat(ll[1])
+    {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ longitude,latitude]}}}}
 
 module.exports = new BusinessController()
