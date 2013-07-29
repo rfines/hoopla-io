@@ -6,6 +6,10 @@ Install Node
 
 Install Mongo
 
+Install elasticsearch
+
+Install memcached
+
 npm install -g coffee-script
 
 npm install -g supervisor
