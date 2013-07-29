@@ -8,8 +8,6 @@ class RestfulController
   getFields : {}
 
   search : (req, res, next) =>
-    require('../services/cacheService').get 'hello', (err, d) -> 
-      console.log d
     query = {}
     @Model.find query, (err, data) ->
       res.send data
