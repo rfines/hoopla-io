@@ -2,7 +2,8 @@ mongoose = require('mongoose')
 CONFIG = require('config')
 
 init = ->
-  mongoose.connect CONFIG.database
+  db = process.env.MONGOHQ_URL || CONFIG.database
+  mongoose.connect db
   mongoose.connection.on 'error', (err) ->
     console.log err
 
