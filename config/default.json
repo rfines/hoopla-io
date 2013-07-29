@@ -1,4 +1,5 @@
 {
 	"port" : "8080",
-	"database" : "mongodb://localhost/ruckus"
+	"database" : "mongodb://localhost/ruckus",
+  "elasticSearch" : "http://localhost:9200"
 }

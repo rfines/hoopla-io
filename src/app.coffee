@@ -5,3 +5,4 @@ mongoService.init()
 server = restifyFactory.build()
 
 require('./services/cacheService')
+require('./services/searchService').init()

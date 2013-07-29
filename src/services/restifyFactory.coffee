@@ -5,6 +5,7 @@ eventController = require '../controllers/eventController'
 userController = require '../controllers/userController'
 businessController = require '../controllers/businessController'
 authTokenController = require '../controllers/authTokenController'
+devController = require '../controllers/devController'
 restifyPlugins = require '../plugins/restifyPlugins'
 
 
@@ -22,6 +23,7 @@ build = ->
 
   routes = [
     ['post', "/tokenRequest", authTokenController, {handler : 'createToken'}]
+    ['get', '/dev/indexAll', devController, {handler : 'indexAll'}]
   ]
 
   scaffold = (resource, controller) ->
