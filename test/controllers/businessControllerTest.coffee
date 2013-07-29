@@ -50,3 +50,8 @@ describe "Operations for Business Routes", ->
     controller.buildSearchQuery {ll:'-94.595033,39.102704', maxDistance: 10}, (err, query) ->
       query.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ -94.595033,39.102704]}, $maxDistance : 16093.470878864446}}}
       done()
+
+  it "should build a query using near city,state and maxdistance", (done) ->
+    controller.buildSearchQuery {near : 'Kansas City, MO', maxDistance: 10}, (err, query) ->
+      query.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ -94.56303, 39.084469 ]}, $maxDistance : 16093.470878864446}}}
+      done()
