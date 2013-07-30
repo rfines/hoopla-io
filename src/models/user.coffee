@@ -31,10 +31,9 @@ UserSchema = new Schema
       apiSecret : String
     }
   ]
+  authTokens : [{apiKey:String, authToken:String}]
   legacyId:String
   legacyProfiles:[String] 
-
-    
 
 module.exports = 
   User : mongoose.model('user', UserSchema, 'user')

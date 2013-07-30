@@ -19,3 +19,4 @@ generate = (len) ->
 module.exports = 
   generateKey : generateKey
   generateSecret : generateSecret
+  generate : generate

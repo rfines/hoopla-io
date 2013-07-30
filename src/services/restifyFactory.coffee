@@ -5,6 +5,7 @@ authorizationService = require './authorizationService'
 eventController = require '../controllers/eventController'
 userController = require '../controllers/userController'
 businessController = require '../controllers/businessController'
+authTokenController = require '../controllers/authTokenController'
 
 build = ->
   server = restify.createServer(name: "ruckus.io-api")
@@ -21,7 +22,9 @@ build = ->
     ), (message) =>
       return next new restify.NotAuthorizedError(message)
 
-  routes = []
+  routes = [
+    ['post', "/tokenRequest", authTokenController, {handler : 'createToken'}]
+  ]
 
   scaffold = (resource, controller) ->
     routes.push ['get', "/#{resource}", controller, {handler : 'search'}]

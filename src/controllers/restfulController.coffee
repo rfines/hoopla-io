@@ -29,7 +29,7 @@ class RestfulController
     @model.remove {'_id' : req.params.id}, (err, doc) ->
       res.send(204)
       next()     
-
+  
   update: (req, res, next) =>
     @model.findByIdAndUpdate req.params.id, JSON.parse(req._body), (err, doc) ->
       res.send(200, doc)
@@ -37,9 +37,8 @@ class RestfulController
 
   create: (req, res, next) =>
     m = new @model(JSON.parse(req._body))
-    console.log m
     m.save (err, doc) ->
-      console.log err
+      console.log err if err
       res.send(201, doc)
       next()                    
 
