@@ -12,9 +12,11 @@
     "bcrypt": "0.7.x",
     "lodash": "1.3.x",
     "mapquest": "0.0.1",
-    "redis": "~0.8.4",
-    "hiredis": "~0.1.15"
+    "redis": "~0.8.4"
   },
+  "optionalDependencies" : {
+    "hiredis": "~0.1.15"
+  },  
   "devDependencies": {
     "mocha": "*",
     "should": "*",
