@@ -13,7 +13,7 @@ geocodeAddress = (query, cb) ->
           else  
             console.log "#{q} not cached"
             result = {latitude : parseFloat(location.latLng.lat), longitude: parseFloat(location.latLng.lng)}
-            cache.set "GEOCODE:#{q}", JSON.stringify(result)
+            cache.setex "GEOCODE:#{q}", 2592000, JSON.stringify(result)
             cb null, result
       else if not error and value
         console.log "#{q} cached"

@@ -5,7 +5,7 @@ SearchQuery = require('./helpers/SearchQuery')
 class BusinessController extends RestfulController
   
   model : require('../models/business').Business
-  PostalCode : require('../models/postalCode').PostalCode
+  postalCodeService : require('../services/postalCodeService')
   geoCoder : require('../services/geocodingMQService')
 
   constructor : (@name) ->
@@ -27,18 +27,19 @@ class BusinessController extends RestfulController
       cb errors, null
     else
       distance = params.maxDistance || 25
+      q = new SearchQuery().within(distance).miles()
       if(params.ll)
         ll = params.ll.split(',')
-        cb null, new SearchQuery().within(distance).miles().ofCoordinates(parseFloat(ll[0]), parseFloat(ll[1])).build()
+        cb null, q.ofCoordinates(parseFloat(ll[0]), parseFloat(ll[1])).build()
       else if(params.near)
         if /^\d+$/.test(params.near)
-          @PostalCode.findOne {'code':params.near}, {}, {}, (err,doc) ->    
-            cb null, new SearchQuery().within(distance).miles().ofCoordinates(doc.geo.coordinates[0], doc.geo.coordinates[1]).build()
+          @postalCodeService.get params.near, (err, doc) ->
+            cb null, q.ofCoordinates(doc.geo.coordinates[0], doc.geo.coordinates[1]).build()
         else
           @geoCoder.geocodeAddress params.near, (err, result) ->
             if err
               cb err, null
             else
-              cb null, new SearchQuery().within(distance).miles().ofCoordinates(result.longitude, result.latitude).build()
+              cb null, q.ofCoordinates(result.longitude, result.latitude).build()
 
 module.exports = new BusinessController()

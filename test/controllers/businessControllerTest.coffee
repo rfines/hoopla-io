@@ -12,9 +12,9 @@ describe "Operations for Business Routes", ->
   beforeEach (done) ->
     controller = require('../../src/controllers/businessController')
     modelSpy = 
-      findOne : (query, fields, options, cb) ->
+      get : (code, cb) ->
         cb null, {geo: { type:'Point', coordinates:[1.001, 1.001]}}
-    controller.PostalCode = modelSpy
+    controller.postalCodeService = modelSpy
     controller.geoCoder = 
       geocodeAddress : (query, cb) ->
         cb null, {latitude : 1.01, longitude: 1.01}
@@ -36,16 +36,16 @@ describe "Operations for Business Routes", ->
       done()
 
   it "should get the zip code coordinates from the database when the near param is passed with a postal code", (done) ->
-    spy = sinon.spy(controller.PostalCode, "findOne");
+    spy = sinon.spy(controller.postalCodeService, "get");
     controller.buildSearchQuery {near:'64105'}, (err, query) ->
-      spy.calledWith({code : '64105'}).should.be.true
+      spy.calledWith('64105').should.be.true
       query.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ 1.001,1.001]},$maxDistance : 40233.67719716111}}}
       done()
 
   it "should get the zip code coordinates from the database when the near param is passed with a postal code and formulate a query using distance and coords", (done) ->
-    spy = sinon.spy(controller.PostalCode, "findOne");
+    spy = sinon.spy(controller.postalCodeService, "get");
     controller.buildSearchQuery {near:'64105', maxDistance: 10}, (err, query) ->
-      spy.calledWith({code : '64105'}).should.be.true
+      spy.calledWith('64105').should.be.true
       query.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ 1.001,1.001]}, $maxDistance : 16093.470878864446 }}}
       done()
 
