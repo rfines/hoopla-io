@@ -1,5 +1,3 @@
-#miles = meters * 0.00062137
-
 metersToMiles = (meters) ->
   return (parseFloat(meters) * 0.00062137)
     
