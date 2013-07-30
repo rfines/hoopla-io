@@ -7,7 +7,7 @@ class RestfulController
 
   getFields : {}
 
-  search : (req, res, next) =>
+  search : (req, res, next) =>  
     query = {}
     @Model.find query, (err, data) ->
       res.send data
