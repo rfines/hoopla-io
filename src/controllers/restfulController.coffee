@@ -9,7 +9,7 @@ class RestfulController
 
   search : (req, res, next) =>  
     query = {}
-    @Model.find query, (err, data) ->
+    @model.find query, (err, data) ->
       res.send data
       next()
 
@@ -17,26 +17,26 @@ class RestfulController
     id = req.params.id
     checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$")
     if not checkForHexRegExp.test(id)
-      @Model.findOne {legacyId : req.params.id}, @getFields, {lean : true}, (err, data) ->
+      @model.findOne {legacyId : req.params.id}, @getFields, {lean : true}, (err, data) ->
         res.send 200, data
         next()
     else
-      @Model.findById req.params.id, @getFields, {lean : true}, (err, data) ->
+      @model.findById req.params.id, @getFields, {lean : true}, (err, data) ->
         res.send 200, data
         next()  
 
   destroy: (req, res, next) =>
-    @Model.remove {'_id' : req.params.id}, (err, doc) ->
+    @model.remove {'_id' : req.params.id}, (err, doc) ->
       res.send(204)
       next()     
 
   update: (req, res, next) =>
-    @Model.findByIdAndUpdate req.params.id, JSON.parse(req._body), (err, doc) ->
+    @model.findByIdAndUpdate req.params.id, JSON.parse(req._body), (err, doc) ->
       res.send(200, doc)
       next()    
 
   create: (req, res, next) =>
-    m = new @Model(JSON.parse(req._body))
+    m = new @model(JSON.parse(req._body))
     console.log m
     m.save (err, doc) ->
       console.log err

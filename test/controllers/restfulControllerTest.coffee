@@ -21,12 +21,12 @@ describe "Base Operations for RESTful Routes", ->
 
   beforeEach (done) ->
     controller =  new RestfulController()
-    controller.Model = modelSpy
+    controller.model = modelSpy
 
     done()
 
   it "should get a resource by id", (done) ->
-    spy = sinon.spy(controller.Model, "findById");
+    spy = sinon.spy(controller.model, "findById");
     req = 
       params : 
         id : new mongoose.Types.ObjectId()
@@ -37,7 +37,7 @@ describe "Base Operations for RESTful Routes", ->
       done()
 
   it "should get a resource by legacyId", (done) ->
-    spy = sinon.spy(controller.Model, "findOne");
+    spy = sinon.spy(controller.model, "findOne");
     req = 
       params : 
         id : 12345
@@ -61,7 +61,7 @@ describe "Base Operations for RESTful Routes", ->
 
 
   it 'should delete a resource by Id', (done) ->
-    spy = sinon.spy(controller.Model, "remove")
+    spy = sinon.spy(controller.model, "remove")
     req = 
       params : 
         id : new mongoose.Types.ObjectId()
@@ -72,7 +72,7 @@ describe "Base Operations for RESTful Routes", ->
       done()  
 
   it 'should return a 204 status on deletion', (done) ->
-    #spy = sinon.spy(controller.Model, "remove")
+    #spy = sinon.spy(controller.model, "remove")
     req = 
       params : 
         id : new mongoose.Types.ObjectId()
@@ -85,7 +85,7 @@ describe "Base Operations for RESTful Routes", ->
       done()    
 
   it 'should update a resource by id', (done) ->
-    spy = sinon.spy(controller.Model, "findByIdAndUpdate")
+    spy = sinon.spy(controller.model, "findByIdAndUpdate")
     req = 
       params : 
         id : new mongoose.Types.ObjectId()

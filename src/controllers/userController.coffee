@@ -2,7 +2,7 @@ mongoose = require 'mongoose'
 RestfulController = require('./restfulController')
 
 class UserController extends RestfulController
-  Model : require('../models/user').User
+  model : require('../models/user').User
   getFields : { 'applications' : 0, 'password' : 0, 'encryptionMethod' : 0}
   
   constructor : (@name) ->

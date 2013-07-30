@@ -3,45 +3,58 @@ RestfulController = require('./restfulController')
 
 class BusinessController extends RestfulController
   
-  Model : require('../models/business').Business
+  model : require('../models/business').Business
   PostalCode : require('../models/postalCode').PostalCode
   Conversion : require('../services/unitConversionService')
-  Mapquest : require('../services/geocodingMQService')
+  geoCoder : require('../services/geocodingMQService')
 
   constructor : (@name) ->
     super(@name)
 
   search : (req, res, next) =>
     @buildSearchQuery req.params, (err, result) =>
-      @Model.find result , (err, data) ->
+      @model.find result , (err, data) ->
         res.send data
         next()
 
-  buildSearchQuery : (params, cb) =>
+  validateSearchQuery : (params) ->
     if not params.ll and not params.near
-      err = {'message': 'The request parameters do not contain a near field or ll field.'}
-      cb err, null
+      return {'message': 'The request parameters do not contain a near field or ll field.'}
+
+  getSearchRadius : (params) ->
+    if(params.maxDistance)
+      return @Conversion.milesToMeters(parseFloat(params.maxDistance))
     else
-      if(params.maxDistance)
-        distance = @Conversion.milesToMeters(parseFloat(params.maxDistance))
-      else
-        distance = @Conversion.milesToMeters(25)
+      return @Conversion.milesToMeters(25)
+
+  withGeoQuery = (q, longitude, latitude, distance) ->
+    q.geo =
+      $near:
+        $geometry : 
+          type : "Point"
+          coordinates : [ longitude,latitude]
+        $maxDistance : distance
+    q
+
+  buildSearchQuery : (params, cb) =>
+    query = {}
+    errors = @validateSearchQuery(params)
+    if errors 
+      cb errors, null
+    else
+      distance = @getSearchRadius(params)
       if(params.ll)
         ll = params.ll.split(',')
-        longitude = parseFloat(ll[0])
-        latitude = parseFloat(ll[1])
-        cb null, {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ longitude,latitude]},$maxDistance : distance}}}
+        cb null, withGeoQuery(query, parseFloat(ll[0]), parseFloat(ll[1]), distance)
       else if(params.near)
-        #geocode the address here
-        isnum = /^\d+$/.test(params.near);
-        if(isnum)
+        if /^\d+$/.test(params.near)
           @PostalCode.findOne {'code':params.near}, {}, {}, (err,doc) ->    
-            cb null, {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ doc.geo.coordinates[0],doc.geo.coordinates[1]]},$maxDistance: distance}}}
+            cb null, withGeoQuery(query, doc.geo.coordinates[0], doc.geo.coordinates[1], distance)
         else
-          @Mapquest.geocodeAddress params.near, (err, result) ->
+          @geoCoder.geocodeAddress params.near, (err, result) ->
             if err
               cb err, null
             else
-              cb null, {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ result.longitude,result.latitude]},$maxDistance: distance}}}
+              cb null, withGeoQuery(query, result.longitude, result.latitude, distance)            
 
 module.exports = new BusinessController()

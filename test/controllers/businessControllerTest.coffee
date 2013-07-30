@@ -15,7 +15,7 @@ describe "Operations for Business Routes", ->
       findOne : (query, fields, options, cb) ->
         cb null, {geo: { type:'Point', coordinates:[1.001, 1.001]}}
     controller.PostalCode = modelSpy
-    controller.Mapquest = 
+    controller.geoCoder = 
       geocodeAddress : (query, cb) ->
         cb null, {latitude : 1.01, longitude: 1.01}
     done()      
