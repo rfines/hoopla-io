@@ -15,6 +15,9 @@ describe "Operations for Business Routes", ->
       findOne : (query, fields, options, cb) ->
         cb null, {geo: { type:'Point', coordinates:[1.001, 1.001]}}
     controller.PostalCode = modelSpy
+    controller.Mapquest = 
+      geocodeAddress : (query, cb) ->
+        cb null, {latitude : 1.01, longitude: 1.01}
     done()      
   
   it "should transform longitude/latitude parameter for search", (done) ->
@@ -53,5 +56,10 @@ describe "Operations for Business Routes", ->
 
   it "should build a query using near city,state and maxdistance", (done) ->
     controller.buildSearchQuery {near : 'Kansas City, MO', maxDistance: 10}, (err, query) ->
-      query.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ -94.56303, 39.084469 ]}, $maxDistance : 16093.470878864446}}}
+      query.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ 1.01, 1.01 ]}, $maxDistance : 16093.470878864446}}}
       done()
+
+  it "should handle maxdistance with float values", (done) ->
+    controller.buildSearchQuery {near : 'Kansas City, MO', maxDistance: 0.1}, (err, query) ->
+      query.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ 1.01, 1.01 ]}, $maxDistance : 160.93470878864446}}}
+      done()  

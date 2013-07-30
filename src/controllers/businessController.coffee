@@ -22,9 +22,10 @@ class BusinessController extends RestfulController
       err = {'message': 'The request parameters do not contain a near field or ll field.'}
       cb err, null
     else
-      distance = @Conversion.milesToMeters(25)
       if(params.maxDistance)
-        distance = @Conversion.milesToMeters(parseInt(params.maxDistance))
+        distance = @Conversion.milesToMeters(parseFloat(params.maxDistance))
+      else
+        distance = @Conversion.milesToMeters(25)
       if(params.ll)
         ll = params.ll.split(',')
         longitude = parseFloat(ll[0])
