@@ -1,8 +1,5 @@
-conversion = require('../../services/unitConversionService')
-
 class SearchQuery
-  convertToMeters : false
-  
+
   ofLongitude: (@longitude) ->
     @
 
@@ -15,18 +12,8 @@ class SearchQuery
   within: (@distance) ->
     @
 
-  miles: () ->
-    @convertToMeters = true
-    @
-
-  meters: () ->
-    @convertToMeters = false
-
   build : ->
-    if @convertToMeters
-      d = conversion.milesToMeters(parseFloat(@distance))
-    else 
-      d = parseFloat(@distance)
+    d = parseFloat(@distance)
     return {
       geo:
         $near:

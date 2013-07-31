@@ -35,8 +35,8 @@ class BusinessController extends RestfulController
     if errors 
       cb errors, null
     else
-      distance = params.maxDistance || 25
-      q = new SearchQuery().within(distance).miles()
+      distance = params.radius || 40234
+      q = new SearchQuery().within(distance)
       if(params.ll)
         ll = params.ll.split(',')
         centerCoordinates = {latitude : parseFloat(ll[1]), longitude: parseFloat(ll[0])}
