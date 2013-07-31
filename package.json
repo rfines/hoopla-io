@@ -12,11 +12,13 @@
     "bcrypt": "0.7.x",
     "lodash": "1.3.x",
     "mapquest": "0.0.1",
-    "redis": "~0.8.4"
+    "redis": "~0.8.4",
+    "async": "~0.2.9",
+    "geolib": "~1.2.5"
   },
-  "optionalDependencies" : {
+  "optionalDependencies": {
     "hiredis": "~0.1.15"
-  },  
+  },
   "devDependencies": {
     "mocha": "*",
     "should": "*",

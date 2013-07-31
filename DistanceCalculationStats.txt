@@ -1,0 +1,17 @@
+http://localhost:8080/business?near=Kansas%20City%2C%20MO&maxDistance=100
+
+Before distance calc:
+391
+569
+544
+635
+538
+564
+
+
+async + geolib:
+325
+584
+563
+559
+
