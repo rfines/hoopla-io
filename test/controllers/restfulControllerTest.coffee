@@ -72,7 +72,6 @@ describe "Base Operations for RESTful Routes", ->
       done()  
 
   it 'should return a 204 status on deletion', (done) ->
-    #spy = sinon.spy(controller.model, "remove")
     req = 
       params : 
         id : new mongoose.Types.ObjectId()

@@ -1,26 +1,24 @@
 CONFIG = require('config')
 restify = require("restify")
 routingService = require './routingService'
-authorizationService = require './authorizationService'
 eventController = require '../controllers/eventController'
 userController = require '../controllers/userController'
 businessController = require '../controllers/businessController'
 authTokenController = require '../controllers/authTokenController'
+restifyPlugins = require '../plugins/restifyPlugins'
+
 
 build = ->
-  server = restify.createServer(name: "ruckus.io-api")
-  server.use(restify.CORS());
-  server.use(restify.fullResponse());
-  server.use(restify.authorizationParser());
-  server.use(restify.bodyParser({ mapParams: false }));
-  server.use(restify.queryParser())
-  server.listen process.env.PORT || CONFIG.port
+  server = restify.createServer(name: "hoopla-io-api")
+  server.use restify.CORS()
+  server.use restify.fullResponse()
+  server.use restify.authorizationParser()
+  server.use restify.bodyParser({ mapParams: false })
+  server.use restify.queryParser()
+  server.use restifyPlugins.AuthorizationParser
+  server.use restifyPlugins.AuthTokenParser
 
-  server.use (req, res, next) =>
-    authorizationService.authorize req.authorization, ( =>
-      return next()
-    ), (message) =>
-      return next new restify.NotAuthorizedError(message)
+  server.listen process.env.PORT || CONFIG.port
 
   routes = [
     ['post', "/tokenRequest", authTokenController, {handler : 'createToken'}]

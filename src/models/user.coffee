@@ -2,14 +2,6 @@ mongoose = require('mongoose')
 Schema = mongoose.Schema
 ObjectId = mongoose.Schema.ObjectId
 
-BusinessPrivileges = new Schema
-  businessId: 
-    type: ObjectId
-    required: true
-  role: 
-    type: String
-    enum: ['OWNER','COLLABORATOR']
-
 UserSchema = new Schema
   email:
     type: String
@@ -22,7 +14,14 @@ UserSchema = new Schema
   encryptionMethod:
     type: String
     enum: ['SHA1','BCRYPT']
-  businessPrivileges: [BusinessPrivileges]
+  businessPrivileges: [
+    businessId: 
+      type: ObjectId
+      required: true
+    role: 
+      type: String
+      enum: ['OWNER','COLLABORATOR']
+  ]
   applications : [
     {
       name : String
