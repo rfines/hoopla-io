@@ -23,7 +23,7 @@ EventSchema = new Schema
     required: true
     default: Date.now
   business : ObjectId
-  categories: [ObjectId]
+  categories: [String]
   website:
     type: String
     required: false
