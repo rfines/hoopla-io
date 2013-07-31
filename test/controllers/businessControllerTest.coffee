@@ -60,6 +60,17 @@ describe "Operations for Business Routes", ->
       done()
 
   it "should handle maxdistance with float values", (done) ->
+<<<<<<< HEAD
     controller.buildSearchQuery {near : 'Kansas City, MO', radius: 10.1}, (err, coords, query) ->
       query.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ 1.01, 1.01 ]}, $maxDistance : 10.1}}}
       done()  
+=======
+    controller.buildSearchQuery {near : 'Kansas City, MO', maxDistance: 0.1}, (err, query) ->
+      query.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ 1.01, 1.01 ]}, $maxDistance : 160.93470878864446}}}
+      done()  
+  it "should handle maxdistance with float values and category names", (done) ->
+    controller.buildSearchQuery {near : 'Kansas City, MO', maxDistance: 0.1, categories : ['Venues', 'Restaurants & Bars']}, (err, query) ->
+      query.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ 1.01, 1.01 ]}, $maxDistance : 160.93470878864446}}, categories : ['51f68fbd72e5875c3f000002','51f68fbd72e5875c3f00001e']}
+      done()  
+
+>>>>>>> More searching
