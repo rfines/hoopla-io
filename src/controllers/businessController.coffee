@@ -35,23 +35,35 @@ class BusinessController extends RestfulController
     if errors 
       cb errors, null
     else
-      distance = params.radius || 40234
-      q = new SearchQuery().within(distance)
-      if(params.ll)
-        ll = params.ll.split(',')
-        centerCoordinates = {latitude : parseFloat(ll[1]), longitude: parseFloat(ll[0])}
-        cb null, centerCoordinates, q.ofCoordinates(parseFloat(ll[0]), parseFloat(ll[1])).build()
-      else if(params.near)
+      async.parallel {
+        coordinates : (cb) =>
+          @coordinates(params, cb)
+      }, (err, results) ->
+        if err
+          cb err, null
+        else
+          distance = params.radius || 40234
+          q = new SearchQuery().within(distance)
+          if results.coordinates
+            q.ofCoordinates(results.coordinates.longitude, results.coordinates.latitude) 
+          cb null, results.coordinates, q.build()
+
+  coordinates: (params, cb) =>
+    if(params.ll)
+      ll = params.ll.split(',')
+      centerCoordinates = {latitude : parseFloat(ll[1]), longitude: parseFloat(ll[0])}
+      cb null, centerCoordinates
+    else if(params.near)
         if /^\d+$/.test(params.near)
           @postalCodeService.get params.near, (err, doc) ->
             centerCoordinates = {latitude : doc.geo.coordinates[1], longitude: doc.geo.coordinates[0]}
-            cb null, centerCoordinates, q.ofCoordinates(doc.geo.coordinates[0], doc.geo.coordinates[1]).build()
+            cb null, centerCoordinates
         else
           @geoCoder.geocodeAddress params.near, (err, result) ->
             if err
               cb err, null
             else
               centerCoordinates = {longitude : result.longitude, latitude : result.latitude}
-              cb null, centerCoordinates, q.ofCoordinates(result.longitude, result.latitude).build()
+              cb null, centerCoordinates  
 
 module.exports = new BusinessController()
