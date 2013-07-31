@@ -5,7 +5,7 @@ task "dev", ->
   cp.spawn 'nodemon', ['./src/app.coffee'], customFds: [0..2]
 
 task "test", "run tests", ->
-  REPORTER = "nyan"
+  REPORTER = "spec"
   cp.exec "NODE_ENV=test 
     ./node_modules/.bin/mocha 
     --recursive

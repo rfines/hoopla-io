@@ -6,23 +6,41 @@ describe "Base Operations for RESTful Routes", ->
   
   controller = {}
 
-  modelSpy = 
-    findById : (id, fields, options, cb) ->
-      cb(null, {})  
-    findOne : (query, fields, options, cb) ->
-      cb(null, {})
-    remove : (query, cb) ->
-      cb(null, {})
-    findByIdAndUpdate : (id, body, cb) ->
-      cb(null, {})
-
   before (done) ->  
     done()
 
   beforeEach (done) ->
     controller =  new RestfulController()
+    modelSpy = 
+      findById : (id, fields, options, cb) ->
+        cb null, { 
+          update : (data, cb) ->
+            cb()
+          remove : (cb) ->
+            cb()
+        }
+      findOne : (query, fields, options, cb) ->
+        cb null, { 
+          update : (data, cb) ->
+            cb()
+          remove : (cb) ->
+            cb()
+        }
+      remove : (query, cb) ->
+        cb null, { 
+          update : (data, cb) ->
+            cb()
+          remove : (cb) ->
+            cb()
+        }
+      findByIdAndUpdate : (id, body, cb) ->
+        cb null, { 
+          update : (data, cb) ->
+            cb()
+          remove : (cb) ->
+            cb()
+        }
     controller.model = modelSpy
-
     done()
 
   it "should get a resource by id", (done) ->
@@ -46,7 +64,7 @@ describe "Base Operations for RESTful Routes", ->
     controller.get req, res, ->
       spy.called.should.be.true
       spy.calledWith({legacyId : req.params.id}).should.be.true
-      done()      
+      done() 
 
   it 'should set the status code to 200 on successful get', (done) ->
     req = 
@@ -56,21 +74,34 @@ describe "Base Operations for RESTful Routes", ->
       send: ( (status, body) ->)
     spy = sinon.spy(res, 'send')  
     controller.get req, res, ->
-      spy.calledWith(200, {}).should.be.true
+      spy.calledWith(200).should.be.true
+      done()            
+  
+  it "should return a 404 when the resource is not found", (done) ->
+    controller.model.findById = (id, fields, options, cb) ->
+      cb(null, null)   
+    req = 
+      params : 
+        id : new mongoose.Types.ObjectId()
+    res = 
+      send: ( (status, body) ->)
+    spy = sinon.spy(res, "send");
+    controller.get req, res, ->
+      spy.calledWith(404).should.be.true
       done()     
 
-
   it 'should delete a resource by Id', (done) ->
-    spy = sinon.spy(controller.model, "remove")
+    spy = sinon.spy(controller.model, "findById")
     req = 
       params : 
         id : new mongoose.Types.ObjectId()
     res = 
       send: ( (status, body) ->)
     controller.destroy req, res, ->
-      spy.calledWith({'_id' : req.params.id}).should.be.true
+      spy.calledWith(req.params.id).should.be.true
       done()  
 
+  
   it 'should return a 204 status on deletion', (done) ->
     req = 
       params : 
@@ -82,9 +113,9 @@ describe "Base Operations for RESTful Routes", ->
     controller.destroy req, res, ->
       spy.calledWith(204).should.be.true
       done()    
-
+  
   it 'should update a resource by id', (done) ->
-    spy = sinon.spy(controller.model, "findByIdAndUpdate")
+    spy = sinon.spy(controller.model, "findById")
     req = 
       params : 
         id : new mongoose.Types.ObjectId()
@@ -92,5 +123,6 @@ describe "Base Operations for RESTful Routes", ->
     res = 
       send: ( (status, body) ->)
     controller.update req, res, ->
-      spy.calledWith(req.params.id, {data:'1'}).should.be.true
+      #spy.calledWith(req.params.id).should.be.true
       done()  
+  

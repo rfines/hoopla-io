@@ -6,6 +6,13 @@ authorizationService = require '../services/authorizationService'
 class RestfulController
 
   getFields : {}
+  security: 
+    destroy : (authenticatedUser, targetUser) ->
+      true
+    update : (authenticatedUser, targetUser) ->
+      true
+    create : (authenticatedUser, targetUser) ->
+      true            
 
   search : (req, res, next) =>  
     query = {}
@@ -18,22 +25,36 @@ class RestfulController
     checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$")
     if not checkForHexRegExp.test(id)
       @model.findOne {legacyId : req.params.id}, @getFields, {lean : true}, (err, data) ->
-        res.send 200, data
+        if not err and not data
+          res.send 404
+        else  
+          res.send 200, data
         next()
     else
-      @model.findById req.params.id, @getFields, {lean : true}, (err, data) ->
-        res.send 200, data
-        next()  
+      @model.findById req.params.id, @getFields, {lean : true}, (err, data) =>
+        if not err and not data
+          res.send 404
+        else  
+          res.send 200, data
+        next()
 
   destroy: (req, res, next) =>
-    @model.remove {'_id' : req.params.id}, (err, doc) ->
-      res.send(204)
-      next()     
+    @model.findById req.params.id, {}, {}, (err, targetUser) =>
+      if @security.destroy(req.authUser, targetUser)
+        targetUser.remove (err, doc) ->
+          res.send(204)
+          next()     
+      else
+        return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")
   
   update: (req, res, next) =>
-    @model.findByIdAndUpdate req.params.id, JSON.parse(req._body), (err, doc) ->
-      res.send(200, doc)
-      next()    
+    @model.findById req.params.id, {}, {}, (err, targetUser) =>
+      if @security.update(req.authUser, targetUser)
+        targetUser.update JSON.parse(req._body), (err, doc) ->
+          res.send(200, doc)
+          next()    
+      else
+        return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")        
 
   create: (req, res, next) =>
     m = new @model(JSON.parse(req._body))
