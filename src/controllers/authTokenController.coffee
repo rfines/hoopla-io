@@ -16,14 +16,14 @@ class AuthTokenController
         next new restify.NotAuthorizedError("Username or password is invalid")
       if doc.encryptionMethod is 'BCRYPT'
         onPass = =>
-          token = @tokenService.generate(12)
+          token = "#{@tokenService.generate(12)}_#{new Date().getTime()}"
           @updateToken(doc, req.authorization.basic.username, token)
           res.send 200, {authToken : token}
           next()  
         @bcryptService.check body.password, doc.password, onPass, onFail
       else
         onPass = =>
-          token = @tokenService.generate(12)
+          token = "#{@tokenService.generate(12)}_#{new Date().getTime()}"
           @updateToken(doc, req.authorization.basic.username, token)
           @upgradeEncryption(doc, body.password)
           res.send 200, {authToken : token}
