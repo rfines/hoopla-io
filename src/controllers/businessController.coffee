@@ -15,6 +15,8 @@ class BusinessController extends RestfulController
   search : (req, res, next) =>
     databaseResults = (cb) =>
       @searchDatabase(req, cb)
+    searchIndexResults = (cb) =>
+      @searchIndex(req, cb)
     datasources = [databaseResults]
     async.parallel datasources, (err, results) ->
       res.send results[0]
@@ -31,5 +33,9 @@ class BusinessController extends RestfulController
           cb null
         async.each data, calcDistance, (err) ->
           cb err, data
+
+  searchIndex : (req, cb) =>
+    #require('./services/searchService').findBusiness req.params.keyword, 
+    cb null, []
 
 module.exports = new BusinessController()

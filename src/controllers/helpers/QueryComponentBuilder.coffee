@@ -48,8 +48,8 @@ class QueryComponentBuilder
 
   maxCost : (params, cb) =>
     if params.maxCost
-      cost = parseFloat(params.maxCost)
-      cb null, cost
+      maxCost = parseFloat(params.maxCost)
+      cb null, maxCost
     else
       cb null, ""
 
