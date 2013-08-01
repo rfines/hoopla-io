@@ -21,11 +21,11 @@ class DevController
       async.parallel {
         businesses: (cb) ->
           Business.find {}, {}, {lean:true}, (err, businesses) ->
-            async.eachLimit businesses, 5, indexBusiness, (err) ->
+            async.eachLimit businesses, 20, indexBusiness, (err) ->
               cb null, null
         events: (cb) ->
           Event.find {}, {}, {lean:true}, (err, events) ->
-            async.eachLimit events, 5, indexEvent, (err) ->
+            async.eachLimit events, 20, indexEvent, (err) ->
               cb null, null              
       }, (err, results) ->
         res.send 200
