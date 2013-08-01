@@ -38,7 +38,8 @@ class SearchQuery
       query.subCategories = 
         $in: @subCategories
     if @cost
-      query.cost = @cost
+      query.cost = 
+        $lte: @cost
     return query 
 
 module.exports = SearchQuery

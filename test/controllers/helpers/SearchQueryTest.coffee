@@ -21,7 +21,7 @@ describe "Operations for Search Query Builder", ->
 
   it "should build search query for latitude, longitude, distance and cost", (done) ->
     q = new SearchQuery().within(25).ofLongitude(-93.5).ofLatitude(40.01).withCost("20.00").build()
-    q.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ -93.5, 40.01 ]},$maxDistance : 25}},'cost' : '20.00'}
+    q.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ -93.5, 40.01 ]},$maxDistance : 25}},'cost' :{$lte: '20.00'}}
     done()
   
 

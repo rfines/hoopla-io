@@ -44,8 +44,7 @@ class BusinessController extends RestfulController
           @categories(params,cb)
         subCategories : (cb) =>
           @subCategories(params, cb)
-        cost: (cb) =>
-          @cost(params, cb)
+        
       }, (err, results) ->
         if err
           cb err, null
@@ -58,8 +57,7 @@ class BusinessController extends RestfulController
             q.inCategories(results.categories)
           if results.subCategories.length
             q.inSubCategories(results.subCategories)
-          if results.cost.length
-            q.withCost(results.cost)
+          
           cb null, results.coordinates, q.build()
 
   coordinates: (params, cb) =>
@@ -92,10 +90,5 @@ class BusinessController extends RestfulController
       cb null, subCategories
     else
       cb null, ""
-  cost: (params, cb) =>
-    if params.cost
-      cost = params.cost
-      cb null, cost
-    else
-      cb null, ""
+  
 module.exports = new BusinessController()
