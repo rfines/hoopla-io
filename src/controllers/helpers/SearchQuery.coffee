@@ -38,7 +38,7 @@ class SearchQuery
       query.subCategories = 
         $in: @subCategories
     if @maxCost
-      query.maxCost = 
+      query.cost = 
         $lte: @maxCost
     return query 
 
