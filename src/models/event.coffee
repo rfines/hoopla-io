@@ -24,6 +24,7 @@ EventSchema = new Schema
     default: Date.now
   business : ObjectId
   categories: [String]
+  cost: Number
   website:
     type: String
     required: false
