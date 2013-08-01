@@ -13,6 +13,14 @@ class BusinessController extends RestfulController
     super(@name)
 
   search : (req, res, next) =>
+    databaseResults = (cb) =>
+      @searchDatabase(req, cb)
+    datasources = [databaseResults]
+    async.parallel datasources, (err, results) ->
+      res.send results[0]
+      next()
+
+  searchDatabase : (req, cb) =>
     @builder.buildSearchQuery req.params, (err, centerCoordinates,  result) =>
       @model.find result, {}, {lean:true}, (err, data) ->
         calcDistance = (item, cb) ->
@@ -22,9 +30,6 @@ class BusinessController extends RestfulController
           item.distance = geolib.getDistance centerCoordinates, businessCoordinates
           cb null
         async.each data, calcDistance, (err) ->
-          res.send data
-          next()
+          cb err, data
 
-  
-  
 module.exports = new BusinessController()
