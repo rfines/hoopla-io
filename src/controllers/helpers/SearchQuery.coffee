@@ -32,9 +32,11 @@ class SearchQuery
             coordinates : [ @longitude, @latitude]
           $maxDistance : d
     if @categories
-      query.categories = @categories
+      query.categories = 
+        $in: @categories
     if @subCategories
-      query.subCategories = @subCategories
+      query.subCategories = 
+        $in: @subCategories
     if @cost
       query.cost = @cost
     return query 
