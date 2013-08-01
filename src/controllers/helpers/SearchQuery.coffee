@@ -16,7 +16,7 @@ class SearchQuery
   inCategories: (@categories) ->
     @
 
-  withCost: (@cost) ->
+  withCost: (@maxCost) ->
     @
 
   inSubCategories: (@subCategories) ->
@@ -37,9 +37,9 @@ class SearchQuery
     if @subCategories
       query.subCategories = 
         $in: @subCategories
-    if @cost
-      query.cost = 
-        $lte: @cost
+    if @maxCost
+      query.maxCost = 
+        $lte: @maxCost
     return query 
 
 module.exports = SearchQuery
