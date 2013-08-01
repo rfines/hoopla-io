@@ -10,10 +10,12 @@ class DevController
 
   indexAll : (req, res, next) =>  
     indexBusiness = (item, cb) ->
-      ss.indexBusiness item, ->
+      ss.indexBusiness item,(err) ->
+        console.log err if err
         cb null
     indexEvent = (item, cb) ->
-      ss.indexEvent item, ->
+      ss.indexEvent item, (err) ->
+        console.log err if err
         cb null  
 
     if req.params.p is 'h00pl@Dev'

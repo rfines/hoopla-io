@@ -33,7 +33,6 @@ class QueryComponentBuilder
 
   categories: (params, cb) =>
     if params.categories
-      console.log params.categories
       categories = params.categories.split(',')
       cb null, categories
     else
@@ -56,7 +55,6 @@ class QueryComponentBuilder
 
   buildSearchQuery : (params, cb) =>
     errors = @validateSearchQuery(params)
-    console.log params
     if errors 
       cb errors, null
     else
@@ -73,7 +71,6 @@ class QueryComponentBuilder
         if err
           cb err, null
         else
-          console.log results
           distance = params.radius || 40234
           q = new SearchQuery().within(distance)
           if results.coordinates

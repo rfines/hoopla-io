@@ -1,3 +1,4 @@
+_ = require 'underscore'
 mongoose = require 'mongoose'
 async = require('async')
 geolib = require('geolib')
@@ -9,6 +10,7 @@ class BusinessController extends RestfulController
   
   model : require('../models/business').Business
   builder : require('./helpers/QueryComponentBuilder')
+  searchService : require('../services/searchService')
   constructor : (@name) ->
     super(@name)
 
@@ -18,8 +20,15 @@ class BusinessController extends RestfulController
     searchIndexResults = (cb) =>
       @searchIndex(req, cb)
     datasources = [databaseResults]
+    if req.params.keyword
+      datasources.push searchIndexResults
     async.parallel datasources, (err, results) ->
-      res.send results[0]
+      if results[1]
+        out = _.filter results[0], (item) ->
+          _.contains results[1], item._id.toString()
+      else 
+        out = results[0]
+      res.send out
       next()
 
   searchDatabase : (req, cb) =>
@@ -35,7 +44,7 @@ class BusinessController extends RestfulController
           cb err, data
 
   searchIndex : (req, cb) =>
-    #require('./services/searchService').findBusiness req.params.keyword, 
-    cb null, []
+    @searchService.findBusinesses req.params.keyword, (err, data) ->
+      cb null, _.pluck(data, '_id')
 
 module.exports = new BusinessController()
