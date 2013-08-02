@@ -11,20 +11,15 @@ calculate= (event,dayCount,cb) ->
     for x in event.schedules
       occurrences = []
       transformed =  forLater(x)
-      console.log transformed
       if moment().add('days', dayCount) < moment(x.end)
         endCalc = moment().add('days', dayCount)
         occurrences = later.schedule({schedules:[transformed]}).next(dayCount,new Date(now),new Date(endCalc))
-        console.log "using day count"
-        console.log occurrences
       else
         endCalc = moment(x.end)
         occurrences = later.schedule({schedules:[transformed]}).next(dayCount,new Date(now),new Date(endCalc))
-        console.log "using end date"
-        console.log occurrences
     cb null, occurrences
   else
-    cb null, event.fixedOccurrences
+    cb null, _.pluck(event.fixedOccurrences, 'start')
 
 forLater = (item) ->
   console.log item
