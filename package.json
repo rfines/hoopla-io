@@ -17,7 +17,8 @@
     "geolib": "~1.2.5",
     "elasticsearchclient": "~0.5.3",
     "underscore": "~1.5.1",
-    "moment":"*"
+    "moment":"*",
+    "later":"*"
   },
   "optionalDependencies": {
     "hiredis": "~0.1.15"

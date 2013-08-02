@@ -23,6 +23,7 @@ EventSchema = new Schema
     required: true
     default: Date.now
   business : ObjectId
+  occurrences:[Date]
   categories: [String]
   cost: Number
   website:
@@ -68,6 +69,9 @@ EventSchema = new Schema
   socialMediaLinks:[SocialMediaLinks]
   schedules: [
     {
+      hour: Number
+      minute:Number
+      duration:Number
       days: [Number]
       dayOfWeekCount : [Number]
       dayOfWeek: [Number]
@@ -91,6 +95,9 @@ EventSchema = new Schema
     days: String
     start: Date
     end: Date
+    hour: Number
+    minute:Number
+    duration:Number
   }
   legacyId: String
   legacyBusinessId: String  
