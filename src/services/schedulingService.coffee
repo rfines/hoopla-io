@@ -3,7 +3,6 @@ later = require 'later'
 _ = require 'lodash'
 
 later.date.localTime();
-
 calculate= (item,cb) ->
   if item.schedules
     occurrences = []
