@@ -1,4 +1,7 @@
 {
   "port" : "8080",
   "database" : "mongodb://heroku:c1cd3d98c544a70a348acf558062ab42@dharma.mongohq.com:10085/app17015048"
+  "openMaps" : {
+    "key" : "Fmjtd%7Cluub256and%2Cr0%3Do5-9u82u0"
+  }  
 }

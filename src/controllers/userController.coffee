@@ -7,8 +7,6 @@ class UserController extends RestfulController
   
   security: 
     destroy : (authenticatedUser, targetUser) ->
-      console.log authenticatedUser._id
-      console.log targetUser._id
       authenticatedUser?._id and authenticatedUser._id.equals(targetUser._id) 
     update : (authenticatedUser, targetUser) ->
       authenticatedUser and authenticatedUser._id is targetUser._id      
