@@ -7,7 +7,7 @@ SearchQuery = require('./SearchQuery')
 class QueryComponentBuilder
 
   postalCodeService : require('../../services/postalCodeService')
-  geoCoder : require('../../services/geocodingMQService')
+  geoCoder : require('../../services/geocodingService')
 
   validateSearchQuery : (params) ->
     if not params.ll and not params.near
@@ -18,18 +18,6 @@ class QueryComponentBuilder
       ll = params.ll.split(',')
       centerCoordinates = {latitude : parseFloat(ll[1]), longitude: parseFloat(ll[0])}
       cb null, centerCoordinates
-    else if(params.near)
-        if /^\d+$/.test(params.near)
-          @postalCodeService.get params.near, (err, doc) ->
-            centerCoordinates = {latitude : doc.geo.coordinates[1], longitude: doc.geo.coordinates[0]}
-            cb null, centerCoordinates
-        else
-          @geoCoder.geocodeAddress params.near, (err, result) ->
-            if err
-              cb err, null
-            else
-              centerCoordinates = {longitude : result.longitude, latitude : result.latitude}
-              cb null, centerCoordinates 
 
   categories: (params, cb) =>
     if params.categories
@@ -68,6 +56,7 @@ class QueryComponentBuilder
         maxCost : (cb) =>
           @maxCost(params, cb)
       }, (err, results) ->
+        console.log results
         if err
           cb err, null
         else
@@ -83,4 +72,5 @@ class QueryComponentBuilder
             q.withCost results.maxCost
 
           cb null, results.coordinates, q.build()
+
   module.exports = new QueryComponentBuilder

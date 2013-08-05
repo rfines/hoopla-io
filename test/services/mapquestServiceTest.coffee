@@ -1,4 +1,4 @@
-service = require('../../src/services/geocodingMQService')
+service = require('../../src/services/mapquestService')
 
 describe "Geocoding using MapQuest Service", ->
   it 'should select a point location if applicable', (done) ->

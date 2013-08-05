@@ -18,6 +18,7 @@ build = ->
   server.use restify.queryParser()
   server.use restifyPlugins.AuthorizationParser
   server.use restifyPlugins.AuthTokenParser
+  server.use restifyPlugins.NearParamParser
 
   server.listen process.env.PORT || CONFIG.port
 

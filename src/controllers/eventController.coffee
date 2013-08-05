@@ -30,7 +30,6 @@ class EventController  extends RestfulController
       res.send out
       next()
 
-
   searchDatabase : (req, cb) =>
     @builder.buildSearchQuery req.params, (err, centerCoordinates,  result) =>
       @model.find result, {}, {lean:true}, (err, data) ->

@@ -6,7 +6,6 @@ later.date.localTime();
 
 calculate= (event,dayCount,cb) ->
   if event.schedules
-    console.log event
     now = moment()
     for x in event.schedules
       occurrences = []
