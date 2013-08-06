@@ -10,6 +10,9 @@
       "apiKey" : "1Vv5fCA7NHi63vYkKvaa7g",
       "username" : "app17015048@heroku.com"
     }
+  },
+  "hooplaIoWeb" : {
+    "pwResetUrl" : "http://localhost:3000/password/reset"
   }
 
 }

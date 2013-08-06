@@ -1,4 +1,3 @@
-CONFIG = require('config')
 mongoService = require './services/mongoService'
 restifyFactory = require './services/restifyFactory'
 

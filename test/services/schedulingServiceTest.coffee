@@ -146,7 +146,7 @@ describe "Scheduling using Later library", ->
       if err
         console.log err
       else
-        results.should.eql [ new Date('Fri Aug 02 2013 15:00:00 GMT-0500'), new Date('Sun Aug 04 2013 15:00:00 GMT-0500'), new Date('Mon Aug 05 2013 15:00:00 GMT-0500'), new Date('Tue Aug 06 2013 15:00:00 GMT-0500'), new Date('Fri Aug 09 2013 15:00:00 GMT-0500'), new Date('Sun Aug 11 2013 15:00:00 GMT-0500'), new Date('Mon Aug 12 2013 15:00:00 GMT-0500'), new Date('Tue Aug 13 2013 15:00:00 GMT-0500') ]
+        results.should.eql [ new Date('Fri Aug 02 2013 15:00:00 GMT-0500'), new Date('Sun Aug 04 2013 15:00:00 GMT-0500'), new Date('Mon Aug 05 2013 15:00:00 GMT-0500'), new Date('Tue Aug 06 2013 15:00:00 GMT-0500'), new Date('Fri Aug 09 2013 15:00:00 GMT-0500'), new Date('Sun Aug 11 2013 15:00:00 GMT-0500'), new Date('Mon Aug 12 2013 15:00:00 GMT-0500'), new Date('Tue Aug 13 2013 15:00:00 GMT-0500'), new Date('2013-08-16T20:00:00.000Z') ]
       done()
   it "should calculate monthly occurrences for 90 days with more complicated schedule", (done)->
     ScheduleService.calculate comp_test, (err, results) ->
