@@ -23,7 +23,7 @@ describe "Operations for Password Resets", ->
     controller.tokenService = {
       generateWithTimestamp : (len) ->
         return 123
-    }
+    }        
     req = 
       body : {email:'user1@localruckus.com'}
     res = 
@@ -54,6 +54,7 @@ describe "Operations for Password Resets", ->
     controller.user = {
       findOne : (query, fields, options, cb) ->
         cb null, {
+          _id : 'userId'
           update : (query, options, cb) ->
             cb null, {}
         }
@@ -61,6 +62,7 @@ describe "Operations for Password Resets", ->
     controller.passwordReset =
       findOne : (query, fields, options, cb) ->
         cb null, {
+          _id : 'myId'
           email : 'user1@localruckus.com'
           update : (query, options, cb) ->
             cb null, {}          
@@ -72,7 +74,7 @@ describe "Operations for Password Resets", ->
         onPass()           
       encrypt: (password, cb) ->
         cb('encryptedInBcrypt')
-    }        
+    }            
     pwSpy = sinon.spy(controller.passwordReset, 'findOne')
     userSpy = sinon.spy(controller.user, 'findOne')
     bcryptSpy = sinon.spy(controller.bcryptService, 'encrypt')
@@ -80,5 +82,19 @@ describe "Operations for Password Resets", ->
       pwSpy.calledWith({ email : 'user1@localruckus.com', token : '123'}).should.be.true
       userSpy.calledWith({email : 'user1@localruckus.com'}).should.be.true
       bcryptSpy.calledWith('newPassword').should.be.true
-      done()      
+      done()  
+
+  it 'should should reject with a 403 if the email/token cannot be found', (done) ->
+    req.body = { email : 'user1@localruckus.com', token : '123', password : 'newPassword'}
+    controller.passwordReset =
+      findOne : (query, fields, options, cb) ->
+        cb null, {}
+      update: (query, options, cb) ->
+        cb(null, {})
+    pwSpy = sinon.spy(controller.passwordReset, 'findOne')
+    resSpy = sinon.spy(res, 'send')
+    controller.resetPassword req, res, ->
+      pwSpy.calledWith({ email : 'user1@localruckus.com', token : '123'}).should.be.true
+      resSpy.calledWith(403).should.be.true
+      done()            
 

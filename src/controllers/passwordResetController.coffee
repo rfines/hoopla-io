@@ -28,7 +28,6 @@ class PasswordResetController
           'to' : [{email:pr.email}]
         template_name : 'password-reset-request'
         template_content : [{PASSWORD_RESET_URL  : "#{CONFIG.hooplaIoWeb.pwResetUrl}?token=#{pr.token}"}]
-      console.log 'call send'
       @emailService.send emailOptions, ->    
         res.send 201
         next()  
@@ -36,12 +35,20 @@ class PasswordResetController
   resetPassword : (req, res, next) =>
     body = req.body
     @passwordReset.findOne {email: body.email, token : body.token}, {_id:1}, {}, (err, reset) =>
-      @user.findOne {email : body.email}, {}, {}, (err, u) =>
-        @bcryptService.encrypt body.password, (encrypted) =>
-          u.update { $set : {password: encrypted, encryptionMethod: 'BCRYPT'}}, {}, (err) =>
-            reset.update {completedDate : new Date()}, {}, (err) ->
-              res.send 200
-              next()
+      if not err and reset?._id
+        @user.findOne {email : body.email}, {}, {}, (err, u) =>
+          if not err and u?._id
+            @bcryptService.encrypt body.password, (encrypted) =>
+              u.update { $set : {password: encrypted, encryptionMethod: 'BCRYPT'}}, {}, (err) =>
+                reset.update {completedDate : new Date()}, {}, (err) ->
+                  res.send 200
+                  next()
+          else
+            res.send 403
+            next()
+      else
+        res.send 403
+        next()
 
 module.exports =  new PasswordResetController()
 
