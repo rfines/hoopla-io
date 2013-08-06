@@ -16,10 +16,9 @@
     "async": "~0.2.9",
     "geolib": "~1.2.5",
     "elasticsearchclient": "~0.5.3",
-    "underscore": "~1.5.1",
     "moment": "*",
     "later": "*",
-    "addressit": "~0.1.4"
+    "request": "~2.25.0"
   },
   "optionalDependencies": {
     "hiredis": "~0.1.15"

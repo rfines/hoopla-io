@@ -2,7 +2,7 @@ ElasticSearchClient = require("elasticsearchclient")
 url = require("url")
 CONFIG = require('config')
 elasticSearchClient = {}
-_ = require('underscore')
+_ = require 'lodash'
 index = 'hoopla'
 
 init= () ->

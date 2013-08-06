@@ -1,6 +1,7 @@
 cache = require('./cacheService')
-_ = require('underscore')
+_ = require 'lodash'
 mapquestService = require('./mapquestService')
+googleService = require('./googleService')
 
 geocodeAddress = (query, cb) ->
   if query.length
@@ -8,9 +9,13 @@ geocodeAddress = (query, cb) ->
       if not error and not value
         mapquestService.geocode query, (err, location) ->
           if err
-            if err.status and err.status is 'NO_MATCH'
-              console.log 'no match found'
-            cb err, null
+            console.log 'try the google'
+            googleService.geocode query, (err, location) ->
+              if err
+                cb err, null
+              else
+                cache.setex "GEOCODE:#{query}", 2592000, JSON.stringify(location)
+                cb null, location                          
           else  
             cache.setex "GEOCODE:#{query}", 2592000, JSON.stringify(location)
             cb null, location            

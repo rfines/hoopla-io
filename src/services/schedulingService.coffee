@@ -1,6 +1,6 @@
 moment = require 'moment'
 later = require 'later'
-_ = require 'underscore'
+_ = require 'lodash'
 
 later.date.localTime();
 

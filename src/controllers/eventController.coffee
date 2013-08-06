@@ -1,4 +1,4 @@
-_ = require 'underscore'
+_ = require 'lodash'
 mongoose = require 'mongoose'
 async = require('async')
 geolib = require('geolib')

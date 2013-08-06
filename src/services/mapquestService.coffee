@@ -1,6 +1,6 @@
 CONFIG = require 'config'
 mapquest = require 'mapquest'
-_ = require('underscore')
+_ = require 'lodash'
 key = CONFIG.openMaps.key
 
 
