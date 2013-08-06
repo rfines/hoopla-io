@@ -4,44 +4,97 @@ moment = require 'moment'
 later.date.localTime();
 
 testEvent = {
-  "_id":"51fbdc9ec778ed000000ad1f"
-  "schedules" : [
+  "startRange":"8/01/2013 15:00:00",
+  "endRange": "08/31/2013 15:00:00",
+  "dayCount": 5,
+  "_id":"51fbdc9ec778ed000000ad1f",
+  "schedules" : [{
       "h" : [15],
       "m" : [0],
       "duration": 540,
-      "start" : "7/30/2013 15:00:00",
-      "end" : "7/30/2018 18:00:00",
+      "start" : "8/01/2013 15:00:00",
+      "end" : "8/30/2018 18:00:00",
       "dw" : [],
       "dayOfWeekCount" : [],
-      "days" : [4]
-      ]
-    ,
-    "fixedOccurrences":[]
-}
-test = {schedules:[{
-    "hour" : 15,
-    "minute" : 0,
+      "days" : []
+      }]}
+test = {
+  "startRange":"8/01/2013 15:00:00",
+  "endRange": "11/30/2013 15:00:00",
+  "dayCount": 90,
+  schedules:[{
+    "hour" : [15],
+    "minute" : [0],
     "duration" : 180,
-    "start" : new Date("5/5/2013 15:00:00"),
+    "start" : new Date("7/5/2013 15:00:00"),
     "end" : new Date("5/5/2018 18:00:00"),
     "_id" : "51fbdd47c778ed000000affb",
     "dayOfWeek" : [1],
     "dayOfWeekCount" : [1],
     "days" : []
   }]}
+weekly_test = {
+  "startRange":"8/01/2013 15:00:00",
+  "endRange": "10/31/2013 15:00:00",
+  "dayCount": 90,
+  schedules:[{
+    "hour": [15],
+    "minute":[0],
+    "duration" : 180,
+    "start" : new Date("7/5/2013 15:00:00"),
+    "end" : new Date("5/5/2018 18:00:00"),
+    "_id" : "51fbdd47c778ed000000afff",
+    "dayOfWeek": [3],
+    "weekOfMonth":[1,3,5]
+  }]}
+defaults_test = {
+  "startRange":"8/01/2013 15:00:00",
+  "dayCount": 90,
+  schedules:[{
+    "hour": [15],
+    "minute":[0],
+    "duration" : 180,
+    "start" : new Date("7/5/2013 15:00:00"),
+    "end" : new Date("5/5/2018 18:00:00"),
+    "_id" : "51fbdd47c778ed000000afff",
+    "dayOfWeek": [3],
+    "weekOfMonth":[1,3,5]
+  }]}
 describe "Scheduling using Later library", ->
-  it "should calculate daily occurrences for 1 days", (done)->
-    ScheduleService.calculate testEvent, 1, (err, results) ->
+  it "should convert the schedules object to a usable state", (done)->
+    ScheduleService.forLater testEvent.schedules[0], (err,result) ->
+      if err
+        console.log err 
+      else
+        result.should.eql {"h":[15],"m":[0]}
+      done()
+
+  it "should calculate daily occurrences for 5 days", (done)->
+    ScheduleService.calculate testEvent, (err, results) ->
       if err
         console.log err
       else
-        results.should.eql new Date('Fri Aug 03 2013 15:00:00 GMT-0500')
+        results.should.eql [new Date('Mon Aug 01 2013 15:00:00 GMT-0500'),new Date('Mon Aug 02 2013 15:00:00 GMT-0500'),new Date('Mon Aug 03 2013 15:00:00 GMT-0500'),new Date('Mon Aug 04 2013 15:00:00 GMT-0500'),new Date('Mon Aug 05 2013 15:00:00 GMT-0500')]
       done()
      
   it "should calculate monthly occurrences for 90 days", (done)->
-    ScheduleService.calculate test, 90, (err, results) ->
+    ScheduleService.calculate test, (err, results) ->
       if err
         console.log err
       else
-        results.should.eql [ new Date('Sun Aug 04 2013 00:00:00 GMT-0500'), new Date('Sun Sep 01 2013 00:00:00 GMT-0500'), new Date('Sun Oct 06 2013 00:00:00 GMT-0500') ]
+        results.should.eql [ new Date('Sun Aug 04 2013 00:00:00 GMT-0500'), new Date('Sun Sep 01 2013 00:00:00 GMT-0500'), new Date('Sun Oct 06 2013 00:00:00 GMT-0500'), new Date('Sun Nov 03 2013 00:00:00 GMT-0500') ]
+      done()
+  it "should calculate weekly occurrences for 90 days", (done)->
+    ScheduleService.calculate weekly_test, (err, results) ->
+      if err
+        console.log err
+      else
+        results.should.eql [ new Date('Wed Aug 13 2013 00:00:00 GMT-0500'), new Date('Wed Aug 27 2013 00:00:00 GMT-0500'), new Date('Wed Sep 03 2013 00:00:00 GMT-0500'), new Date('Wed Sep 17 2013 00:00:00 GMT-0500'), new Date('Wed Oct 01 2013 00:00:00 GMT-0500'), new Date('Wed Oct 15 2013 00:00:00 GMT-0500'), new Date('Wed Oct 29 2013 00:00:00 GMT-0500') ]
+      done()
+  it "should calculate weekly occurrences for 90 days using default values for end range", (done)->
+    ScheduleService.calculate defaults_test, (err, results) ->
+      if err
+        console.log err
+      else
+        results.should.eql [ new Date('Wed Aug 13 2013 00:00:00 GMT-0500'), new Date('Wed Aug 27 2013 00:00:00 GMT-0500'), new Date('Wed Sep 03 2013 00:00:00 GMT-0500'), new Date('Wed Sep 17 2013 00:00:00 GMT-0500'), new Date('Wed Oct 01 2013 00:00:00 GMT-0500'), new Date('Wed Oct 15 2013 00:00:00 GMT-0500'), new Date('Wed Oct 29 2013 00:00:00 GMT-0500') ]
       done()

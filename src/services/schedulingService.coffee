@@ -4,32 +4,70 @@ _ = require 'lodash'
 
 later.date.localTime();
 
-calculate= (event,dayCount,cb) ->
-  if event.schedules
+calculate= (item,cb) ->
+  if item.schedules
+    occurrences = []
+    dayCount = 90
+    if item.dayCount
+      dayCount = item.dayCount 
+    console.log item
     now = moment()
-    for x in event.schedules
-      occurrences = []
-      transformed =  forLater(x)
-      if moment().add('days', dayCount) < moment(x.end)
-        endCalc = moment().add('days', dayCount)
-        occurrences = later.schedule({schedules:[transformed]}).next(dayCount,new Date(now),new Date(endCalc))
+    startRange = new Date()
+    endRange = new Date()
+    if item.startRange?.length
+      startRange = new Date(item.startRange)
+    else
+      startRange = new Date(now)
+    for x in item.schedules
+      transformed = {}
+      forLater x, (err,result)->
+        console.log result
+        if err
+          console.log err
+        else
+          transformed = result
+          console.log "Transformed: "
+          console.log transformed
+      if item.endRange?.length
+        endRange = new Date(item.endRange)
       else
-        endCalc = moment(x.end)
-        occurrences = later.schedule({schedules:[transformed]}).next(dayCount,new Date(now),new Date(endCalc))
+        if moment().add('days', dayCount) < moment(x.end)
+          endRange = new Date(moment().add('days', dayCount))
+        else
+          endRange = new Date(x.end)
+      console.log "Ending: #{endRange}"
+      occurrences = later.schedule({schedules:[transformed]}).next(dayCount,startRange,endRange)
     cb null, occurrences
   else
-    cb null, _.pluck(event.fixedOccurrences, 'start')
+    cb null, _.pluck(item.fixedOccurrences, 'start')
 
-forLater = (item) ->
-  console.log item
+forLater = (item, cb) ->
   output = {}
-  output.d = item.day if item.day?.length
-  output.h= item.h if item.h?.length
-  output.m= item.m if item.m?.length
-  output.dw= item.dayOfWeek if item.dayOfWeek?.length
-  output.dayOfWeekCount= item.dayOfWeekCount if item.dayOfWeekCount?.length
-  output.wm= item.wm if item.wm?.length
-  return output
+  if item.day?.length
+    output.d = item.day
+  else if item.days?.length
+    output.d = item.days
+  if item.h?.length
+    output.h= item.h
+  else if item.hours?.length
+    output.h = item.hours
+  if item.m?.length
+    output.m= item.m
+  else if item.minutes?.length
+    output.m = item.minutes
+  if item.dayOfWeek?.length
+    output.dw= item.dayOfWeek
+  else if item.dw?.length
+    output.dw = item.dw
+  if item.dayOfWeekCount?.length
+    output.dayOfWeekCount= item.dayOfWeekCount
+  if item.wm
+    output.wm= item.wm
+  else if item.weekOfMonth
+    output.wm = item.weekOfMonth
+  console.log output
+  cb null, output
 
 module.exports = 
   calculate : calculate
+  forLater : forLater
