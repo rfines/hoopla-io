@@ -36,4 +36,6 @@ module.exports.NearParamParser = (req, res, next) =>
           req.params.ll = "#{result.longitude},#{result.latitude}"
           req.params.near = undefined
           next()
+  else
+    next()
 

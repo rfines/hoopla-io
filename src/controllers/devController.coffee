@@ -36,6 +36,7 @@ class DevController
     else
       res.send 403
       next()
+
   buildAllSchedules: (req, res, next) =>
     console.log "****Starting schedule build****"
     if req.params.p is 'h00pl@Dev'
@@ -62,4 +63,5 @@ class DevController
       console.log "****Returning due to insufficient priviliges****"
       res.send 403
       next()
+      
 module.exports =  new DevController()
