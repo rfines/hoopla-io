@@ -39,22 +39,21 @@ class DevController
 
   buildAllSchedules: (req, res, next) =>
     console.log "****Starting schedule build****"
-    if req.params.p is 'h00pl@Dev'
-      scheduleEvent : (item,cb) ->
-        console.log "Inside Schedule Event #{item}"
-        scheduler.calculate item, (err, occurrences) ->
-          if err
-            console.log err
-            cb err, null
+    scheduleEvent = (item,cb) ->
+      console.log "Inside Schedule Event #{item}"
+      scheduler.calculate item, (err, occurrences) ->
+        if err
+          console.log err
+          cb err, null
+        else
+          item.occurrences = occurrences
+          item.save (error, data)->
+          if err 
+            console.log error
+            cb error, null
           else
-            item.occurrences = occurrences
-            item.save (error, data)->
-            if err 
-              console.log error
-              cb error, null
-            else
-              cb null, null
-
+            cb null, null
+    if req.params.p is 'h00pl@Dev'
       Event.find {}, {}, {}, (err, events) ->
         async.each events, scheduleEvent, (err) ->
           res.send 200
