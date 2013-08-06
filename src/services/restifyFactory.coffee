@@ -6,6 +6,7 @@ userController = require '../controllers/userController'
 businessController = require '../controllers/businessController'
 authTokenController = require '../controllers/authTokenController'
 devController = require '../controllers/devController'
+passwordResetController = require '../controllers/passwordResetController'
 restifyPlugins = require '../plugins/restifyPlugins'
 
 
@@ -23,6 +24,8 @@ build = ->
   server.listen process.env.PORT || CONFIG.port
 
   routes = [
+    ['post', '/passwordReset/emailRequest', passwordResetController, {handler : 'requestResetEmail'}]
+    ['post', '/passwordReset', passwordResetController, {handler : 'resetPassword'}]
     ['post', "/tokenRequest", authTokenController, {handler : 'createToken'}]
     ['get', '/dev/indexAll', devController, {handler : 'indexAll'}]
     ['get', '/dev/buildAllSchedules', devController, {handler : 'buildAllSchedules'}]

@@ -18,7 +18,8 @@
     "elasticsearchclient": "~0.5.3",
     "moment": "*",
     "later": "*",
-    "request": "~2.25.0"
+    "request": "~2.25.0",
+    "mandrill-api": "~1.0.28"
   },
   "optionalDependencies": {
     "hiredis": "~0.1.15"
