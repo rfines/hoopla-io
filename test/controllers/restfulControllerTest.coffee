@@ -86,7 +86,7 @@ describe "Base Operations for RESTful Routes", ->
     req = 
       params : 
         id : new mongoose.Types.ObjectId()
-      _body : JSON.stringify({data:'1'})
+      body : {data:'1'}
     spy = sinon.spy(document, "update")
     controller.update req, res, ->
       spy.calledWith({data:'1'}).should.be.true

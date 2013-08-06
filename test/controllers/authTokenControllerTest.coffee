@@ -43,7 +43,7 @@ describe "Token based Authentication Controller", ->
     dbSpy = sinon.spy(controller.model, "findOne")
     bcryptSpy = sinon.spy(controller.bcryptService, 'check')
     req = 
-      body : JSON.stringify({email:'user1@localruckus.com', password : 'goodPassword'})
+      body : {email:'user1@localruckus.com', password : 'goodPassword'}
       authorization : 
         basic: 
           username : 'apiKey'
@@ -66,7 +66,7 @@ describe "Token based Authentication Controller", ->
     dbSpy = sinon.spy(controller.model, "findOne")
     sha1Spy = sinon.spy(controller.sha1Service, 'check')
     req = 
-      body : JSON.stringify({email:'user1@localruckus.com', password : 'goodPassword'})
+      body : {email:'user1@localruckus.com', password : 'goodPassword'}
       authorization : 
         basic: 
           username : 'apiKey'
@@ -88,7 +88,7 @@ describe "Token based Authentication Controller", ->
       }           
     bcryptSpy = sinon.spy(controller.bcryptService, 'encrypt')
     req = 
-      body : JSON.stringify({email:'user1@localruckus.com', password : 'goodPassword'})
+      body : {email:'user1@localruckus.com', password : 'goodPassword'}
       authorization : 
         basic: 
           username : 'apiKey'

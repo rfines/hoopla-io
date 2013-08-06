@@ -50,7 +50,7 @@ class RestfulController
   update: (req, res, next) =>
     @model.findById req.params.id, {}, {}, (err, targetUser) =>
       if @security.update(req.authUser, targetUser)
-        targetUser.update JSON.parse(req._body), (err, doc) ->
+        targetUser.update req.body, (err, doc) ->
           @postUpdate(targetUser) if @postUpdate
           res.send(200, doc)
           next()    
@@ -58,7 +58,7 @@ class RestfulController
         return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")        
 
   create: (req, res, next) =>
-    m = new @model(JSON.parse(req._body))
+    m = new @model(req.body)
     m.save (err, doc) ->
       @postCreate(m) if @postCreate
       console.log err if err
