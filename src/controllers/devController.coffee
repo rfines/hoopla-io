@@ -46,6 +46,7 @@ class DevController
           console.log err
           cb err, null
         else
+          console.log occurrences
           item.occurrences = occurrences
           item.save (error, data)->
           if err 
