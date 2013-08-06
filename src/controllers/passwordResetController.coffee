@@ -7,15 +7,18 @@ Event = require('../models/event').Event
 class PasswordResetController
 
   PasswordReset : require('../models/passwordReset').PasswordReset
-  
+  emailService : require('../services/emailService')
+  tokenService : require '../services/tokenService'
+
   constructor : (@name) ->
 
   requestResetEmail : (req, res, next) =>  
     body = JSON.parse(req.body.toString())
-    console.log 'ready to save'
     pr = new @PasswordReset(body)
+    pr.token = @tokenService.generateWithTimestamp(12)
+    pr.requestDate = new Date()
     pr.save (err, data) ->
-      res.send 200
+      res.send 200, pr
       next()  
 
   resetPassword : (req, res, next) =>

@@ -1,4 +1,4 @@
-service = require('../../src/services/apiCredentialsService')
+service = require('../../src/services/tokenService')
 
 describe "Utilities for generating/managing api keys and secrets", ->
   

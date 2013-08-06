@@ -4,5 +4,12 @@
   "elasticSearch" : "http://localhost:9200",
   "openMaps" : {
     "key" : "Fmjtd%7Cluub2001n5%2Caw%3Do5-9uragy"
+  },
+  "email" : {
+    "mandrill" : {
+      "apiKey" : "1Vv5fCA7NHi63vYkKvaa7g",
+      "username" : "app17015048@heroku.com"
+    }
   }
+
 }

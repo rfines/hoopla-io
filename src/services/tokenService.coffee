@@ -16,7 +16,11 @@ generate = (len) ->
   key += chars[rn(chars.length)] for i in [1..len]
   return key
 
+generateWithTimestamp = (len) ->
+  "#{generate(len)}_#{new Date().getTime()}"
+
 module.exports = 
   generateKey : generateKey
   generateSecret : generateSecret
   generate : generate
+  generateWithTimestamp : generateWithTimestamp
