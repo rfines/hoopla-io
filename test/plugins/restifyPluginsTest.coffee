@@ -22,7 +22,6 @@ describe "Restify Plugins", ->
     req.postalCodeService = modelSpy
     req.geoCoder = 
       geocodeAddress : (query, cb) ->
-        console.log 'fake geocoder'
         cb null, {latitude : 1.01, longitude: 1.01}
     done()      
 

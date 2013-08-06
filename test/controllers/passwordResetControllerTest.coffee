@@ -1,6 +1,4 @@
 sinon = require 'sinon'
-PasswordResetController = require('../../src/controllers/passwordResetController')
-
 describe "Operations for Password Resets", ->
   controller = {}
   emailService = {
@@ -14,13 +12,13 @@ describe "Operations for Password Resets", ->
     done()
 
   beforeEach (done) ->
-    controller = PasswordResetController
+    controller = require('../../src/controllers/passwordResetController')
     mockModel = class Mock
       constructor: (@name)->
 
       save: (cb) ->
         cb(null, {})
-    controller.PasswordReset = mockModel
+    controller.passwordReset = mockModel
     controller.emailService = emailService
     controller.tokenService = {
       generateWithTimestamp : (len) ->
@@ -49,4 +47,38 @@ describe "Operations for Password Resets", ->
       emailServiceSpy.called.should.be.true
       actualArgs = emailServiceSpy.getCall(0).args[0]
       actualArgs.should.be.eql expectedParams
+      done()
+
+  it 'should should save the new password is the token and email address are valid', (done) ->
+    req.body = { email : 'user1@localruckus.com', token : '123', password : 'newPassword'}
+    controller.user = {
+      findOne : (query, fields, options, cb) ->
+        cb null, {
+          update : (query, options, cb) ->
+            cb null, {}
+        }
+    }
+    controller.passwordReset =
+      findOne : (query, fields, options, cb) ->
+        cb null, {
+          email : 'user1@localruckus.com'
+          update : (query, options, cb) ->
+            cb null, {}          
+        }
+      update: (query, options, cb) ->
+        cb(null, {})
+    controller.bcryptService = {
+      check: (password, encrypted, onPass, onFail) ->
+        onPass()           
+      encrypt: (password, cb) ->
+        cb('encryptedInBcrypt')
+    }        
+    pwSpy = sinon.spy(controller.passwordReset, 'findOne')
+    userSpy = sinon.spy(controller.user, 'findOne')
+    bcryptSpy = sinon.spy(controller.bcryptService, 'encrypt')
+    controller.resetPassword req, res, ->
+      pwSpy.calledWith({ email : 'user1@localruckus.com', token : '123'}).should.be.true
+      userSpy.calledWith({email : 'user1@localruckus.com'}).should.be.true
+      bcryptSpy.calledWith('newPassword').should.be.true
       done()      
+

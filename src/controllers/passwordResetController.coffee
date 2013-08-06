@@ -7,16 +7,18 @@ Event = require('../models/event').Event
 
 class PasswordResetController
 
-  PasswordReset : require('../models/passwordReset').PasswordReset
+  passwordReset : require('../models/passwordReset').PasswordReset
   emailService : require('../services/emailService')
   tokenService : require '../services/tokenService'
+  bcryptService : require('../services/bcryptService')
+  user : require('../models/user').User
 
   constructor : (@name) ->
 
   requestResetEmail : (req, res, next) =>  
     body = req.body
     console.log body
-    pr = new @PasswordReset()
+    pr = new @passwordReset()
     pr.email = body.email
     pr.token = @tokenService.generateWithTimestamp(12)
     pr.requestDate = new Date()
@@ -32,7 +34,14 @@ class PasswordResetController
         next()  
 
   resetPassword : (req, res, next) =>
-    next()
+    body = req.body
+    @passwordReset.findOne {email: body.email, token : body.token}, {_id:1}, {}, (err, reset) =>
+      @user.findOne {email : body.email}, {}, {}, (err, u) =>
+        @bcryptService.encrypt body.password, (encrypted) =>
+          u.update { $set : {password: encrypted, encryptionMethod: 'BCRYPT'}}, {}, (err) =>
+            reset.update {completedDate : new Date()}, {}, (err) ->
+              res.send 200
+              next()
 
 module.exports =  new PasswordResetController()
 
