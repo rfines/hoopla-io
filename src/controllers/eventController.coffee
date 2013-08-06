@@ -5,11 +5,13 @@ geolib = require('geolib')
 RestfulController = require('./restfulController')
 SearchQuery = require('./helpers/SearchQuery')
 
+
 class EventController  extends RestfulController
   model : require('../models/event').Event
   builder : require('./helpers/QueryComponentBuilder')
   searchService : require('../services/searchService')
-  
+  scheduleService : require('../services/schedulingService')
+
   constructor : (@name) ->
     super(@name)
 
@@ -48,5 +50,21 @@ class EventController  extends RestfulController
   searchIndex : (req, cb) =>
     @searchService.findEvents req.params.keyword, (err, data) ->
       cb null, _.pluck(data, '_id')
+
+  postUpdate : (event) =>
+    @scheduleService.calculate event, (err, occurrences) ->
+      if err
+        console.log err
+      else
+        event.occurrences = occurrences
+        event.save()
+
+  postCreate : (event) =>
+    @scheduleService.calculate event, (err, occurrences) ->
+      if err
+        console.log err
+      else
+        event.occurrences = occurrences
+        event.save()
 
 module.exports = new EventController()

@@ -25,6 +25,7 @@ build = ->
   routes = [
     ['post', "/tokenRequest", authTokenController, {handler : 'createToken'}]
     ['get', '/dev/indexAll', devController, {handler : 'indexAll'}]
+    ['get', '/dev/buildAllSchedules', devController, {handler : 'buildAllSchedules'}]
   ]
 
   scaffold = (resource, controller) ->

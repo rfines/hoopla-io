@@ -3,9 +3,10 @@ ss = require('../services/searchService')
 async = require 'async'
 Business = require('../models/business').Business
 Event = require('../models/event').Event
+scheduler = require('../services/schedulingService')
 
 class DevController
-
+  
   constructor : (@name) ->
 
   indexAll : (req, res, next) =>  
@@ -35,5 +36,30 @@ class DevController
     else
       res.send 403
       next()
+  buildAllSchedules: (req, res, next) =>
+    console.log "****Starting schedule build****"
+    if req.params.p is 'h00pl@Dev'
+      scheduleEvent : (item,cb) ->
+        console.log "Inside Schedule Event #{item}"
+        scheduler.calculate item, (err, occurrences) ->
+          if err
+            console.log err
+            cb err, null
+          else
+            item.occurrences = occurrences
+            item.save (error, data)->
+            if err 
+              console.log error
+              cb error, null
+            else
+              cb null, null
 
+      Event.find {}, {}, {}, (err, events) ->
+        async.each events, scheduleEvent, (err) ->
+          res.send 200
+          next()
+    else
+      console.log "****Returning due to insufficient priviliges****"
+      res.send 403
+      next()
 module.exports =  new DevController()

@@ -51,6 +51,7 @@ class RestfulController
     @model.findById req.params.id, {}, {}, (err, targetUser) =>
       if @security.update(req.authUser, targetUser)
         targetUser.update JSON.parse(req._body), (err, doc) ->
+          @postUpdate(targetUser) if @postUpdate
           res.send(200, doc)
           next()    
       else
@@ -59,6 +60,7 @@ class RestfulController
   create: (req, res, next) =>
     m = new @model(JSON.parse(req._body))
     m.save (err, doc) ->
+      @postCreate(m) if @postCreate
       console.log err if err
       res.send(201, doc)
       next()                    
