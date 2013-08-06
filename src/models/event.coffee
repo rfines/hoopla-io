@@ -1,6 +1,7 @@
 mongoose = require('mongoose')
 Schema = mongoose.Schema
 ObjectId = mongoose.Schema.ObjectId
+Media = require('./media').MediaSchema
 Contact = require('./contact').ContactSchema
 TicketingLink = require('./ticketingLink').TicketingLinkSchema
 SocialMediaLinks = require('./socialMediaLink').SocialMediaLinkSchema
@@ -34,7 +35,7 @@ EventSchema = new Schema
     type: [String]
     required: false
   bands: [String]
-  media:[ObjectId]
+  media:[{type : ObjectId, ref : 'media'}]
   contacts: [Contact]
   address: {
     line1:

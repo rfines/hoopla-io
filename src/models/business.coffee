@@ -2,6 +2,7 @@ mongoose = require('mongoose')
 Schema = mongoose.Schema
 ObjectId = mongoose.Schema.ObjectId
 Contact = require('./contact')
+Media = require('./media').MediaSchema
 SocialMediaLink = require('./socialMediaLink').SocialMediaLinkSchema
 
 BusinessSchema = new Schema
@@ -32,7 +33,7 @@ BusinessSchema = new Schema
     required: false
     trim: true
   createdBy: ObjectId
-  media: [ObjectId]
+  media:[{type : ObjectId, ref : 'media'}]
   contacts: [Contact]
   address: {
     line1:

@@ -33,7 +33,9 @@ class BusinessController extends RestfulController
 
   searchDatabase : (req, cb) =>
     @builder.buildSearchQuery req.params, (err, centerCoordinates,  result) =>
-      @model.find result, {}, {lean:true}, (err, data) ->
+      q = @model.find(result, {}, {lean:true})
+      q.populate('media')
+      q.exec (err, data) ->
         calcDistance = (item, cb) ->
           businessCoordinates = 
             longitude: item.geo.coordinates[0]
