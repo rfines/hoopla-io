@@ -9,7 +9,6 @@ calculate= (item,cb) ->
     dayCount = 90
     if item.dayCount
       dayCount = item.dayCount 
-    console.log item
     now = moment()
     startRange = new Date()
     endRange = new Date()
@@ -20,13 +19,10 @@ calculate= (item,cb) ->
     for x in item.schedules
       transformed = {}
       forLater x, (err,result)->
-        console.log result
         if err
           console.log err
         else
           transformed = result
-          console.log "Transformed: "
-          console.log transformed
       if item.endRange?.length
         endRange = new Date(item.endRange)
       else
@@ -34,7 +30,6 @@ calculate= (item,cb) ->
           endRange = new Date(moment().add('days', dayCount))
         else
           endRange = new Date(x.end)
-      console.log "Ending: #{endRange}"
       occurrences = later.schedule({schedules:[transformed]}).next(dayCount,startRange,endRange)
     cb null, occurrences
   else
@@ -48,12 +43,12 @@ forLater = (item, cb) ->
     output.d = item.days
   if item.h?.length
     output.h= item.h
-  else if item.hours?.length
-    output.h = item.hours
+  else if item.hour?.length
+    output.h = item.hour
   if item.m?.length
     output.m= item.m
-  else if item.minutes?.length
-    output.m = item.minutes
+  else if item.minute?.length
+    output.m = item.minute
   if item.dayOfWeek?.length
     output.dw= item.dayOfWeek
   else if item.dw?.length
@@ -64,7 +59,6 @@ forLater = (item, cb) ->
     output.wm= item.wm
   else if item.weekOfMonth
     output.wm = item.weekOfMonth
-  console.log output
   cb null, output
 
 module.exports = 
