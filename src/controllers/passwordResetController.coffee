@@ -26,6 +26,7 @@ class PasswordResetController
       emailOptions =
         message: 
           'to' : [{email:pr.email}]
+          'global_merge_vars' : [{name : 'PASSWORD_RESET_URL', content : "#{CONFIG.hooplaIoWeb.pwResetUrl}?token=#{pr.token}"}, {name: 'TEXT:PASSWORD_RESET_URL', content: "#{CONFIG.hooplaIoWeb.pwResetUrl}?token=#{pr.token}"}]
         template_name : 'password-reset-request'
         template_content : [{PASSWORD_RESET_URL  : "#{CONFIG.hooplaIoWeb.pwResetUrl}?token=#{pr.token}"}]
       @emailService.send emailOptions, ->    
