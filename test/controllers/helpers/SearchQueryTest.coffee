@@ -14,9 +14,9 @@ describe "Operations for Search Query Builder", ->
     q.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ -93.5, 40.01 ]},$maxDistance : 25}}}
     done()
   
-  it "should build search query for latitude, longitude, distance, categories, and subCategories", (done) ->
-    q = new SearchQuery().within(25).ofLongitude(-93.5).ofLatitude(40.01).inCategories(["ATTRACTIONS"]).inSubCategories(["AMUSEMENT","ARCADES"]).build()
-    q.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ -93.5, 40.01 ]},$maxDistance : 25}}, 'categories' :{$in: ["ATTRACTIONS"]}, 'subCategories' :{$in: ["AMUSEMENT","ARCADES"]}}
+  it "should build search query for latitude, longitude, distance, tags", (done) ->
+    q = new SearchQuery().within(25).ofLongitude(-93.5).ofLatitude(40.01).withTags(["ATTRACTIONS","AMUSEMENT","ARCADES"]).build()
+    q.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ -93.5, 40.01 ]},$maxDistance : 25}}, 'tags' :{$in: ["ATTRACTIONS","AMUSEMENT","ARCADES"]}}
     done()
 
   it "should build search query for latitude, longitude, distance and cost", (done) ->

@@ -22,12 +22,7 @@ BusinessSchema = new Schema
   lastModifiedAt:
     type: Date
     default: Date.now
-  categories:
-    type: [String]
-    required: true
-  subCategories:
-    type:[String]
-    required: true
+  tags:[String]
   website:
     type: String
     required: false

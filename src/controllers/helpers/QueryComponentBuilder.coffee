@@ -19,17 +19,10 @@ class QueryComponentBuilder
       centerCoordinates = {latitude : parseFloat(ll[1]), longitude: parseFloat(ll[0])}
       cb null, centerCoordinates
 
-  categories: (params, cb) =>
-    if params.categories
-      categories = params.categories.split(',')
-      cb null, categories
-    else
-      cb null, ""
-
-  subCategories: (params, cb) =>
-    if params.subCategories
-      subCategories = params.subCategories.split(',')
-      cb null, subCategories
+  tags: (params, cb) =>
+    if params.tags
+      tags = params.tags.split(',')
+      cb null, tags
     else
       cb null, ""
 
@@ -56,10 +49,8 @@ class QueryComponentBuilder
       async.parallel {
         coordinates : (cb) =>
           @coordinates(params, cb)
-        categories : (cb) =>
-          @categories(params,cb)
-        subCategories : (cb) =>
-          @subCategories(params, cb)
+        tags : (cb) =>
+          @tags(params,cb)
         maxCost : (cb) =>
           @maxCost(params, cb)
         betweenDates : (cb) =>
@@ -72,10 +63,8 @@ class QueryComponentBuilder
           q = new SearchQuery().within(distance)
           if results.coordinates
             q.ofCoordinates(results.coordinates.longitude, results.coordinates.latitude) 
-          if results.categories.length
-            q.inCategories(results.categories)
-          if results.subCategories.length
-            q.inSubCategories(results.subCategories)
+          if results.tags.length
+            q.withTags(results.tags)
           if results.maxCost
             q.withCost results.maxCost
           if results.betweenDates

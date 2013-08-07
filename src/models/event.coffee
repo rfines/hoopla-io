@@ -25,7 +25,7 @@ EventSchema = new Schema
     default: Date.now
   business : ObjectId
   occurrences:[Date]
-  categories: [String]
+  tags: [String]
   cost: Number
   website:
     type: String
@@ -89,7 +89,7 @@ EventSchema = new Schema
   legacySchedule: {
     "dayNum": Number
     "period": Number
-    "periodDay": Number
+    "periodDay": [Number]
     "ordinal": Number
     "recurrenceInterval": Number
     "dayofweek": Number

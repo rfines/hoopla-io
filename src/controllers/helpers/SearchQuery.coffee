@@ -13,13 +13,10 @@ class SearchQuery
   within: (@distance) ->
     @
 
-  inCategories: (@categories) ->
+  withTags: (@tags) ->
     @
 
   withCost: (@maxCost) ->
-    @
-
-  inSubCategories: (@subCategories) ->
     @
 
   betweenDates: (@start, @end) ->
@@ -34,12 +31,9 @@ class SearchQuery
             type : "Point"
             coordinates : [ @longitude, @latitude]
           $maxDistance : d
-    if @categories
-      query.categories = 
-        $in: @categories
-    if @subCategories
-      query.subCategories = 
-        $in: @subCategories
+    if @tags
+      query.tags = 
+        $in: @tags
     if @maxCost
       query.maxCost = 
         $lte: @maxCost

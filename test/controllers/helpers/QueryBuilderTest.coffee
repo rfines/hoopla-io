@@ -56,9 +56,9 @@ describe "Query Builder", ->
       query.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ 1.01, 1.01 ]}, $maxDistance : 10.1}}}
       done()        
 
-  it "should handle event categories correctly as well as location", (done) ->
-    builder.buildSearchQuery {ll:'-94.595033,39.102704', radius: 10, categories:"PETS,FOOD"}, (err, coords, query) ->
-      query.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ -94.595033,39.102704]}, $maxDistance : 10}}, 'categories':{$in:["PETS","FOOD"]}}
+  it "should handle event tags correctly as well as location", (done) ->
+    builder.buildSearchQuery {ll:'-94.595033,39.102704', radius: 10, tags:"PETS,FOOD"}, (err, coords, query) ->
+      query.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ -94.595033,39.102704]}, $maxDistance : 10}}, 'tags':{$in:["PETS","FOOD"]}}
       done()
 
   it "should handle maxdistance with float values and cost", (done) ->
