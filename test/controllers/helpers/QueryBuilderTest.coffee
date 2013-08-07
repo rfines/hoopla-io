@@ -64,4 +64,16 @@ describe "Query Builder", ->
   it "should handle maxdistance with float values and cost", (done) ->
     builder.buildSearchQuery {ll: '1.01,1.01', radius: 10.1, maxCost: '20.00'}, (err, coords, query) ->
       query.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ 1.01, 1.01 ]}, $maxDistance : 10.1}}, 'maxCost':{$lte : 20.00}}
+      done() 
+
+  it "should handle maxdistance with float values and start date", (done) ->
+    start = new Date("8/5/2013 15:00:00")
+    builder.buildSearchQuery {ll: '1.01,1.01', radius: 10.1, start: start}, (err, coords, query) ->
+      query.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ 1.01, 1.01 ]}, $maxDistance : 10.1}}, 'occurrences':{$gte : start}}
+      done()  
+  it "should handle maxdistance with float values and both dates", (done) ->
+    start = new Date("8/5/2013 15:00:00")
+    end = new Date("8/8/2013 18:00:00")
+    builder.buildSearchQuery {ll: '1.01,1.01', radius: 10.1, start: start, end: end}, (err, coords, query) ->
+      query.should.eql {'geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ 1.01, 1.01 ]}, $maxDistance : 10.1}}, 'occurrences':{$gte : start, $lte :end}}
       done()          

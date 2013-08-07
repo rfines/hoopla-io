@@ -22,6 +22,9 @@ class SearchQuery
   inSubCategories: (@subCategories) ->
     @
 
+  betweenDates: (@start, @end) ->
+    @
+
   build : ->
     query = {}
     d = parseFloat(@distance)
@@ -40,6 +43,13 @@ class SearchQuery
     if @maxCost
       query.maxCost = 
         $lte: @maxCost
+    if @start and @end
+      query.occurrences=
+        $gte: @start,$lte:@end
+    else if @start
+      query.occurrences = 
+        $gte:@start
+
     return query 
 
 module.exports = SearchQuery

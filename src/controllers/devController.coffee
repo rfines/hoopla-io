@@ -38,15 +38,12 @@ class DevController
       next()
 
   buildAllSchedules: (req, res, next) =>
-    console.log "****Starting schedule build****"
     scheduleEvent = (item,cb) ->
-      console.log "Inside Schedule Event #{item}"
       scheduler.calculate item, (err, occurrences) ->
         if err
           console.log err
           cb err, null
         else
-          console.log occurrences
           item.occurrences = occurrences
           item.save (error, data)->
           if err 
@@ -60,7 +57,6 @@ class DevController
           res.send 200
           next()
     else
-      console.log "****Returning due to insufficient priviliges****"
       res.send 403
       next()
       

@@ -40,6 +40,13 @@ class QueryComponentBuilder
     else
       cb null, ""
 
+  betweenDates : (params, cb) =>
+    if params.start and params.end
+      cb null, {start:params.start, end: params.end}
+    else if params.start and not params.end
+      cb null, {start:params.start}
+    else
+      cb null,""
 
   buildSearchQuery : (params, cb) =>
     errors = @validateSearchQuery(params)
@@ -55,8 +62,9 @@ class QueryComponentBuilder
           @subCategories(params, cb)
         maxCost : (cb) =>
           @maxCost(params, cb)
+        betweenDates : (cb) =>
+          @betweenDates(params, cb)
       }, (err, results) ->
-        console.log results
         if err
           cb err, null
         else
@@ -70,6 +78,9 @@ class QueryComponentBuilder
             q.inSubCategories(results.subCategories)
           if results.maxCost
             q.withCost results.maxCost
+          if results.betweenDates
+            q.betweenDates(results.betweenDates.start,results.betweenDates.end)
+           
 
           cb null, results.coordinates, q.build()
 
