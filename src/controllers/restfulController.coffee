@@ -12,7 +12,18 @@ class RestfulController
     update : (authenticatedUser, target) ->
       true
     create : (authenticatedUser, target) ->
-      true            
+      true    
+
+  hooks:
+    create:
+      pre : (target, cb) =>
+        cb null
+      post : (target) =>
+    update:
+      pre : (target, cb) =>
+        cb null
+      post : (target) =>      
+
 
   search : (req, res, next) =>  
     query = {}
@@ -59,10 +70,12 @@ class RestfulController
 
   create: (req, res, next) =>
     target = new @model(req.body)
-    target.save (err, doc) ->
-      @hooks.create.post(target) if @hooks?.create?.post
-      console.log err if err
-      res.send(201, doc)
-      next()                    
+    @hooks.create.pre target, (err) ->
+      target.save (err, doc) ->
+        @hooks.create.post(target) if @hooks?.create?.post
+        console.log err if err
+        res.send(201, doc)
+        next()                    
+
 
 module.exports = RestfulController
