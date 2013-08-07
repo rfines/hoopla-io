@@ -12,6 +12,25 @@ class EventController  extends RestfulController
   searchService : require('../services/searchService')
   scheduleService : require('../services/schedulingService')
 
+  hooks:
+    update:
+      post : (event) =>
+        @scheduleService.calculate event, (err, occurrences) ->
+          if err
+            console.log err
+          else
+            event.occurrences = occurrences
+            event.save()
+    create:
+      post : (event) =>
+        @scheduleService.calculate event, (err, occurrences) ->
+          if err
+            console.log err
+          else
+            event.occurrences = occurrences
+            event.save()
+
+
   constructor : (@name) ->
     super(@name)
 
@@ -50,21 +69,5 @@ class EventController  extends RestfulController
   searchIndex : (req, cb) =>
     @searchService.findEvents req.params.keyword, (err, data) ->
       cb null, _.pluck(data, '_id')
-
-  postUpdate : (event) =>
-    @scheduleService.calculate event, (err, occurrences) ->
-      if err
-        console.log err
-      else
-        event.occurrences = occurrences
-        event.save()
-
-  postCreate : (event) =>
-    @scheduleService.calculate event, (err, occurrences) ->
-      if err
-        console.log err
-      else
-        event.occurrences = occurrences
-        event.save()
 
 module.exports = new EventController()

@@ -41,8 +41,9 @@ describe "Operations for Password Resets", ->
     expectedParams = 
       message: 
         'to' : [{email:'user1@localruckus.com'}]
+        global_merge_vars : [{name: 'PASSWORD_RESET_URL', content: "http://localhost:3000/password/reset?token=123"}]        
       template_name : 'password-reset-request'
-      template_content : [{PASSWORD_RESET_URL  : "http://localhost:3000/password/reset?token=123"}]
+      template_content : []
     controller.requestResetEmail req, res, ->
       emailServiceSpy.called.should.be.true
       actualArgs = emailServiceSpy.getCall(0).args[0]

@@ -7,11 +7,11 @@ class RestfulController
 
   getFields : {}
   security: 
-    destroy : (authenticatedUser, targetUser) ->
+    destroy : (authenticatedUser, target) ->
       true
-    update : (authenticatedUser, targetUser) ->
+    update : (authenticatedUser, target) ->
       true
-    create : (authenticatedUser, targetUser) ->
+    create : (authenticatedUser, target) ->
       true            
 
   search : (req, res, next) =>  
@@ -39,28 +39,28 @@ class RestfulController
         next()
 
   destroy: (req, res, next) =>
-    @model.findById req.params.id, {}, {}, (err, targetUser) =>
-      if @security.destroy(req.authUser, targetUser)
-        targetUser.remove (err, doc) ->
+    @model.findById req.params.id, {}, {}, (err, target) =>
+      if @security.destroy(req.authUser, target)
+        target.remove (err, doc) ->
           res.send(204)
           next()     
       else
         return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")
   
   update: (req, res, next) =>
-    @model.findById req.params.id, {}, {}, (err, targetUser) =>
-      if @security.update(req.authUser, targetUser)
-        targetUser.update req.body, (err, doc) ->
-          @postUpdate(targetUser) if @postUpdate
+    @model.findById req.params.id, {}, {}, (err, target) =>
+      if @security.update(req.authUser, target)
+        target.update req.body, (err, doc) ->
+          @hooks.update.post(target) if @hooks?.update?.post
           res.send(200, doc)
           next()    
       else
         return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")        
 
   create: (req, res, next) =>
-    m = new @model(req.body)
-    m.save (err, doc) ->
-      @postCreate(m) if @postCreate
+    target = new @model(req.body)
+    target.save (err, doc) ->
+      @hooks.create.post(target) if @hooks?.create?.post
       console.log err if err
       res.send(201, doc)
       next()                    
