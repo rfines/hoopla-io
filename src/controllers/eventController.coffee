@@ -55,6 +55,10 @@ class EventController  extends RestfulController
     @builder.buildSearchQuery req.params, (err, centerCoordinates,  result) =>
       q = @model.find(result, {}, {lean:true})
       q.populate('media')
+      if req.params.skip
+        q.skip req.params.skip
+      if req.params.limit
+        q.limit req.params.limit
       q.exec (err, data) ->
         calcDistance = (item, cb) ->
           businessCoordinates = 
