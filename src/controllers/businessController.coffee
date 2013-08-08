@@ -17,6 +17,8 @@ class BusinessController extends SearchableController
     create : (authenticatedUser, target) ->
       return authenticatedUser
 
+  hooks : require('./hooks/businessHooks')
+
   constructor : (@name) ->
     super(@name)
 

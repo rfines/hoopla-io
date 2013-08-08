@@ -82,7 +82,7 @@ class RestfulController
             next()
           else
             target.save (err, doc) ->
-              @hooks.create.post(target) if @hooks?.create?.post
+              @hooks.create.post(target, req) if @hooks?.create?.post
               console.log err if err
               res.send(201, doc)
               next()                    
