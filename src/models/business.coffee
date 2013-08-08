@@ -67,5 +67,6 @@ BusinessSchema = new Schema
 
 module.exports = 
   Business : mongoose.model('business', BusinessSchema,'business')
+  BusinessSchema: BusinessSchema
 
 

@@ -5,6 +5,7 @@ Media = require('./media').MediaSchema
 Contact = require('./contact').ContactSchema
 TicketingLink = require('./ticketingLink').TicketingLinkSchema
 SocialMediaLinks = require('./socialMediaLink').SocialMediaLinkSchema
+Business= require('./business').BusinessSchema
 
 EventSchema = new Schema
   name: 
@@ -23,7 +24,8 @@ EventSchema = new Schema
     type: Date
     required: true
     default: Date.now
-  business : ObjectId
+  host: {type:ObjectId, ref:'business'}
+  business : {type:ObjectId, ref:'business'}
   occurrences:[Date]
   tags: [String]
   cost: Number
@@ -33,6 +35,7 @@ EventSchema = new Schema
     trim: true
   eventType:
     type: [String]
+    enum: ['ENTERTAINMENT', 'ARTS', 'MUSIC','FAMILY','FOOD']
     required: false
   bands: [String]
   media:[{type : ObjectId, ref : 'media'}]
@@ -100,9 +103,12 @@ EventSchema = new Schema
     minute:Number
     duration:Number
   }
+
   legacyId: String
   legacyBusinessId: String  
+  legacyHostId : String 
   legacyImage: String
+  legacyEndDate: Date
 
 
 module.exports = 

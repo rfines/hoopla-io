@@ -60,4 +60,11 @@ class DevController
       res.send 403
       next()
       
+  bcryptPassword:(req, res, next) =>
+    require('../services/bcryptService').encrypt req.params.password, (encrypted)->
+      key = require('../services/tokenService').generateKey()
+      secret = require('../services/tokenService').generateSecret()
+      res.send {encryptedPassword : encrypted, key: key, secret: secret}
+      next()
+
 module.exports =  new DevController()

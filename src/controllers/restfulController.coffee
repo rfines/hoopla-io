@@ -22,8 +22,11 @@ class RestfulController
     update:
       pre : (resource, req, res, next, cb) =>
         cb null
-      post : (target) =>      
-
+      post : (target) =>
+    search:
+      pre : (target, cb) =>
+        cb null
+      post : (target) =>     
 
   search : (req, res, next) =>  
     query = {}

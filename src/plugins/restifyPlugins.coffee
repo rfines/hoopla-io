@@ -5,13 +5,13 @@ postalCodeService = require('../services/postalCodeService')
 geoCoder = require('../services/geocodingService')
 
 module.exports.AuthorizationParser = (req, res, next) =>
-  authorizationService.authorize req.authorization, ( =>
+  authorizationService.authorize req, ( =>
     return next()
   ), (message) =>
     return next new restify.NotAuthorizedError(message)
 
 module.exports.AuthTokenParser = (req, res, next) =>
-  if req.authorization.basic.username and req.headers['x-authtoken']
+  if req.authorization?.basic?.username and req.headers['x-authtoken']
     userService.getByAppToken req.authorization.basic.username, req.headers['x-authtoken'], (err, user) ->
       req.authUser = user
       next()

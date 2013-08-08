@@ -8,7 +8,7 @@ class QueryComponentBuilder
 
   postalCodeService : require('../../services/postalCodeService')
   geoCoder : require('../../services/geocodingService')
-
+  populate :['media']
   validateSearchQuery : (params) ->
     if not params.ll and not params.near
       return {'message': 'The request parameters do not contain a near field or ll field.'}
@@ -44,6 +44,7 @@ class QueryComponentBuilder
   buildSearchQuery : (params, cb) =>
     errors = @validateSearchQuery(params)
     if errors 
+      console.log errors
       cb errors, null
     else
       async.parallel {
@@ -57,6 +58,7 @@ class QueryComponentBuilder
           @betweenDates(params, cb)
       }, (err, results) ->
         if err
+          console.log err
           cb err, null
         else
           distance = params.radius || 40234

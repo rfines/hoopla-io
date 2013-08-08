@@ -9,38 +9,54 @@ SearchQuery = require('./helpers/SearchQuery')
 class SearchableController extends RestfulController
   builder : require('./helpers/QueryComponentBuilder')
   searchService : require('../services/searchService')
+  populate: ['media']
 
   constructor : (@name) ->
     super(@name)
 
   search : (req, res, next) =>
-    @validateRequest req, (error) =>
-      if error.code
-        res.body = error
-        res.status = error.code
-        res.send()
-        next()
-      else
-        databaseResults = (cb) =>
-          @searchDatabase(req, cb)
-        searchIndexResults = (cb) =>
-          @searchIndex(req, cb)
-        datasources = [databaseResults]
-        if req.params.keyword
-          datasources.push searchIndexResults
-        async.parallel datasources, (err, results) ->
-          if results[1]
-            out = _.filter results[0], (item) ->
-              _.contains results[1], item._id.toString()
-          else 
-            out = results[0]
-          res.send out
+    @hooks.search.pre req, res, (err) =>
+      console.log err if err
+      @validateRequest req, (error) =>
+        if error.code
+          console.log error
+          res.body = error
+          res.status = error.code
+          res.send()
+
           next()
+        else
+          console.log "Validation successful"
+          console.log @hooks
+          databaseResults = (cb) =>
+            @searchDatabase(req, cb)
+          searchIndexResults = (cb) =>
+            @searchIndex(req, cb)
+          datasources = [databaseResults]
+          if req.params.keyword
+            datasources.push searchIndexResults
+          async.parallel datasources, (err, results) =>
+            if results[1]
+              out = _.filter results[0], (item) ->
+                _.contains results[1], item._id.toString()
+            else 
+              out = results[0]
+            @hooks.search.post out, res, (error, data) =>
+              console.log "post executed"
+              if error
+                console.log error
+                res.status = error.code
+                res.send error.message
+                next()
+              else
+                res.send data
+                next()
+              
 
   searchDatabase : (req, cb) =>
     @builder.buildSearchQuery req.params, (err, centerCoordinates,  result) => 
       q = @model.find(result, {}, {lean:true})
-      q.populate('media')
+      q.populate(@populate.join(' '))
       if req.params.skip
         q.skip req.params.skip
       if req.params.limit

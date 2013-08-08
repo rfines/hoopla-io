@@ -8,7 +8,7 @@ authTokenController = require '../controllers/authTokenController'
 devController = require '../controllers/devController'
 passwordResetController = require '../controllers/passwordResetController'
 restifyPlugins = require '../plugins/restifyPlugins'
-
+legacyRouteController = require '../controllers/legacyRouteController'
 
 build = ->
   server = restify.createServer(name: "hoopla-io-api")
@@ -29,6 +29,9 @@ build = ->
     ['post', "/tokenRequest", authTokenController, {handler : 'createToken'}]
     ['get', '/dev/indexAll', devController, {handler : 'indexAll'}]
     ['get', '/dev/buildAllSchedules', devController, {handler : 'buildAllSchedules'}]
+    ['get', '/dev/bcryptPassword', devController, {handler:'bcryptPassword'}]
+    ['get', '/api/getevents', legacyRouteController, {handler: 'search'}]
+    ['get', '/api/getevent', legacyRouteController, {handler:'search'}]
   ]
 
   scaffold = (resource, controller) ->

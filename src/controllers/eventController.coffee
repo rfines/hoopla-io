@@ -12,6 +12,7 @@ class EventController  extends SearchableController
   searchService : require('../services/searchService')
   scheduleService : require('../services/schedulingService')
   type: 'event'
+  populate: ['media']
   hooks:
     update:
       post : (event) =>
