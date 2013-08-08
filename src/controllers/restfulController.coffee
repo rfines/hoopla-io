@@ -4,8 +4,8 @@ _ = require 'lodash'
 authorizationService = require '../services/authorizationService'
 
 class RestfulController
-
   getFields : {}
+
   security: 
     destroy : (authenticatedUser, target) ->
       true
