@@ -43,7 +43,6 @@ class QueryComponentBuilder
 
   buildSearchQuery : (params, cb) =>
     errors = @validateSearchQuery(params)
-    console.log errors
     if errors 
       cb errors, null
     else

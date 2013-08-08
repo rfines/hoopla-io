@@ -17,7 +17,6 @@ class UserController extends RestfulController
     @hooks = 
       create :
         pre : (user, cb) =>
-          console.log @
           @bcryptService.encrypt user.password, (encrypted) ->
             user.password = encrypted
             user.encryptionMethod = 'BCRYPT'

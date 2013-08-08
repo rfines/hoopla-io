@@ -71,11 +71,17 @@ class RestfulController
   create: (req, res, next) =>
     target = new @model(req.body)
     @hooks.create.pre target, (err) ->
-      target.save (err, doc) ->
-        @hooks.create.post(target) if @hooks?.create?.post
-        console.log err if err
-        res.send(201, doc)
-        next()                    
+      target.validate (err) ->
+        if err
+          errors = err.errors
+          res.send 400, errors
+          next()
+        else
+          target.save (err, doc) ->
+            @hooks.create.post(target) if @hooks?.create?.post
+            console.log err if err
+            res.send(201, doc)
+            next()                    
 
 
 module.exports = RestfulController

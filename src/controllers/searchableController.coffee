@@ -17,13 +17,11 @@ class SearchableController extends RestfulController
     
     @validateRequest req, (error) =>
       if error.code
-        console.log error
         res.body = error
         res.status = error.code
         res.send()
         next()
       else
-        console.log "Validation successful"
         databaseResults = (cb) =>
           @searchDatabase(req, cb)
         searchIndexResults = (cb) =>
