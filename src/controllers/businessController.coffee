@@ -13,6 +13,10 @@ class BusinessController extends SearchableController
   builder : require('./helpers/QueryComponentBuilder')
   searchService : require('../services/searchService')
 
+  security: 
+    create : (authenticatedUser, target) ->
+      return authenticatedUser
+
   constructor : (@name) ->
     super(@name)
 

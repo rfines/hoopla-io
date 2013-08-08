@@ -14,7 +14,6 @@ class SearchableController extends RestfulController
     super(@name)
 
   search : (req, res, next) =>
-    
     @validateRequest req, (error) =>
       if error.code
         res.body = error

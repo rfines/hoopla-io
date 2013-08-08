@@ -10,16 +10,14 @@ class UserController extends RestfulController
     destroy : (authenticatedUser, targetUser) ->
       authenticatedUser?._id and authenticatedUser._id.equals(targetUser._id) 
     update : (authenticatedUser, targetUser) ->
-      authenticatedUser and authenticatedUser._id is targetUser._id      
+      authenticatedUser and authenticatedUser._id is targetUser._id
 
   constructor : (@name) ->
     super(@name)
-    @hooks = 
-      create :
-        pre : (user, cb) =>
-          @bcryptService.encrypt user.password, (encrypted) ->
-            user.password = encrypted
-            user.encryptionMethod = 'BCRYPT'
-            cb()
+    @hooks.create.pre = (user, req, res, next, cb) =>
+      @bcryptService.encrypt user.password, (encrypted) ->
+        user.password = encrypted
+        user.encryptionMethod = 'BCRYPT'
+        cb()
 
 module.exports =  new UserController()

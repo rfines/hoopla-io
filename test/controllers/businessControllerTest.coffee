@@ -9,6 +9,17 @@ describe "Operations for Business Routes", ->
 
   beforeEach (done) ->
     controller = require('../../src/controllers/businessController')      
-    done()      
+    done()
+
+  it 'should return a 401 to the user if they try to create a business without being authenticated', (done) ->
+    req =
+      body : {}
+    res = 
+      send: ( (status, body) ->)  
+    responseSpy = sinon.spy(res, 'send')
+    controller.create req, res, (msg) ->
+      msg.statusCode.should.be.equal 403
+      done()
+
 
   
