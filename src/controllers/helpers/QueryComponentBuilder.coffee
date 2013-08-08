@@ -43,6 +43,7 @@ class QueryComponentBuilder
 
   buildSearchQuery : (params, cb) =>
     errors = @validateSearchQuery(params)
+    console.log errors
     if errors 
       cb errors, null
     else
@@ -69,8 +70,6 @@ class QueryComponentBuilder
             q.withCost results.maxCost
           if results.betweenDates
             q.betweenDates(results.betweenDates.start,results.betweenDates.end)
-           
-
           cb null, results.coordinates, q.build()
 
   module.exports = new QueryComponentBuilder

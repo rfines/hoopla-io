@@ -68,6 +68,11 @@ findEvents = (term, cb) ->
   ).on("error", (error) ->
     cb error
   ).exec()
+find = (type, term, cb) ->
+  if type is 'business'
+    findBusinesses term, cb
+  else
+    findEvents term, cb
 
 module.exports =
   init : init
@@ -76,3 +81,4 @@ module.exports =
   indexEvent : indexEvent
   findEvents : findEvents
   deleteIndex : deleteIndex
+  find : find
