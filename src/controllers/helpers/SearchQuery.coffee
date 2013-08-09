@@ -46,21 +46,19 @@ class SearchQuery
     return query 
 
   buildFromParams: (params) ->
+    distance = params.radius || 40234
     ll = params.ll.split(',')
-    coordinates = {latitude : parseFloat(ll[1]), longitude: parseFloat(ll[0])}      
+    q = new SearchQuery().within(distance)
+    q.ofCoordinates(parseFloat(ll[0]), parseFloat(ll[1])) 
     if params.tags
-      tags = params.tags.split(',')
+      q.withTags(params.tags.split(','))
     if params.maxCost
-      maxCost = parseFloat(params.maxCost)
+      q.withCost(parseFloat(params.maxCost))
     if params.start and params.end
       betweenDates = {start:params.start, end: params.end}
     else if params.start and not params.end
       betweenDates = {start:params.start}
-    distance = params.radius || 40234
-    q = new SearchQuery().within(distance)
-    q.ofCoordinates(coordinates.longitude, coordinates.latitude) 
-    q.withTags(tags) if tags?.length
-    q.withCost(maxCost) if maxCost
+    
     q.betweenDates(betweenDates.start,betweenDates.end) if betweenDates
     return q.build()
 
