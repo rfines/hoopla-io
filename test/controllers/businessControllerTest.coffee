@@ -47,3 +47,11 @@ describe "Operations for Business Routes", ->
     user = {businessPrivileges : [{businessId : business._id, role : 'OWNER'}]}
     controller.security.destroy(user, business).should.be.true
     done()        
+
+  it 'should  allow you to update a business if have privileges on the business', (done) ->
+    business = {
+      _id : new mongoose.Types.ObjectId()
+    }
+    user = {businessPrivileges : [{businessId : business._id, role : 'COLLABORATOR'}]}
+    controller.security.update(user, business).should.be.true
+    done()            

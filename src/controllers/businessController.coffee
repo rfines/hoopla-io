@@ -15,8 +15,10 @@ class BusinessController extends SearchableController
   security: 
     create : (authenticatedUser, target) ->
       return authenticatedUser
-    update : (authenticatedUser, target) ->
-      return authenticatedUser
+    update : (authenticatedUser, business) ->
+      ownerMatch = _.find authenticatedUser.businessPrivileges, (priv) ->
+        return priv.businessId.equals(business._id)
+      return not _.isUndefined(ownerMatch)
     destroy : (authenticatedUser, business) ->
       ownerMatch = _.find authenticatedUser.businessPrivileges, (priv) ->
         return priv.businessId.equals(business._id) and priv.role is 'OWNER'
