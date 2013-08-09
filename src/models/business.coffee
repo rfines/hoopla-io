@@ -63,6 +63,7 @@ BusinessSchema = new Schema
   legacyId: String
   legacyCreatedBy: String
 
+
 module.exports = 
   Business : mongoose.model('business', BusinessSchema,'business')
   BusinessSchema: BusinessSchema

@@ -15,65 +15,35 @@ class LegacyRouteController extends SearchableController
 
   constructor : (@name) ->
     super(@name)
+  get: (req, res, next) ->
+    @hooks.get.pre req,res,(err, req)=>
+      if err?.code
+        console.log err
+        res.status = err.code
+        res.body = err.message
+        res.send()
+        next()
+      else
+        id = req.params.id
+        checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$")
+        if not checkForHexRegExp.test(id)
+          @model.findOne {legacyId : req.params.id}, @getFields, {lean : true}, (err, data) =>
+            if not err and not data
+              res.send 404
+              next()
+            else 
+              res.body = data
+              if req.imageHeight or req.imageWidth
+                res.body.imageHeight = req.imageHeight
+                res.body.imageWidth = req.imageWidth 
+              @hooks.get.post req,res,(err)->
+                if err
+                  console.log err
+                  res.send err.code, err.message
+                  next()
+                else
+                  res.send 200, res.body
+                  next()
 
 module.exports = new LegacyRouteController()
 
-###
-routes to implement:
-/api/getevents?apiKey=blah&eventType=4&categories="some list of categories"&zipcode=64105&radius=25&cost=100&start=10/29/1981&end=10/31/1981&imageHeight=200&imageWidth=200
-
-the result should look like this:
-{success:true, date:[{
-  id:
-  name:
-  email:
-  contactName:
-  phone:
-  website:
-  venueId:
-  venueName:
-  address:(as one string)
-  latitude:
-  longitude:
-  startDate:
-  endDate:
-  nextOccurrenceDate:
-  startTime:
-  endTime:
-  isRecurring:
-  image: (url to the image)
-  categories: (one string, comma separated)
-  description:
-  venueImage: (url to image)
-  ticketUrl:
-  detailsUrl: (link to details page on local ruckus)
-}]
-
-/api/get-event?apiKey=somekey&id=123&imageWidth=200&imageHeight=200
-
-success:true, data:{
-  id:
-  name:
-  email:
-  contactName:
-  phone:
-  website:
-  venueId:
-  venueName:
-  address:(as one string)
-  latitude:
-  longitude:
-  startDate:
-  endDate:
-  nextOccurrenceDate:
-  startTime:
-  endTime:
-  isRecurring:
-  image: (url to the image)
-  categories: (one string, comma separated)
-  description:
-  venueImage: (url to image)
-  ticketUrl:
-  detailsUrl: (link to details page on local ruckus)
-}
-###
