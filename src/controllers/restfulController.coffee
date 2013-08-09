@@ -62,16 +62,15 @@ class RestfulController
   create: (req, res, next) =>
     target = new @model(req.body)
     if @security.create(req.authUser, target)
-      @hooks.create.pre target, req, res, next, (err) ->
-        target.validate (err) ->
+      @hooks.create.pre target, req, res, next, (err) =>
+        target.validate (err) =>
           if err
             errors = err.errors
             res.send 400, errors
             next()
           else
-            target.save (err, doc) ->
+            target.save (err, doc) =>
               @hooks.create.post(target, req) if @hooks?.create?.post
-              console.log err if err
               res.send(201, doc)
               next()                    
     else

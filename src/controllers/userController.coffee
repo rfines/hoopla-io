@@ -11,6 +11,8 @@ class UserController extends RestfulController
       authenticatedUser?._id and authenticatedUser._id.equals(targetUser._id) 
     update : (authenticatedUser, targetUser) ->
       authenticatedUser and authenticatedUser._id is targetUser._id
+    create : () ->
+      true
 
   constructor : (@name) ->
     super(@name)

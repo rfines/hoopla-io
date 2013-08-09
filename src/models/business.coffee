@@ -61,9 +61,7 @@ BusinessSchema = new Schema
   }
   socialMediaLinks:[SocialMediaLink]
   legacyId: String
-  legacyCreatedBy:
-    type: Number
-    required: true  
+  legacyCreatedBy: String
 
 module.exports = 
   Business : mongoose.model('business', BusinessSchema,'business')
