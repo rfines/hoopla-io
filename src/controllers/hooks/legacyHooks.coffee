@@ -95,4 +95,11 @@ module.exports = exports =
         else
           res.body = newData
           cb null
-
+  get:
+     post : (req, res, cb) =>
+      exports.transformResponse res.body, res.body.imageHeight, res.body.imageWidth, (err, newData) ->
+        if err
+          cb err,null
+        else
+          res.body = newData
+          cb null

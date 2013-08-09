@@ -31,7 +31,7 @@ build = ->
     ['get', '/dev/buildAllSchedules', devController, {handler : 'buildAllSchedules'}]
     ['get', '/dev/bcryptPassword', devController, {handler:'bcryptPassword'}]
     ['get', '/api/getevents', legacyRouteController, {handler: 'search'}]
-    ['get', '/api/getevent', legacyRouteController, {handler:'search'}]
+    ['get', '/api/getevent', legacyRouteController, {handler:'get'}]
   ]
 
   scaffold = (resource, controller) ->
