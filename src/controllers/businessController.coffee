@@ -10,7 +10,6 @@ SearchableController = require('./searchableController')
 class BusinessController extends SearchableController
   type: 'business'
   model : require('../models/business').Business
-  builder : require('./helpers/QueryComponentBuilder')
   searchService : require('../services/searchService')
 
   security: 

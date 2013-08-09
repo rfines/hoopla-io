@@ -1,13 +1,10 @@
 _ = require 'lodash'
-mongoose = require 'mongoose'
 async = require('async')
 geolib = require('geolib')
 RestfulController = require('./restfulController')
 SearchQuery = require('./helpers/SearchQuery')
 
-
 class SearchableController extends RestfulController
-  builder : require('./helpers/QueryComponentBuilder')
   searchService : require('../services/searchService')
   populate: ['media']
   hooks: require('./hooks/defaultHooks')
@@ -49,23 +46,25 @@ class SearchableController extends RestfulController
               
 
   searchDatabase : (req, cb) =>
-    @builder.buildSearchQuery req.params, (err, centerCoordinates,  result) => 
-      q = @model.find(result, {}, {lean:true})
-      q.populate(@populate.join(' '))
-      if req.params.skip
-        q.skip req.params.skip
-      if req.params.limit
-        q.limit req.params.limit
-      q.exec (err, data) ->   
-        calcDistance = (item, cb) ->         
-          businessCoordinates = 
-            longitude: item.geo.coordinates[0]
-            latitude: item.geo.coordinates[1]
-          item.distance = geolib.getDistance centerCoordinates, businessCoordinates
-          cb null
-        async.each data, calcDistance, (err) ->
-          
-          cb err, data          
+    ll = req.params.ll.split(',')
+    centerCoordinates = {latitude : parseFloat(ll[1]), longitude: parseFloat(ll[0])}  
+    criteria = new SearchQuery().buildFromParams(req.params)
+    q = @model.find(criteria, {}, {lean:true})
+    q.populate(@populate.join(' '))
+    if req.params.skip
+      q.skip req.params.skip
+    if req.params.limit
+      q.limit req.params.limit
+    q.exec (err, data) ->   
+      calcDistance = (item, cb) ->         
+        businessCoordinates = 
+          longitude: item.geo.coordinates[0]
+          latitude: item.geo.coordinates[1]
+        item.distance = geolib.getDistance centerCoordinates, businessCoordinates
+        cb null
+      async.each data, calcDistance, (err) ->
+        
+        cb err, data          
 
   searchIndex : (req, cb) =>
     @searchService.find @type, req.params.keyword, (err, data) ->

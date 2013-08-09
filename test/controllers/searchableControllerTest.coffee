@@ -17,8 +17,8 @@ describe "Operations for Searchable Routes", ->
     controller = new SearchableController()
     controller.type = 'event'
     controller.builder = {
-      buildSearchQuery : (params, cb)->
-        cb null, {}, {}
+      buildSearchQuery : (params)->
+        return {}
     }
     mockedQuery = {
       skip: (x) ->
@@ -32,7 +32,8 @@ describe "Operations for Searchable Routes", ->
         return mockedQuery
     }
     req = 
-      params : 
+      params :
+        ll : '1,1'
         near : '64105'
         keyword : 'myKeyword'
     res = 
@@ -70,6 +71,7 @@ describe "Operations for Searchable Routes", ->
       params: 
         limit: 100
         skip: 1
+        ll : '1,1'
     res = 
       send: ( (status, body) ->) 
     skipSpy = sinon.spy(mockedQuery, 'skip')
@@ -80,7 +82,7 @@ describe "Operations for Searchable Routes", ->
       done()
 
   it "should not use skip and limit if not passed", (done)->
-    req.params = {}
+    req.params = {ll : '1,1'}
     skipSpy = sinon.spy(mockedQuery, 'skip')
     limitSpy = sinon.spy(mockedQuery,'limit')
     controller.searchDatabase req, (err,data) ->
@@ -100,6 +102,7 @@ describe "Operations for Searchable Routes", ->
         keyword: 'somekeyword'
         limit: 100
         skip: 2
+        ll : '1,1'
     skipSpy = sinon.spy(mockedQuery, 'skip')
     limitSpy = sinon.spy(mockedQuery, 'limit')
     controller.search req,res, ->
@@ -113,22 +116,20 @@ describe "Operations for Searchable Routes", ->
         near: '64105'
         limit: 100
         skip: 2
+        ll : '1,1'
     skipSpy = sinon.spy(mockedQuery, 'skip')
     limitSpy = sinon.spy(mockedQuery,'limit')
     controller.search req,res, ->
       skipSpy.called.should.be.true
       limitSpy.called.should.be.true
       done()
+
   it "should return an error if no near or ll param is passed", (done)->
     req = 
       params:
         limit: 100
         skip: 2
     controller.search req,res, ->
-      res.status.should.equal 400
-      done()
-  it "should return an error if no near or ll param is passed", (done)->
-    req.params = {}
-    controller.search req,res, ->
+      console.log res
       res.status.should.equal 400
       done()
