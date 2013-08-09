@@ -1,4 +1,5 @@
 sinon = require 'sinon'
+mongoose = require 'mongoose'
 
 describe "Business Hooks", ->
   hooks = {}
@@ -29,6 +30,30 @@ describe "Business Hooks", ->
       req.authUser.businessPrivileges.length.should.be.equal 1
       done()
 
-
+  it 'should remove all user privileges when a business is deleted', (done) ->
+    business = {
+      _id : new mongoose.Types.ObjectId()
+    }
+    userAttachedToBusiness = {
+      businessPrivileges : [ {businessId : business._id}]
+      save: (cb) ->
+        cb null
+    }
+    UserService = {
+      getByBusinessPrivileges: (businessId, cb) ->
+        cb null, [userAttachedToBusiness]
+    }
+    userServiceSpy = sinon.spy(UserService, 'getByBusinessPrivileges')
+    userSpy = sinon.spy(userAttachedToBusiness, 'save')
+    hooks.UserService = UserService
+    hooks.destroy.post 
+      resource : business
+      req : req
+      res : res
+      success : ->
+        userServiceSpy.calledWith(business._id).should.be.true
+        userAttachedToBusiness.businessPrivileges.length.should.equal 0
+        userSpy.called.should.be.true
+        done()
 
   

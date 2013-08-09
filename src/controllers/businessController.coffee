@@ -15,6 +15,10 @@ class BusinessController extends SearchableController
   security: 
     create : (authenticatedUser, target) ->
       return authenticatedUser
+    update : (authenticatedUser, target) ->
+      return authenticatedUser
+    destroy : (authenticatedUser, target) ->
+      return authenticatedUser            
 
   hooks : require('./hooks/businessHooks')
 

@@ -42,10 +42,20 @@ class RestfulController
 
   destroy: (req, res, next) =>
     @model.findById req.params.id, {}, {}, (err, target) =>
+      return next new restify.ResourceNotFoundError() if not target
       if @security.destroy(req.authUser, target)
-        target.remove (err, doc) ->
-          res.send(204)
-          next()     
+        target.remove (err, doc) =>
+          if @hooks?.destroy?.post 
+            @hooks.destroy.post 
+              resource : target
+              req : req
+              res : res
+              success: () -> 
+                res.send 204
+                next()
+          else
+            res.send 204
+            next()        
       else
         return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")
   
