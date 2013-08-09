@@ -9,7 +9,6 @@ geocodeAddress = (query, cb) ->
       if not error and not value
         mapquestService.geocode query, (err, location) ->
           if err
-            console.log 'try the google'
             googleService.geocode query, (err, location) ->
               if err
                 cb err, null

@@ -10,24 +10,21 @@ class SearchableController extends RestfulController
   builder : require('./helpers/QueryComponentBuilder')
   searchService : require('../services/searchService')
   populate: ['media']
+  hooks: require('./hooks/defaultHooks')
 
   constructor : (@name) ->
     super(@name)
 
   search : (req, res, next) =>
     @hooks.search.pre req, res, (err) =>
-      console.log err if err
       @validateRequest req, (error) =>
         if error.code
-          console.log error
           res.body = error
           res.status = error.code
           res.send()
 
           next()
         else
-          console.log "Validation successful"
-          console.log @hooks
           databaseResults = (cb) =>
             @searchDatabase(req, cb)
           searchIndexResults = (cb) =>
@@ -41,15 +38,14 @@ class SearchableController extends RestfulController
                 _.contains results[1], item._id.toString()
             else 
               out = results[0]
-            @hooks.search.post out, res, (error, data) =>
-              console.log "post executed"
+            res.body = out
+            @hooks.search.post req, res, (error) =>
               if error
-                console.log error
                 res.status = error.code
                 res.send error.message
                 next()
               else
-                res.send data
+                res.send 200, res.body
                 next()
               
 
@@ -73,7 +69,7 @@ class SearchableController extends RestfulController
           cb err, data          
 
   searchIndex : (req, cb) =>
-    @searchService.find @type,req.params.keyword, (err, data) ->
+    @searchService.find @type, req.params.keyword, (err, data) ->
       cb null, _.pluck(data, '_id')
 
   validateRequest : (req, cb) =>

@@ -12,7 +12,6 @@ authorize = (req, onAuthorized, onUnAuthorized) ->
       else
         onUnAuthorized 'Invalid api key or secret.'
   else if req.params.apiKey
-    console.log req.params
     q = {'applications.legacyKey': req.params.apiKey}
     User.findOne q,(err,data) ->
       if data

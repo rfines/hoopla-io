@@ -2,10 +2,10 @@ mongoose = require 'mongoose'
 RestfulController = require('./restfulController')
 
 class UserController extends RestfulController
-  bcryptService : require('../services/bcryptService')
   model : require('../models/user').User
   getFields : { 'applications' : 0, 'password' : 0, 'encryptionMethod' : 0}
-
+  hooks : require('./hooks/userHooks.coffee')
+  
   security: 
     destroy : (authenticatedUser, targetUser) ->
       authenticatedUser?._id and authenticatedUser._id.equals(targetUser._id) 
@@ -14,10 +14,5 @@ class UserController extends RestfulController
 
   constructor : (@name) ->
     super(@name)
-    @hooks.create.pre = (user, req, res, next, cb) =>
-      @bcryptService.encrypt user.password, (encrypted) ->
-        user.password = encrypted
-        user.encryptionMethod = 'BCRYPT'
-        cb()
 
 module.exports =  new UserController()

@@ -41,13 +41,11 @@ class DevController
     scheduleEvent = (item,cb) ->
       scheduler.calculate item, (err, occurrences) ->
         if err
-          console.log err
           cb err, null
         else
           item.occurrences = occurrences
           item.save (error, data)->
           if err 
-            console.log error
             cb error, null
           else
             cb null, null

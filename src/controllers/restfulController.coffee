@@ -14,19 +14,7 @@ class RestfulController
     create : (authenticatedUser, target) ->
       true    
 
-  hooks:
-    create:
-      pre : (resource, req, res, next, cb) =>
-        cb null
-      post : (target) =>
-    update:
-      pre : (resource, req, res, next, cb) =>
-        cb null
-      post : (target) =>
-    search:
-      pre : (target, cb) =>
-        cb null
-      post : (target) =>     
+  hooks: require('./hooks/defaultHooks') 
 
   search : (req, res, next) =>  
     query = {}

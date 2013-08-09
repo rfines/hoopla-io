@@ -19,9 +19,7 @@ calculate= (item,cb) ->
     for x in item.schedules
       transformed = {}
       forLater x, (err,result)->
-        if err
-          console.log err
-        else
+        if not err
           transformed = result
       if item.endRange?.length
         endRange = new Date(item.endRange)

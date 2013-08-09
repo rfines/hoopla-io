@@ -29,7 +29,6 @@ module.exports.NearParamParser = (req, res, next) =>
         next()
     else
       geoCoder.geocodeAddress req.params.near, (err, result) ->
-        console.log err
         if err
           cb err, null
         else

@@ -44,7 +44,6 @@ class QueryComponentBuilder
   buildSearchQuery : (params, cb) =>
     errors = @validateSearchQuery(params)
     if errors 
-      console.log errors
       cb errors, null
     else
       async.parallel {
@@ -58,7 +57,6 @@ class QueryComponentBuilder
           @betweenDates(params, cb)
       }, (err, results) ->
         if err
-          console.log err
           cb err, null
         else
           distance = params.radius || 40234
