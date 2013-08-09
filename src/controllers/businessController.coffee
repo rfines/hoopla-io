@@ -1,9 +1,4 @@
 _ = require 'lodash'
-mongoose = require 'mongoose'
-async = require('async')
-geolib = require('geolib')
-RestfulController = require('./restfulController')
-SearchQuery = require('./helpers/SearchQuery')
 SearchableController = require('./searchableController')
 
 

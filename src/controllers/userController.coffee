@@ -1,4 +1,3 @@
-mongoose = require 'mongoose'
 RestfulController = require('./restfulController')
 
 class UserController extends RestfulController
@@ -7,6 +6,8 @@ class UserController extends RestfulController
   hooks : require('./hooks/userHooks.coffee')
   
   security: 
+    get : (authenticatedUser, targetUser) ->
+      authenticatedUser?._id and authenticatedUser._id.equals(targetUser._id)   
     destroy : (authenticatedUser, targetUser) ->
       authenticatedUser?._id and authenticatedUser._id.equals(targetUser._id) 
     update : (authenticatedUser, targetUser) ->
@@ -16,5 +17,9 @@ class UserController extends RestfulController
 
   constructor : (@name) ->
     super(@name)
+
+  search : (req, res, next) =>  
+    return next new restify.ResourceNotFoundError()
+  
 
 module.exports =  new UserController()
