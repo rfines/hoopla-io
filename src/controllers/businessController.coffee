@@ -17,8 +17,10 @@ class BusinessController extends SearchableController
       return authenticatedUser
     update : (authenticatedUser, target) ->
       return authenticatedUser
-    destroy : (authenticatedUser, target) ->
-      return authenticatedUser            
+    destroy : (authenticatedUser, business) ->
+      ownerMatch = _.find authenticatedUser.businessPrivileges, (priv) ->
+        return priv.businessId.equals(business._id) and priv.role is 'OWNER'
+      return not _.isUndefined(ownerMatch)
 
   hooks : require('./hooks/businessHooks')
 
