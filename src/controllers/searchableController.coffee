@@ -22,7 +22,6 @@ class SearchableController extends RestfulController
           res.body = error
           res.status = error.code
           res.send()
-
           next()
         else
           databaseResults = (cb) =>
