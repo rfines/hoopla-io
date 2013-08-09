@@ -24,9 +24,7 @@ describe "Business Hooks", ->
     }
     business = {}
     userSpy = sinon.spy(req.authUser, 'save')
-    next = ->
-      console.log 'next'
-    hooks.create.post business, req, res, next, ->
+    hooks.create.post business, req, res, ->
       userSpy.called.should.be.true
       req.authUser.businessPrivileges.length.should.be.equal 1
       done()

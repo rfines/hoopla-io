@@ -22,7 +22,7 @@ describe "User Routes", ->
       console.log 'next'
     user = 
       password : 'myPassword'
-    hooks.create.pre user, req, res, next, ->
+    hooks.create.pre user, req, res, ->
       bcryptSpy.calledWith('myPassword').should.be.true
       user.password.should.be.equal 'encryptedPassword'
       user.encryptionMethod.should.be.equal 'BCRYPT'

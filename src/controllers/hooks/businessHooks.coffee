@@ -1,13 +1,13 @@
 module.exports =
   create:
-    pre : (resource, req, res, next, cb) =>
+    pre : (resource, req, res, cb) =>
       cb null
-    post : (business, req, res, next, cb) ->  
+    post : (business, req, res, cb) ->  
       req.authUser.businessPrivileges.push {businessId : business._id, role : 'OWNER'}
       req.authUser.save (err) ->
         cb() if cb
   update:
-    pre : (resource, req, res, next, cb) =>
+    pre : (resource, req, res, cb) =>
       cb null
     post : (target) =>
   search:

@@ -1,10 +1,10 @@
 module.exports = exports =
   create:
-    pre : (resource, req, res, next, cb) =>
+    pre : (resource, req, res, cb) =>
       cb null
     post : (target) =>
   update:
-    pre : (resource, req, res, next, cb) =>
+    pre : (resource, req, res, cb) =>
       cb null
     post : (target) =>
   search:
