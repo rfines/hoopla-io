@@ -32,6 +32,7 @@ build = ->
     ['get', '/dev/bcryptPassword', devController, {handler:'bcryptPassword'}]
     ['get', '/api/getevents', legacyRouteController, {handler: 'search'}]
     ['get', '/api/getevent', legacyRouteController, {handler:'get'}]
+    ['get', '/business/:id/events', businessController, {handler:'getEvents'}]
   ]
 
   scaffold = (resource, controller) ->

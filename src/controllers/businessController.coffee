@@ -6,6 +6,7 @@ class BusinessController extends SearchableController
   type: 'business'
   model : require('../models/business').Business
   searchService : require('../services/searchService')
+  events : require('../models/event').Event
 
   security: 
     get : securityConstraints.anyone
@@ -23,5 +24,18 @@ class BusinessController extends SearchableController
 
   constructor : (@name) ->
     super(@name)
+
+  getEvents : (req,res,next) =>
+    if req.params.id
+      @events.find {"business": req.params.id}, {},{lean:true}, (err, result)->
+        if err
+          res.send 400, err
+          next()
+        else
+          res.send 200, result
+          next()
+    else
+      res.send 400, "Bad request. Missing required parameter"
+      next()
 
 module.exports = new BusinessController()

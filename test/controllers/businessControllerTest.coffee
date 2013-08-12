@@ -11,7 +11,13 @@ describe "Operations for Business Routes", ->
     done()
 
   beforeEach (done) ->
-    controller = require('../../src/controllers/businessController')      
+    controller = require('../../src/controllers/businessController')
+    document = {}
+    modelSpy = 
+      find : (query, fields, options, cb) ->
+        cb null, document
+
+    controller.events = modelSpy      
     req =
       body : {}
     res = 
@@ -54,4 +60,13 @@ describe "Operations for Business Routes", ->
     }
     user = {businessPrivileges : [{businessId : business._id, role : 'COLLABORATOR'}]}
     controller.security.update(user, business).should.be.true
-    done()            
+    done() 
+
+  it 'should return a list of events owned by a business', (done) ->
+    req.params = {}
+    req.params.id = "123"
+    req.params.ll  = '-94.595033,39.102704'
+    spy = sinon.spy(controller.events, 'find') 
+    controller.getEvents req, res,(err,result) ->
+      spy.calledWith({'business' : req.params.id}).should.be.true
+      done()             
