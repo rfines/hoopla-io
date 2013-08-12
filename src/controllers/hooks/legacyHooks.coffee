@@ -29,7 +29,6 @@ module.exports = exports =
           for c in cats
             tags.push TagMap[c]
           req.params.tags = tags
-        console.log req
         cb null, req
     else
       errors = {code: 400, message: "Invalid request"}
@@ -182,7 +181,6 @@ module.exports = exports =
     pre : (req, res, cb) =>
       cb null, req
     post : (req, res, cb) =>
-      console.log res.body
       exports.transformResponse res.body, res.body.imageHeight, res.body.imageWidth, (err, newData) ->
         if err
           cb err,null

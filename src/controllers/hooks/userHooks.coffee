@@ -1,3 +1,5 @@
+hookLibrary = require('./hookLibrary')
+
 module.exports = exports = 
   bcryptService : require('../../services/bcryptService')
   create:
@@ -6,3 +8,8 @@ module.exports = exports =
         user.password = encrypted
         user.encryptionMethod = 'BCRYPT'
         cb()
+    post: hookLibrary.default
+  update:
+    pre : hookLibrary.default
+    post : hookLibrary.default    
+    post : hookLibrary.default    

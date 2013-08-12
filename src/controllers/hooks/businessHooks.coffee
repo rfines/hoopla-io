@@ -1,19 +1,18 @@
 async = require 'async'
 _ = require 'lodash'
+hookLibrary = require('./hookLibrary')
 
 module.exports = exports = 
   UserService : require('../../services/data/userService')
   create:
-    pre : (resource, req, res, cb) =>
-      cb null
+    pre : hookLibrary.default
     post : (business, req, res, cb) ->  
       req.authUser.businessPrivileges.push {businessId : business._id, role : 'OWNER'}
       req.authUser.save (err) ->
         cb() if cb
   update:
-    pre : (resource, req, res, cb) =>
-      cb null
-    post : (target) =>
+    pre : hookLibrary.default
+    post : hookLibrary.default
   search:
     pre : (req, res, cb) =>
       cb null

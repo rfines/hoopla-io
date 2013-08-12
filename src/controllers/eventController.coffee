@@ -12,15 +12,15 @@ class EventController  extends SearchableController
     get : securityConstraints.anyone
     destroy : (authenticatedUser, event) ->
       ownerMatch = _.find authenticatedUser.businessPrivileges, (priv) ->
-        return priv?.businessId?.equals(event.businessId)
+        return priv?.businessId?.equals(event.business)
       return not _.isUndefined(ownerMatch)      
-    update : (authenticatedUser, target) ->
+    update : (authenticatedUser, event) ->
       ownerMatch = _.find authenticatedUser.businessPrivileges, (priv) ->
-        return priv?.businessId?.equals(event.businessId)
+        return priv?.businessId?.equals(event.business)
       return not _.isUndefined(ownerMatch)  
-    create : (authenticatedUser, target) ->
+    create : (authenticatedUser, event) ->
       ownerMatch = _.find authenticatedUser.businessPrivileges, (priv) ->
-        return priv?.businessId?.equals(event.businessId)
+        return priv?.businessId?.equals(event.business)
       return not _.isUndefined(ownerMatch)  
 
   constructor : (@name) ->

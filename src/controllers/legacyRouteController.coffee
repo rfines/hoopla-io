@@ -18,7 +18,6 @@ class LegacyRouteController extends SearchableController
   get: (req, res, next) ->
     @hooks.get.pre req,res,(err, req)=>
       if err?.code
-        console.log err
         res.status = err.code
         res.body = err.message
         res.send()
@@ -38,7 +37,6 @@ class LegacyRouteController extends SearchableController
                 res.body.imageWidth = req.imageWidth 
               @hooks.get.post req,res,(err)->
                 if err
-                  console.log err
                   res.send err.code, err.message
                   next()
                 else

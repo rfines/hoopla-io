@@ -1,17 +1,23 @@
+hookLibrary = require('./hookLibrary')
+
 module.exports = exports =
   scheduleService : require('../../services/schedulingService')
   update:
-    post : (event) =>
+    pre : hookLibrary.default
+    post : (event, req, res, cb) =>
       exports.scheduleService.calculate event, (err, occurrences) ->
         if not err
           event.occurrences = occurrences
           event.save()
+          cb()
   create:
-    post : (event) =>
+    pre : hookLibrary.default 
+    post : (event, req, res, cb) =>
       exports.scheduleService.calculate event, (err, occurrences) ->
         if not err
           event.occurrences = occurrences
           event.save()
+          cb()
   search:
     pre : (req, res, cb) =>
       cb null

@@ -16,7 +16,7 @@ class RestfulController
     create : (authenticatedUser, target) ->
       true    
 
-  hooks: require('./hooks/defaultHooks') 
+  hooks: require('./hooks/restfulHooks') 
 
   search : (req, res, next) =>  
     query = {}
@@ -67,9 +67,13 @@ class RestfulController
     @model.findById req.params.id, {}, {}, (err, target) =>
       if @security.update(req.authUser, target)
         target.update req.body, (err, doc) ->
-          @hooks.update.post(target) if @hooks?.update?.post
-          res.send(200, doc)
-          next()    
+          if @hooks?.update?.post
+            @hooks.update.post target, req, res, ->
+              res.send(200, doc)
+              next()    
+          else
+            res.send(200, doc)
+            next()             
       else
         return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")        
 

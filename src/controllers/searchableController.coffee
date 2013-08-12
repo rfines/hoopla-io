@@ -7,7 +7,7 @@ SearchQuery = require('./helpers/SearchQuery')
 class SearchableController extends RestfulController
   searchService : require('../services/searchService')
   populate: ['media']
-  hooks: require('./hooks/defaultHooks')
+  hooks: require('./hooks/restfulHooks')
 
   constructor : (@name) ->
     super(@name)

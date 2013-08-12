@@ -17,7 +17,7 @@ describe "Operations for Event Routes", ->
       businessPrivileges : [{}]
     }
     event = {
-      businessId : new mongoose.Types.ObjectId()
+      business : new mongoose.Types.ObjectId()
     }
     controller.security.destroy(authUser, event).should.be.false
     done()
@@ -28,7 +28,7 @@ describe "Operations for Event Routes", ->
       businessPrivileges : [{businessId : bid, role:'COLLABORATOR'}]
     }
     event = {
-      businessId : bid
+      business : bid
     }
     controller.security.destroy(authUser, event).should.be.true
     done()    
