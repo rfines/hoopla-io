@@ -2,11 +2,13 @@ restify = require("restify")
 mongoose = require 'mongoose'
 _ = require 'lodash'
 authorizationService = require '../services/authorizationService'
+securityConstraints = require('./helpers/securityConstraints')
 
 class RestfulController
   getFields : {}
 
   security: 
+    get : securityConstraints.anyone
     destroy : (authenticatedUser, target) ->
       true
     update : (authenticatedUser, target) ->
@@ -26,19 +28,21 @@ class RestfulController
     id = req.params.id
     checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$")
     if not checkForHexRegExp.test(id)
-      @model.findOne {legacyId : req.params.id}, @getFields, {lean : true}, (err, data) ->
-        if not err and not data
-          res.send 404
-        else  
-          res.send 200, data
-        next()
+      @model.findOne {legacyId : req.params.id}, @getFields, {lean : true}, (err, target) =>
+        if @security.get(req.authUser, target)
+          if not err and not target
+            res.send 404
+          else  
+            res.send 200, target
+          next()
     else
-      @model.findById req.params.id, @getFields, {lean : true}, (err, data) =>
-        if not err and not data
-          res.send 404
-        else  
-          res.send 200, data
-        next()
+      @model.findById req.params.id, @getFields, {lean : true}, (err, target) =>
+        if @security.get(req.authUser, target)
+          if not err and not target
+            res.send 404
+          else  
+            res.send 200, target
+          next()
 
   destroy: (req, res, next) =>
     @model.findById req.params.id, {}, {}, (err, target) =>

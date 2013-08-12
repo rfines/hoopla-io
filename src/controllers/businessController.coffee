@@ -1,6 +1,6 @@
 _ = require 'lodash'
 SearchableController = require('./searchableController')
-
+securityConstraints = require('./helpers/securityConstraints')
 
 class BusinessController extends SearchableController
   type: 'business'
@@ -8,8 +8,8 @@ class BusinessController extends SearchableController
   searchService : require('../services/searchService')
 
   security: 
-    create : (authenticatedUser, target) ->
-      return authenticatedUser
+    get : securityConstraints.anyone
+    create : securityConstraints.hasAuthUser
     update : (authenticatedUser, business) ->
       ownerMatch = _.find authenticatedUser.businessPrivileges, (priv) ->
         return priv.businessId.equals(business._id)
