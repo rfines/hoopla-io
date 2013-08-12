@@ -49,3 +49,5 @@ describe "Legacy Routes", ->
       else
         result.should.eql {"params":{ 'll': '-94.595033,39.102704','apiKey' : 'CjV94IobahVjMt9', 'tags': ['BEER']}}
         done()
+
+ 
