@@ -10,13 +10,10 @@ passwordResetController = require '../controllers/passwordResetController'
 restifyPlugins = require '../plugins/restifyPlugins'
 legacyRouteController = require '../controllers/legacyRouteController'
 feedController = require '../controllers/feedController'
-<<<<<<< HEAD
 widgetController = require '../controllers/widgetController'
-=======
 socialMediaAccountController = require '../controllers/socialMediaAccountController'
 promotionRequestController = require '../controllers/promotionRequestController'
 
->>>>>>> Adding promotion requests and supporting service
 build = ->
   server = restify.createServer(name: "hoopla-io-api")
   server.use restify.CORS()
