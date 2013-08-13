@@ -6,7 +6,7 @@ class UserService
       cb err, data
 
   getByBusinessPrivileges: (businessId, cb) ->
-    @User.find {'businessPrivileges.businessId' : businessId}, cb
+    @User.find {'businessPrivileges.business' : businessId}, cb
 
 
 module.exports = new UserService()

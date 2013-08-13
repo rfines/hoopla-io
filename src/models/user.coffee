@@ -1,6 +1,7 @@
 mongoose = require('mongoose')
 Schema = mongoose.Schema
 ObjectId = mongoose.Schema.ObjectId
+Business = require('./business').BusinessSchema
 
 UserSchema = new Schema
   email:
@@ -15,9 +16,8 @@ UserSchema = new Schema
     type: String
     enum: ['SHA1','BCRYPT']
   businessPrivileges: [
-    businessId: 
-      type: ObjectId
-      required: true
+    business: 
+      type: {type:ObjectId, ref:'business'}
     role: 
       type: String
       enum: ['OWNER','COLLABORATOR']

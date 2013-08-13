@@ -25,7 +25,7 @@ describe "Operations for Event Routes", ->
   it 'should allow destroy when the user has business privileges that match the events business', (done) ->
     bid = new mongoose.Types.ObjectId()
     authUser = {
-      businessPrivileges : [{businessId : bid, role:'COLLABORATOR'}]
+      businessPrivileges : [{business : bid, role:'COLLABORATOR'}]
     }
     event = {
       business : bid

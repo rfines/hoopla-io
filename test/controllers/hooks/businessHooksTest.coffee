@@ -35,7 +35,7 @@ describe "Business Hooks", ->
       _id : new mongoose.Types.ObjectId()
     }
     userAttachedToBusiness = {
-      businessPrivileges : [ {businessId : business._id}]
+      businessPrivileges : [ {business : business._id}]
       save: (cb) ->
         cb null
     }

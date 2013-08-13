@@ -50,7 +50,7 @@ describe "Operations for Business Routes", ->
     business = {
       _id : new mongoose.Types.ObjectId()
     }
-    user = {businessPrivileges : [{businessId : business._id, role : 'OWNER'}]}
+    user = {businessPrivileges : [{business : business._id, role : 'OWNER'}]}
     controller.security.destroy(user, business).should.be.true
     done()        
 
@@ -58,7 +58,7 @@ describe "Operations for Business Routes", ->
     business = {
       _id : new mongoose.Types.ObjectId()
     }
-    user = {businessPrivileges : [{businessId : business._id, role : 'COLLABORATOR'}]}
+    user = {businessPrivileges : [{business : business._id, role : 'COLLABORATOR'}]}
     controller.security.update(user, business).should.be.true
     done() 
 

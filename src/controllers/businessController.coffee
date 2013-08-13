@@ -13,11 +13,11 @@ class BusinessController extends SearchableController
     create : securityConstraints.hasAuthUser
     update : (authenticatedUser, business) ->
       ownerMatch = _.find authenticatedUser.businessPrivileges, (priv) ->
-        return priv.businessId.equals(business._id)
+        return priv.business?.equals(business._id)
       return not _.isUndefined(ownerMatch)
     destroy : (authenticatedUser, business) ->
       ownerMatch = _.find authenticatedUser.businessPrivileges, (priv) ->
-        return priv.businessId.equals(business._id) and priv.role is 'OWNER'
+        return priv.business?.equals(business._id) and priv.role is 'OWNER'
       return not _.isUndefined(ownerMatch)
 
   hooks : require('./hooks/businessHooks')
@@ -37,5 +37,6 @@ class BusinessController extends SearchableController
     else
       res.send 400, "Bad request. Missing required parameter"
       next()
+
 
 module.exports = new BusinessController()

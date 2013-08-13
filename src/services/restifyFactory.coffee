@@ -35,6 +35,7 @@ build = ->
     ['get', '/api/getevent', legacyRouteController, {handler:'get'}]
     ['get', '/business/:id/events', businessController, {handler:'getEvents'}]
     ['get', '/feed/:id/results', feedController, {handler: 'getResults'}]
+    ['get', '/user/:id/businesses', userController, {handler:'businesses'}]
   ]
 
   scaffold = (resource, controller) ->

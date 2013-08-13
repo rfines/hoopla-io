@@ -7,7 +7,7 @@ module.exports = exports =
   create:
     pre : hookLibrary.default
     post : (business, req, res, cb) ->  
-      req.authUser.businessPrivileges.push {businessId : business._id, role : 'OWNER'}
+      req.authUser.businessPrivileges.push {business : business._id, role : 'OWNER'}
       req.authUser.save (err) ->
         cb() if cb
   update:
@@ -24,7 +24,7 @@ module.exports = exports =
     post : (options) =>
       removePriv = (user, cb) ->
         user.businessPrivileges = _.filter user.businessPrivileges, (item) ->
-          not item.businessId.equals(options.resource._id)
+          not item.business.equals(options.resource._id)
         user.save (err) ->
           cb err
       exports.UserService.getByBusinessPrivileges options.resource._id, (err, users) ->
