@@ -19,7 +19,8 @@
     "moment": "*",
     "later": "*",
     "request": "~2.25.0",
-    "mandrill-api": "~1.0.28"
+    "mandrill-api": "~1.0.28",
+    "fbgraph": "~0.2.7"
   },
   "optionalDependencies": {
     "hiredis": "~0.1.15"
