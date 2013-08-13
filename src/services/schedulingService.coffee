@@ -4,7 +4,7 @@ _ = require 'lodash'
 
 later.date.localTime();
 calculate= (item,cb) ->
-  if item.schedules
+  if item.schedules.length
     occurrences = []
     dayCount = 90
     if item.dayCount

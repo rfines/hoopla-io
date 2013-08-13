@@ -6,7 +6,7 @@ ObjectId = mongoose.Schema.ObjectId
 
 class UserController extends RestfulController
   model : require('../models/user').User
-  getFields : { 'applications' : 0, 'password' : 0, 'encryptionMethod' : 0}
+  getFields : { 'applications' : 0, 'password' : 0, 'encryptionMethod' : 0, 'businessPrivileges':1}
   hooks : require('./hooks/userHooks.coffee')
   populate : ['businessPrivileges.business']
   businessModel : require('../models/business').Business
@@ -29,7 +29,7 @@ class UserController extends RestfulController
   
   businesses: (req,res,next) =>
     if req.params.id
-      @model.findById req.params.id, {"businessPrivileges":1}, {lean:true}, (err, data) =>
+      @model.findById req.params.id, @getFields, {lean:true}, (err, data) =>
         if err
           console.log err
           res.send 400, err

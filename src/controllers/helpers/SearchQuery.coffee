@@ -21,7 +21,8 @@ class SearchQuery
 
   betweenDates: (@start, @end) ->
     @
-
+  atBusiness:(@businessId) ->
+    @
   build : ->
     query = {}
     d = parseFloat(@distance)
@@ -43,6 +44,8 @@ class SearchQuery
     else if @start
       query.occurrences = 
         $gte:@start
+    if @businessId
+      query.business =@businessId
     return query 
 
   buildFromParams: (params) ->
@@ -60,6 +63,7 @@ class SearchQuery
       betweenDates = {start:params.start}
     
     q.betweenDates(betweenDates.start,betweenDates.end) if betweenDates
+
     return q.build()
 
 module.exports = SearchQuery
