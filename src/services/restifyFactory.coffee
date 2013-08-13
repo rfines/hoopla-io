@@ -9,6 +9,7 @@ devController = require '../controllers/devController'
 passwordResetController = require '../controllers/passwordResetController'
 restifyPlugins = require '../plugins/restifyPlugins'
 legacyRouteController = require '../controllers/legacyRouteController'
+feedController = require '../controllers/feedController'
 
 build = ->
   server = restify.createServer(name: "hoopla-io-api")
@@ -33,6 +34,7 @@ build = ->
     ['get', '/api/getevents', legacyRouteController, {handler: 'search'}]
     ['get', '/api/getevent', legacyRouteController, {handler:'get'}]
     ['get', '/business/:id/events', businessController, {handler:'getEvents'}]
+    ['get', '/feed/:id/results', feedController, {handler: 'getResults'}]
   ]
 
   scaffold = (resource, controller) ->
@@ -45,6 +47,7 @@ build = ->
   scaffold('business', businessController)
   scaffold('event', eventController)
   scaffold('user', userController)
+  scaffold('feed', feedController)
 
   routingService.init server, routes
   return server
