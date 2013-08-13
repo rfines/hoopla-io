@@ -1,0 +1,3 @@
+#! /app/node_modules/.bin/coffee
+job = require '../src/jobs/scheduledJobs'
+job.runOnce()
