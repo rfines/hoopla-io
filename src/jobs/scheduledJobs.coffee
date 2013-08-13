@@ -23,9 +23,7 @@ module.exports.runOnce = ->
 
   events.find {$or:["schedules.end":{$gte: Date.now()}, {"fixedOccurrences.end":{$gte:Date.now()}}]},{}, {}, (err, data) ->
     console.log err if err
-    console.log data
     async.each data, calculateSchedules, (err) ->
-      console.log "hello"
       if err
         process.exit 1
       else
