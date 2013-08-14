@@ -11,7 +11,7 @@ restifyPlugins = require '../plugins/restifyPlugins'
 legacyRouteController = require '../controllers/legacyRouteController'
 feedController = require '../controllers/feedController'
 widgetController = require '../controllers/widgetController'
-socialMediaAccountController = require '../controllers/socialMediaAccountController'
+promotionTargetController = require '../controllers/promotionTargetController'
 promotionRequestController = require '../controllers/promotionRequestController'
 
 build = ->
@@ -54,7 +54,7 @@ build = ->
   scaffold('user', userController)
   scaffold('feed', feedController)
   scaffold('widget', widgetController)
-  scaffold('socialMediaAccount', socialMediaAccountController)
+  scaffold('promotionTarget', promotionTargetController)
   scaffold('promotionRequest', promotionRequestController)
 
   routingService.init server, routes

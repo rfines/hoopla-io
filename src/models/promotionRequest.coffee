@@ -1,6 +1,6 @@
 mongoose = require('mongoose')
 ObjectId = mongoose.Schema.ObjectId
-socialMediaAccountSchema = require('./socialMediaAccount').SocialMediaAccountSchema
+require('./promotionTarget').PromotionTargetSchema
 
 PromotionRequestSchema = new mongoose.Schema
   pushType : String
@@ -8,8 +8,18 @@ PromotionRequestSchema = new mongoose.Schema
   message: String
   startTime : Date
   location : String
-  socialMediaAccount : {type: ObjectId, ref:'socialMediaAccount'}
-
+  promotionTarget : {type: ObjectId, ref:'promotionTarget'}
+  status : {
+    code :
+      type: String
+      default: 'WAITING'
+      enum: ['WAITING', 'COMPLETE', 'FAILED']
+    retryCount:
+      type: Number
+      default: 0
+    lastError: mongoose.Schema.Types.Mixed
+    completedDate: Date
+  }
 
 module.exports = 
   PromotionRequest : mongoose.model('promotionRequest', PromotionRequestSchema, 'promotionRequest')

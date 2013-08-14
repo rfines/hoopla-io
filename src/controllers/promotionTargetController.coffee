@@ -2,8 +2,8 @@ _ = require 'lodash'
 RestfulController = require('./restfulController')
 securityConstraints = require('./helpers/securityConstraints')
 
-class SocialMediaAccountController extends RestfulController
-  model : require('../models/socialMediaAccount').SocialMediaAccount
+class PromotionTargetController extends RestfulController
+  model : require('../models/promotionTarget').PromotionTarget
   getFields : {}
   hooks : require('./hooks/restfulHooks.coffee')
 
@@ -16,4 +16,4 @@ class SocialMediaAccountController extends RestfulController
   constructor : (@name) ->
     super(@name)
 
-module.exports = new SocialMediaAccountController()
+module.exports = new PromotionTargetController()

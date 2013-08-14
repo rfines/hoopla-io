@@ -1,17 +1,16 @@
 graph = require('fbgraph')
 moment = require 'moment'
 
-facebookPost = (socialMediaPushRequest, cb) ->
-  content = socialMediaPushRequest.content  
-  graph.setAccessToken socialMediaPushRequest.socialMediaAccount.accessToken
+facebookPost = (promotionRequest, cb) ->
+  content = promotionRequest.content  
+  graph.setAccessToken promotionRequest.promotionTarget.accessToken
   wallPost = {
     message: content
   }
-
   graph.post "me/feed", wallPost, (err, res) ->
-    cb()
+    cb(err)
 
-facebookEvent = (socialMediaRequest, cb) ->
+facebookEvent = (promotionRequest, cb) ->
   event = {
     name : 'Adams Super Party'
     start_time: moment().add('d', 7).toISOString()
@@ -19,12 +18,13 @@ facebookEvent = (socialMediaRequest, cb) ->
   graph.post "me/events", event, (err, res) ->
     console.log err
     console.log res
-    cb()
+    cb(err)
 
-module.exports.publish = (socialMediaPushRequest, cb) ->
-  switch socialMediaPushRequest.pushType
-    when 'FACEBOOK-EVENT' then facebookEvent(socialMediaPushRequest, cb)
-    when 'FACEBOOK-POST' then facebookPost(socialMediaPushRequest, cb)
+module.exports.publish = (promotionRequest, cb) ->
+  console.log promotionRequest
+  switch promotionRequest.pushType
+    when 'FACEBOOK-EVENT' then facebookEvent(promotionRequest, cb)
+    when 'FACEBOOK-POST' then facebookPost(promotionRequest, cb)
     else
       console.log 'unsupported type'
     
