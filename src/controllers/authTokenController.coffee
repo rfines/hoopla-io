@@ -12,6 +12,7 @@ class AuthTokenController
   createToken: (req, res, next) =>
     body = req.body
     @model.findOne {email: body.email}, (err, doc) =>
+      console.log doc
       onFail = ->
         next new restify.NotAuthorizedError("Username or password is invalid")
       if doc.encryptionMethod is 'BCRYPT'
@@ -27,7 +28,8 @@ class AuthTokenController
           @updateToken(doc, req.authorization.basic.username, token)
           @upgradeEncryption(doc, body.password)
           res.send 200, {authToken : token}
-          next()  
+          next()
+        console.log "Passwords Compare: body: #{body.password}, doc:#{doc.password}"  
         @sha1Service.check body.password, doc.password, onPass, onFail
 
   updateToken: (user, apiKey, token) ->
