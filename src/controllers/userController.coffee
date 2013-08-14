@@ -39,8 +39,6 @@ class UserController extends RestfulController
             privIds = _.pluck data?.businessPrivileges, "business" 
             @businessModel.find {_id:{$in:privIds}}, {}, {lean:true}, (error,busData)->
               if error
-                console.log "Error"
-                console.log error
                 res.send 500, error
                 next()
               else

@@ -11,25 +11,30 @@ class AuthTokenController
 
   createToken: (req, res, next) =>
     body = req.body
-    @model.findOne {email: body.email}, (err, doc) =>
-      onFail = ->
-        next new restify.NotAuthorizedError("Username or password is invalid")
-      if doc.encryptionMethod is 'BCRYPT'
-        onPass = =>
-          token = "#{@tokenService.generateWithTimestamp(12)}"
-          @updateToken(doc, req.authorization.basic.username, token)
-          res.send 200, {authToken : token, user : doc._id}
-          next()  
-        @bcryptService.check body.password, doc.password, onPass, onFail
-      else
-        onPass = =>
-          token = "#{@tokenService.generateWithTimestamp(12)}"
-          @updateToken(doc, req.authorization.basic.username, token)
-          @upgradeEncryption(doc, body.password)
-          res.send 200, {authToken : token, user : doc._id}
-          next()
-        console.log "Passwords Compare: body: #{body.password}, doc:#{doc.password}"  
-        @sha1Service.check body.password, doc.password, onPass, onFail
+    if not (body?.email and body?.password)
+      next new restify.NotAuthorizedError("Username or password is invalid")
+    else
+      @model.findOne {email: body.email}, (err, doc) =>
+        if not doc
+          next new restify.NotAuthorizedError("Username or password is invalid")
+        else
+          onFail = ->
+            next new restify.NotAuthorizedError("Username or password is invalid")
+          if doc.encryptionMethod is 'BCRYPT'
+            onPass = =>
+              token = "#{@tokenService.generateWithTimestamp(12)}"
+              @updateToken(doc, req.authorization.basic.username, token)
+              res.send 200, {authToken : token, user : doc._id}
+              next()  
+            @bcryptService.check body.password, doc.password, onPass, onFail
+          else
+            onPass = =>
+              token = "#{@tokenService.generateWithTimestamp(12)}"
+              @updateToken(doc, req.authorization.basic.username, token)
+              @upgradeEncryption(doc, body.password)
+              res.send 200, {authToken : token, user : doc._id}
+              next()
+            @sha1Service.check body.password, doc.password, onPass, onFail
 
   updateToken: (user, apiKey, token) ->
     user.update { $pull : {authTokens : { 'apiKey' : 'METkwI15Bg0heuRNaru6'}}}, (err) ->
