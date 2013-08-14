@@ -6,7 +6,7 @@ ObjectId = mongoose.Schema.ObjectId
 
 class UserController extends RestfulController
   model : require('../models/user').User
-  getFields : { 'applications' : 0, 'password' : 0, 'encryptionMethod' : 0, 'businessPrivileges':1}
+  getFields : { }
   hooks : require('./hooks/userHooks.coffee')
   populate : ['businessPrivileges.business']
   businessModel : require('../models/business').Business
