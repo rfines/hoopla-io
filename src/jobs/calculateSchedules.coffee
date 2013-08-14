@@ -1,10 +1,8 @@
 _ = require 'lodash'
 scheduleService = require('../services/schedulingService')
 events = require('../models/event').Event
-mongoService = require '../services/mongoService'
 async = require 'async'
 
-mongoService.init()
 module.exports.runOnce = ->
   calculateSchedules = (item,cb)=>
     scheduleService.calculate item, (error, occurrences) ->

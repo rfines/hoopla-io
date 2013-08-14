@@ -2,5 +2,5 @@
 mongoService = require '../src/services/mongoService'
 mongoService.init()
 
-job = require '../src/jobs/calculateSchedules'
+job = require '../src/jobs/promoteEvents'
 job.runOnce()

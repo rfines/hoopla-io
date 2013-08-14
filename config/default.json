@@ -13,6 +13,8 @@
   },
   "hooplaIoWeb" : {
     "pwResetUrl" : "http://localhost:3000/password/reset"
+  },
+  "jobs" : {
+    "run" : true
   }
-
 }
