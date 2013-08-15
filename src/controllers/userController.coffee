@@ -31,19 +31,21 @@ class UserController extends RestfulController
     if req.params.id
       @model.findById req.params.id, @getFields, {lean:true}, (err, data) =>
         if err
-          console.log err
           res.send 400, err
           next()
         else
           if data
-            privIds = _.pluck data?.businessPrivileges, "business" 
-            @businessModel.find {_id:{$in:privIds}}, {}, {lean:true}, (error,busData)->
-              if error
-                res.send 500, error
-                next()
-              else
-                res.send 200, busData
-                next()
+            privIds = _.without(_.pluck(data?.businessPrivileges, "business"), undefined)
+            if privIds.length > 0
+              @businessModel.find {'_id': {$in:privIds} }, {}, {lean:true}, (error,busData)->
+                if error
+                  res.send 500, error
+                  next()
+                else
+                  res.send 200, busData
+                  next()
+            else
+              res.send 200, []
           else
             res.send 400, "Missing required parameter"
             next()
