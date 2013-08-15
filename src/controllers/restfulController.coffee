@@ -35,6 +35,8 @@ class RestfulController
           else  
             res.send 200, target
           next()
+        else
+          return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")
     else
       @model.findById req.params.id, @getFields, {lean : true}, (err, target) =>
         if @security.get(req.authUser, target)
@@ -43,6 +45,8 @@ class RestfulController
           else  
             res.send 200, target
           next()
+        else
+          return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")
 
   destroy: (req, res, next) =>
     @model.findById req.params.id, {}, {}, (err, target) =>
