@@ -4,6 +4,7 @@ ObjectId = mongoose.Schema.ObjectId
 Contact = require('./contact')
 Media = require('./media').MediaSchema
 SocialMediaLink = require('./socialMediaLink').SocialMediaLinkSchema
+require('./promotionTarget').PromotionTargetSchema
 
 BusinessSchema = new Schema
   name: 
@@ -60,6 +61,7 @@ BusinessSchema = new Schema
     coordinates: [Number]
   }
   socialMediaLinks:[SocialMediaLink]
+  promotionTargets: [{type:ObjectId, ref : 'promotionTarget'}]
   legacyId: String
   legacyCreatedBy: String
 

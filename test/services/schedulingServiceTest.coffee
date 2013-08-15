@@ -126,7 +126,7 @@ describe "Scheduling using Later library", ->
       done()
   it "should calculate weekly occurrences for 90 days using default values for end range", (done)->
     ScheduleService.calculate defaults_test, (err, results) ->
-      results.should.eql [ new Date('Wed Aug 13 2013 15:00:00 GMT-0500'), new Date('Wed Aug 27 2013 15:00:00 GMT-0500'), new Date('Wed Sep 03 2013 15:00:00 GMT-0500'), new Date('Wed Sep 17 2013 15:00:00 GMT-0500'), new Date('Wed Oct 01 2013 15:00:00 GMT-0500'), new Date('Wed Oct 15 2013 15:00:00 GMT-0500'), new Date('Wed Oct 29 2013 15:00:00 GMT-0500') ]
+      results.should.eql [ new Date('Wed Aug 13 2013 15:00:00 GMT-0500'), new Date('Wed Aug 27 2013 15:00:00 GMT-0500'), new Date('Wed Sep 03 2013 15:00:00 GMT-0500'), new Date('Wed Sep 17 2013 15:00:00 GMT-0500'), new Date('Wed Oct 01 2013 15:00:00 GMT-0500'), new Date('Wed Oct 15 2013 15:00:00 GMT-0500'), new Date('Wed Oct 29 2013 15:00:00 GMT-0500'), new Date('2013-11-12T21:00:00.000Z') ]
       done()
 
   it "should calculate weekly occurrences for 10 days using default values for end range", (done)->
