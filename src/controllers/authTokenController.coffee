@@ -11,16 +11,11 @@ class AuthTokenController
 
   createToken: (req, res, next) =>
     body = req.body
-    console.log body
     if not (body?.email and body?.password)
-      console.log body.email
-      console.log body.password
       next new restify.NotAuthorizedError("Username or password is invalid")
     else
       @model.findOne {email: body.email}, (err, doc) =>
         if not doc
-          console.log body.email
-          console.log body.password
           next new restify.NotAuthorizedError("Username or password is invalid")
         else
           onFail = ->
@@ -42,7 +37,6 @@ class AuthTokenController
             @sha1Service.check body.password, doc.password, onPass, onFail
 
   updateToken: (user, apiKey, token) ->
-    console.log 'update the token'
     user.update { $pull : {authTokens : { 'apiKey' : apiKey}}}, (err) ->
       user.update { $push : {authTokens: {apiKey : apiKey, authToken: token}}}, (err) ->
         console.log err if err

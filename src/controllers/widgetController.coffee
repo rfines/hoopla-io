@@ -25,7 +25,6 @@ class WidgetController extends RestfulController
         criteria = new SearchQuery().ofCoordinates(data.geo.coordinates[0], data.geo.coordinates[1]).within(data.radius).withTags(data.tags).build()
       @event.find criteria, {}, {lean:true}, (err, data) ->
         if err 
-          console.log err
           res.send err.code || 500, err.message || "Internal Error Occurred"
         else
           res.send 200, data

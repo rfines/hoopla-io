@@ -58,19 +58,15 @@ class UserController extends RestfulController
   password: (req,res,next) =>
     if req.params.id
       body = req.params
-      console.log @bcryptService
       @model.findById body.id, @getFields,{}, (err, data)=>
         if err
-          console.log err
           res.send 400, err
           next()
         else
           if body.password
             @bcryptService.encrypt body.password, (encrypted) =>
               data.update { $set : {password: encrypted, encryptionMethod: 'BCRYPT'}}, {}, (error) =>
-                console.log "made it here"
                 if error
-                  console.log error
                   res.send 400, error 
                   next()
                 else

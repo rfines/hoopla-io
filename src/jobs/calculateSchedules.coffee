@@ -7,13 +7,11 @@ module.exports.runOnce = ->
   calculateSchedules = (item,cb)=>
     scheduleService.calculate item, (error, occurrences) ->
       if error
-        console.log error
         cb error, null
       else  
         item.occurrences = occurrences
         item.save (errors, next)=>
           if errors
-            console.log errors
             cb errors, null
           else
             cb null, null
