@@ -40,35 +40,18 @@ EventSchema = new Schema
   bands: [String]
   media:[{type : ObjectId, ref : 'media'}]
   contacts: [Contact]
-  address: {
-    line1:
-      type: String
-      required: true
-      trim: true
-    line2:
-      type: String
-      trim: true
-    city:
-      type: String
-      required: true
-      trim: true
-    state_province:
-      type: String
-      required: true
-      trim: true
-    postal_code:
-      type: String
-      required: true
-      trim: true
-  }
-  geo: {
-    'type':
-      type: String,
-      required: true,
-      enum: ['Point', 'LineString', 'Polygon'],
-      default: 'Point'
-    coordinates: [Number]
-  }
+  location: {
+    address: String
+    neighborhood : String
+    geo: {
+      'type':
+        type: String,
+        required: true,
+        enum: ['Point', 'LineString', 'Polygon'],
+        default: 'Point'
+      coordinates: [Number]
+    }
+  }    
   ticketingLinks:[TicketingLink]
   socialMediaLinks:[SocialMediaLinks]
   schedules: [

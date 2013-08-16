@@ -58,10 +58,8 @@ module.exports = exports =
         if imageH and imageW
           if x.media
             x.image = exports.transformImageUrl x.media[0]?.url, imageH, imageW
-          
           if x.business?.media
             x.venueImage = exports.transformImageUrl x.business.media[0] || x.host.media[0], imageH, imageW
-          
         else
           x.image = x.media[0]?.url
           x.venueImage = x.business.media?[0]?.url || ""
@@ -69,18 +67,16 @@ module.exports = exports =
         x.endTime = new moment(x.legacyEndDate).format('hh:mm A')
         x.phone = x.contacts?.phone
         x.email = x.contacts?.email
-        addr = x.address
-        delete x.address
-        x.address = "#{addr.line1} #{addr.city}, #{addr.state_province} #{addr.postal_code}"
-        x.latitude = x.geo.coordinates[1]
-        x.longitude = x.geo.coordinates[0]
+        x.address = x.location.address
+        x.latitude = x.location.geo.coordinates[1]
+        x.longitude = x.location.geo.coordinates[0]
         if x.eventType is 'FOOD'
           x.detailsUrl = "http://localruckus.com/food-and-drink/details/#{x.legacyId}/"
         else if x.eventType is 'MUSIC'
           x.detailsUrl = "http://localruckus.com/live-music/details/#{x.legacyId}/"
         else
           x.detailsUrl = "http://localruckus.com/arts-and-culture/details/#{x.legacyId}/"
-        delete x.geo
+        delete x.location
         delete x.business
         delete x.createdAt
         delete x.lastModifiedAt
