@@ -10,12 +10,17 @@ class AuthTokenController
   constructor : (@name) ->
 
   createToken: (req, res, next) =>
-    body = req.body
+    body = JSON.parse(req.body.toString())
+    console.log body
     if not (body?.email and body?.password)
+      console.log body.email
+      console.log body.password
       next new restify.NotAuthorizedError("Username or password is invalid")
     else
       @model.findOne {email: body.email}, (err, doc) =>
         if not doc
+          console.log body.email
+          console.log body.password
           next new restify.NotAuthorizedError("Username or password is invalid")
         else
           onFail = ->

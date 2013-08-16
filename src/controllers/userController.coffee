@@ -1,6 +1,7 @@
 RestfulController = require('./restfulController')
 _ = require 'lodash'
 mongoose = require('mongoose')
+restify =require 'restify'
 ObjectId = mongoose.Schema.ObjectId
 
 
