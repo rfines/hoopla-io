@@ -16,8 +16,7 @@ UserSchema = new Schema
     type: String
     enum: ['SHA1','BCRYPT']
   businessPrivileges: [
-    business: 
-      type: {type:ObjectId, ref:'business'}
+    business: {type:ObjectId, ref:'business'}
     role: 
       type: String
       enum: ['OWNER','COLLABORATOR']

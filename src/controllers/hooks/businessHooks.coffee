@@ -7,7 +7,8 @@ module.exports = exports =
   create:
     pre : hookLibrary.default
     post : (business, req, res, cb) ->  
-      req.authUser.businessPrivileges.push {business : business._id, role : 'OWNER'}
+      req.authUser.businessPrivileges = req.authUser.businessPrivileges || []
+      req.authUser.businessPrivileges.push {business : business, role : 'OWNER'}
       req.authUser.save (err) ->
         cb() if cb
   update:
