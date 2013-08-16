@@ -11,8 +11,13 @@ module.exports.AuthorizationParser = (req, res, next) =>
     return next new restify.NotAuthorizedError(message)
 
 module.exports.AuthTokenParser = (req, res, next) =>
+  console.log '1. get token out and find user'
+  console.log req.authorization
+  console.log req.headers
   if req.authorization?.basic?.username and req.headers['x-authtoken']
+    console.log '2'
     userService.getByAppToken req.authorization.basic.username, req.headers['x-authtoken'], (err, user) ->
+      console.log '3'
       req.authUser = user
       next()
   else
@@ -37,4 +42,3 @@ module.exports.NearParamParser = (req, res, next) =>
           next()
   else
     next()
-

@@ -42,7 +42,8 @@ class AuthTokenController
             @sha1Service.check body.password, doc.password, onPass, onFail
 
   updateToken: (user, apiKey, token) ->
-    user.update { $pull : {authTokens : { 'apiKey' : 'METkwI15Bg0heuRNaru6'}}}, (err) ->
+    console.log 'update the token'
+    user.update { $pull : {authTokens : { 'apiKey' : apiKey}}}, (err) ->
       user.update { $push : {authTokens: {apiKey : apiKey, authToken: token}}}, (err) ->
         console.log err if err
 

@@ -83,7 +83,9 @@ class RestfulController
 
   create: (req, res, next) =>
     target = new @model(req.body)
+    console.log req.authUser
     if @security.create(req.authUser, target)
+      console.log 'security passed'
       @hooks.create.pre target, req, res, (err) =>
         target.validate (err) =>
           if err
@@ -100,6 +102,7 @@ class RestfulController
                 res.send 201, doc
                 next()
     else
+      console.log 'secuirty failed'
       next new restify.NotAuthorizedError("You are not permitted to perform this operation.")       
 
 

@@ -41,7 +41,7 @@ EventSchema = new Schema
   media:[{type : ObjectId, ref : 'media'}]
   contacts: [Contact]
   location: {
-    address: String
+    address: {type: String, required: true}
     neighborhood : String
     geo: {
       'type':
