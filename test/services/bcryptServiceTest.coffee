@@ -17,3 +17,10 @@ describe "Bcrypt Utilities for Password Security", ->
         false.should.be.true
       service.check password, hash, onPass, onFail
 
+  it 'should encrypt a password', (done)->
+    password = "twins3514"
+    service.encrypt password, (hash)->
+      console.log hash
+      hash.should.not.equal.password
+      done()
+    

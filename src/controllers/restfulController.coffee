@@ -82,6 +82,7 @@ class RestfulController
         return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")        
 
   create: (req, res, next) =>
+    console.log req.body
     target = new @model(req.body)
     console.log req.authUser
     if @security.create(req.authUser, target)

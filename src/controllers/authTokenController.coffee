@@ -10,7 +10,7 @@ class AuthTokenController
   constructor : (@name) ->
 
   createToken: (req, res, next) =>
-    body = JSON.parse(req.body.toString())
+    body = req.body
     console.log body
     if not (body?.email and body?.password)
       console.log body.email

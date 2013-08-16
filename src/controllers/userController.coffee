@@ -11,7 +11,7 @@ class UserController extends RestfulController
   hooks : require('./hooks/userHooks.coffee')
   populate : ['businessPrivileges.business']
   businessModel : require('../models/business').Business
-
+  bcryptService: require('../services/bcryptService')
   security: 
     get : (authenticatedUser, targetUser) ->
       authenticatedUser?._id and authenticatedUser._id.equals(targetUser._id)   
@@ -54,5 +54,33 @@ class UserController extends RestfulController
     else
       res.send 400, "Missing required parameter"
       next()
+
+  password: (req,res,next) =>
+    if req.params.id
+      body = req.params
+      console.log @bcryptService
+      @model.findById body.id, @getFields,{}, (err, data)=>
+        if err
+          console.log err
+          res.send 400, err
+          next()
+        else
+          if body.password
+            @bcryptService.encrypt body.password, (encrypted) =>
+              data.update { $set : {password: encrypted, encryptionMethod: 'BCRYPT'}}, {}, (error) =>
+                console.log "made it here"
+                if error
+                  console.log error
+                  res.send 400, error 
+                  next()
+                else
+                  res.send 201
+                  next()
+          else
+            res.send 403, "Invalid request"
+            next()
+    else
+       res.send 403, "Invalid request"
+       next()
 
 module.exports =  new UserController()
