@@ -31,35 +31,19 @@ BusinessSchema = new Schema
   createdBy: ObjectId
   media:[{type : ObjectId, ref : 'media'}]
   contacts: [Contact]
-  address: {
-    line1:
-      type: String
-      required: true
-      trim: true
-    line2:
-      type: String
-      trim: true
-    city:
-      type: String
-      required: true
-      trim: true
-    state_province:
-      type: String
-      required: true
-      trim: true
-    postal_code:
-      type: String
-      required: true
-      trim: true
+  location: {
+    address: String
+    neighborhood : String
+    geo: {
+      'type':
+        type: String,
+        required: true,
+        enum: ['Point', 'LineString', 'Polygon'],
+        default: 'Point'
+      coordinates: [Number]
+    }    
   }
-  geo: {
-    'type':
-      type: String,
-      required: true,
-      enum: ['Point', 'LineString', 'Polygon'],
-      default: 'Point'
-    coordinates: [Number]
-  }
+
   socialMediaLinks:[SocialMediaLink]
   promotionTargets: [{type:ObjectId, ref : 'promotionTarget'}]
   legacyId: String
