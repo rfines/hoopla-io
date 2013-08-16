@@ -14,12 +14,12 @@ describe "User Routes", ->
     controller = require('../../src/controllers/userController')
     mockedUser = {
       "_id" : "520a403f5fd0c6000000a609",
-      "password": "oafd5asdfpe09409aia-loeuyrioroiyt94048ujkf/.ruutiituujs"
+      "password": "$2a$12$swKRMJbKkxfSus9rbtD/cOcZpi6YPnXoC1NNzrcjw1NAmQoDiP8vy",
       "businessPrivileges" : [{
           "business" : "520a404c5fd0c6000000a9fa",
           "role" : "OWNER",
           "_id" : "520a410a5fd0c6000000af80"
-        }]
+        }],
       "update": (update, fields, next)->
         if update
           next null, {}
@@ -68,6 +68,7 @@ describe "User Routes", ->
   it 'should change a users password when a password is submitted', (done)->
     req.params.password = "twins3514"
     req.params.id = "520a403f5fd0c6000000a609"
+    req.params.currentPassword = "twins3514"
     spy = sinon.spy(res, 'send')
     controller.password req, res, (err, data)->
       if err
@@ -79,6 +80,7 @@ describe "User Routes", ->
   it 'should not change a users password when a password is not submitted', (done)->
     req.params.password = undefined
     req.params.id = "520a403f5fd0c6000000a609"
+    req.params.currentPassword = "twins3514"
     spy = sinon.spy(res, 'send')
     controller.password req, res, (err, data)->
       if err
@@ -90,6 +92,7 @@ describe "User Routes", ->
   it 'should return an error if no id is present', (done)->
     req.params.password = "twins3514"
     req.params.id = undefined
+    req.params.currentPassword = "twins3514"
     spy = sinon.spy(res, 'send')
     controller.password req, res, (err, data)->
       if err

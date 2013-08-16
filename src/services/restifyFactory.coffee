@@ -40,6 +40,7 @@ build = ->
     ['get', '/feed/:id/results', feedController, {handler: 'getResults'}]
     ['get', '/widget/:id/results', widgetController, {handler: 'getResults'}]
     ['get', '/user/:id/businesses', userController, {handler:'businesses'}]
+    ['put', '/user/:id/password', userController, {handler:'password'}]
   ]
 
   scaffold = (resource, controller) ->

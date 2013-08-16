@@ -64,14 +64,22 @@ class UserController extends RestfulController
           next()
         else
           if body.password
-            @bcryptService.encrypt body.password, (encrypted) =>
-              data.update { $set : {password: encrypted, encryptionMethod: 'BCRYPT'}}, {}, (error) =>
-                if error
-                  res.send 400, error 
-                  next()
-                else
-                  res.send 201
-                  next()
+            currPass = body.currentPassword
+            @bcryptService.check currPass, data.password, ()=>
+                @bcryptService.encrypt body.password, (encrypted) =>
+                  data.update { $set : {password: encrypted, encryptionMethod: 'BCRYPT'}}, {}, (error) =>
+                    console.log "made it here"
+                    if error
+                      console.log error
+                      res.send 400, error 
+                      next()
+                    else
+                      res.send 201 
+                      next()               
+            ,()=>
+              res.send 403, "Current password does not match."
+              next()
+
           else
             res.send 403, "Invalid request"
             next()
