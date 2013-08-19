@@ -56,8 +56,9 @@ class UserController extends RestfulController
       next()
 
   password: (req,res,next) =>
-    if req.params.id
-      body = req.params
+    console.log req.body
+    if req.body.id
+      body = req.body
       @model.findById body.id, @getFields,{}, (err, data)=>
         if err
           res.send 400, err
