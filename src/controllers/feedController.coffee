@@ -21,8 +21,16 @@ class FeedController extends RestfulController
   getResults : (req, res, next) =>
     id = req.params.id
     @model.findById id, (err, data) =>
-      criteria = new SearchQuery().ofCoordinates(data.geo.coordinates[0], data.geo.coordinates[1]).within(data.radius).withTags(data.tags).build()
-      @event.find criteria, {}, {lean:true}, (err, data) ->
-        res.send 200, data
+      if err
+        console.log err
+        res.send 401, err
+      else
+        criteria = new SearchQuery().ofCoordinates(data.geo.coordinates[0], data.geo.coordinates[1]).within(data.radius).withTags(data.tags).build()
+        @event.find criteria, {}, {lean:true}, (err, d) ->
+          if err
+            console.log err
+            res.send 400, err
+          else
+            res.send 200, d
 
 module.exports = new FeedController()

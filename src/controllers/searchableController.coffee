@@ -34,16 +34,29 @@ class SearchableController extends RestfulController
                 _.contains results[1], item._id.toString()
             else 
               out = results[0]
+
             res.body = out
-            @hooks.search.post req, res, (error) =>
-              if error
-                res.status = error.code
-                res.send error.message
-                next()
-              else
-                res.send 200, res.body
-                next()
-              
+            if req.params.height and req.params.width
+              rewriteImageUrl req, res.body, (errors)=>
+                console.log errors if errors
+                @hooks.search.post req, res, (error) =>
+                  if error
+                    res.status = error.code
+                    res.send error.message
+                    next()
+                  else
+                    res.send 200, res.body
+                    next()
+            else
+              @hooks.search.post req, res, (error) =>
+                if error
+                  res.status = error.code
+                  res.send error.message
+                  next()
+                else
+                  res.send 200, res.body
+                  next()
+                  
 
   searchDatabase : (req, cb) =>
     ll = req.params.ll.split(',')
@@ -84,5 +97,19 @@ class SearchableController extends RestfulController
       errors = {code:400, message: "No parameters received. A 'NEAR' or 'LL' parameter is required."} 
     cb errors
 
+  rewriteImageUrl = (req, originalList, callback) =>
+    modifyUrl = (item, cb) =>
+      if item.media[0]?.url
+        u = item.media[0]?.url
+        t = u.split('/')
+        a = t.indexOf('upload')
+        t[a+1] = "h_#{req.params.height},w_#{req.params.width}"
+        item.media[0].url = t.join('/')
+        cb null
+    async.each originalList, modifyUrl, (errors)->
+      if errors
+        callback errors, null
+      else
+        callback null, originalList
 
 module.exports = SearchableController

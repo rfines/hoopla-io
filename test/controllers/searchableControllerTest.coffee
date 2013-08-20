@@ -36,6 +36,8 @@ describe "Operations for Searchable Routes", ->
         ll : '1,1'
         near : '64105'
         keyword : 'myKeyword'
+        height: 200
+        width: 200
     res = 
       send: ( (status, body) ->)
 
@@ -133,3 +135,12 @@ describe "Operations for Searchable Routes", ->
       console.log res
       res.status.should.equal 400
       done()
+  it "should transform an image url to use the height and width parameters", (done)->
+    mockedList = [{media:[{url:"http://res.cloudinary.com/durin-software/image/upload/v1375113455/p3ux4buvr7ayhbeykoiq.jpg"}]}]
+    controller.rewriteImageUrl req, mockedList, (error, data)->
+      if error
+        console.log error
+        done()
+      else
+        data[0].media[0].url.should.equal "http://res.cloudinary.com/durin-software/image/upload/h_200,w_200/p3ux4buvr7ayhbeykoiq.jpg"
+        done()
