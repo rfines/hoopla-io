@@ -46,6 +46,10 @@ describe "User Routes", ->
       find: (query, fields, options, next)->
         next null, mockedBusiness
     }
+    controller.eventModel = {
+      find: (query, fields, options, next)->
+        next null, []
+    }
 
     req.params = {}
     req.params.id = "520a403f5fd0c6000000a609"
@@ -66,9 +70,8 @@ describe "User Routes", ->
         done()
 
   it 'should change a users password when a password is submitted', (done)->
-    req.params.password = "twins3514"
     req.params.id = "520a403f5fd0c6000000a609"
-    req.params.currentPassword = "twins3514"
+    req.body = {password: 'twins3514', currentPassword : "twins3514"}
     spy = sinon.spy(res, 'send')
     controller.password req, res, (err, data)->
       if err
@@ -77,10 +80,10 @@ describe "User Routes", ->
       else
         spy.calledWith(201).should.be.true
         done()
+
   it 'should not change a users password when a password is not submitted', (done)->
-    req.params.password = undefined
+    req.body = {password: undefined, currentPassword : "twins3514"}
     req.params.id = "520a403f5fd0c6000000a609"
-    req.params.currentPassword = "twins3514"
     spy = sinon.spy(res, 'send')
     controller.password req, res, (err, data)->
       if err
@@ -89,6 +92,7 @@ describe "User Routes", ->
       else
         spy.calledWith(403).should.be.true
         done()
+
   it 'should return an error if no id is present', (done)->
     req.params.password = "twins3514"
     req.params.id = undefined

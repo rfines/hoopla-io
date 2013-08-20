@@ -11,6 +11,7 @@ class UserController extends RestfulController
   hooks : require('./hooks/userHooks.coffee')
   populate : ['businessPrivileges.business']
   businessModel : require('../models/business').Business
+  eventModel : require('../models/event').Event
   bcryptService: require('../services/bcryptService')
   security: 
     get : (authenticatedUser, targetUser) ->
@@ -50,15 +51,42 @@ class UserController extends RestfulController
           else
             res.send 400, "Missing required parameter"
             next()
+    else
+      res.send 400, "Missing required parameter"
+      next()
 
+  events: (req, res, next) =>
+    if req.params.id
+      @model.findById req.params.id, @getFields, {lean:true}, (err, data) =>
+        if err
+          res.send 400, err
+          next()
+        else
+          if data
+            privIds = _.without(_.pluck(data?.businessPrivileges, "business"), undefined)
+            if privIds.length > 0
+              q = @eventModel.find({'business': {$in:privIds} }, {}, {lean:true})
+              q.populate('media')
+              q.exec (error,eventData) ->
+                if error
+                  res.send 500, error
+                  next()
+                else
+                  res.send 200, eventData
+                  next()
+            else
+              res.send 200, []
+          else
+            res.send 400, "Missing required parameter"
+            next()
     else
       res.send 400, "Missing required parameter"
       next()
 
   password: (req,res,next) =>
-    if req.body.id
+    if req.params.id
       body = req.body
-      @model.findById body.id, @getFields,{}, (err, data)=>
+      @model.findById req.params.id, @getFields,{}, (err, data)=>
         if err
           res.send 400, err
           next()
