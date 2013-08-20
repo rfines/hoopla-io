@@ -3,6 +3,7 @@ async = require('async')
 geolib = require('geolib')
 RestfulController = require('./restfulController')
 SearchQuery = require('./helpers/SearchQuery')
+imageManipulation = require('./helpers/imageManipulation')
 
 class SearchableController extends RestfulController
   searchService : require('../services/searchService')
@@ -13,6 +14,7 @@ class SearchableController extends RestfulController
     super(@name)
 
   search : (req, res, next) =>
+    async.series
     @hooks.search.pre req, res, (err) =>
       @validateRequest req, (error) =>
         if error.code
@@ -27,33 +29,25 @@ class SearchableController extends RestfulController
           if req.params.keyword
             datasources.push searchIndexResults
           async.parallel datasources, (err, results) =>
-            if results[1]
-              out = _.filter results[0], (item) ->
-                _.contains results[1], item._id.toString()
-            else 
-              out = results[0]
-
+            out = @mergeSearches(results)
+            out = @rewriteImageUrl req, out if req.params.height and req.params.width
             res.body = out
-            if req.params.height and req.params.width
-              @rewriteImageUrl req, res.body, (errors)=>
-                console.log errors if errors
-                @hooks.search.post req, res, (error) =>
-                  if error
-                    res.status = error.code
-                    res.send error.message
-                    next()
-                  else
-                    res.send 200, res.body
-                    next()
-            else
-              @hooks.search.post req, res, (error) =>
-                if error
-                  res.status = error.code
-                  res.send error.message
-                  next()
-                else
-                  res.send 200, res.body
-                  next()
+            @hooks.search.post req, res, (error) =>
+              if error
+                res.status = error.code
+                res.send error.message
+                next()
+              else
+                res.send 200, res.body
+                next()
+
+  mergeSearches: (results) ->
+    if results[1]
+      out = _.filter results[0], (item) ->
+        _.contains results[1], item._id.toString()
+    else 
+      out = results[0]                
+    return out
                   
 
   searchDatabase : (req, cb) =>
@@ -62,10 +56,8 @@ class SearchableController extends RestfulController
     criteria = new SearchQuery().buildFromParams(req.params)
     q = @model.find(criteria, {}, {lean:true})
     q.populate(@populate.join(' '))
-    if req.params.skip
-      q.skip req.params.skip
-    if req.params.limit
-      q.limit req.params.limit
+    q.skip(req.params.skip) if req.params.skip
+    q.limit(req.params.limit) if req.params.limit
     q.exec (err, data) ->   
       calcDistance = (item, cb) ->         
         businessCoordinates = 
@@ -74,7 +66,6 @@ class SearchableController extends RestfulController
         item.distance = geolib.getDistance centerCoordinates, businessCoordinates
         cb null
       async.each data, calcDistance, (err) ->
-        
         cb err, data          
 
   searchIndex : (req, cb) =>
@@ -95,19 +86,10 @@ class SearchableController extends RestfulController
       errors = {code:400, message: "No parameters received. A 'NEAR' or 'LL' parameter is required."} 
     cb errors
 
-  rewriteImageUrl : (req, originalList, callback) =>
-    modifyUrl = (item, cb) =>
+  rewriteImageUrl : (req, originalList) =>
+    return _.map originalList, (item) ->
       if item.media[0]?.url
-        u = item.media[0]?.url
-        t = u.split('/')
-        a = t.indexOf('upload')
-        t[a+1] = "h_#{req.params.height},w_#{req.params.width}"
-        item.media[0].url = t.join('/')
-        cb null
-    async.each originalList, modifyUrl, (errors)->
-      if errors
-        callback errors, null
-      else
-        callback null, originalList
+        item.media[0].url = imageManipulation.resize(req.params.width, req.params.height, item.media[0].url)
+      return item
 
 module.exports = SearchableController
