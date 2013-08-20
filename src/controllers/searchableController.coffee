@@ -58,8 +58,8 @@ class SearchableController extends RestfulController
     q.exec (err, data) ->   
       calcDistance = (item, cb) ->         
         businessCoordinates = 
-          longitude: item.geo.coordinates[0]
-          latitude: item.geo.coordinates[1]
+          longitude: item.location.geo.coordinates[0]
+          latitude: item.location.geo.coordinates[1]
         item.distance = geolib.getDistance centerCoordinates, businessCoordinates
         cb null
       async.each data, calcDistance, (err) ->
