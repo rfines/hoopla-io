@@ -3,7 +3,7 @@ scheduleService = require('../services/schedulingService')
 events = require('../models/event').Event
 async = require 'async'
 
-module.exports.runOnce = ->
+module.exports.runOnce = (onComplete) ->
   calculateSchedules = (item,cb)=>
     scheduleService.calculate item, (error, occurrences) ->
       if error
@@ -16,12 +16,7 @@ module.exports.runOnce = ->
           else
             cb null, null
 
-
   events.find {$or:["schedules.end":{$gte: Date.now()}, {"fixedOccurrences.end":{$gte:Date.now()}}]},{}, {}, (err, data) ->
-    console.log err if err
-    async.each data, calculateSchedules, (err) ->
-      if err
-        process.exit 1
-      else
-        process.exit 0
+    async.each data, calculateSchedules, ->
+      onComplete() if onComplete
       

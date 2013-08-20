@@ -3,7 +3,7 @@ promotionRequest = require('../models/promotionRequest').PromotionRequest
 async = require 'async'
 ss = require '../services/socialService'
 
-module.exports.runOnce = ->
+module.exports.runOnce = (onComplete) ->
   promote = (item, cb) ->
     ss.publish item, (err) ->
       if err
@@ -16,10 +16,6 @@ module.exports.runOnce = ->
   q.populate('promotionTarget')
   q.exec (err, data) ->
     async.eachLimit data, 10, promote, (err) ->
-      if err
-        console.log err
-        process.exit 1
-      else
-        process.exit 0
+      onComplete() if onComplete
 
 

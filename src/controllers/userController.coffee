@@ -56,7 +56,6 @@ class UserController extends RestfulController
       next()
 
   password: (req,res,next) =>
-    console.log req.body
     if req.body.id
       body = req.body
       @model.findById body.id, @getFields,{}, (err, data)=>
@@ -69,9 +68,7 @@ class UserController extends RestfulController
             @bcryptService.check currPass, data.password, ()=>
                 @bcryptService.encrypt body.password, (encrypted) =>
                   data.update { $set : {password: encrypted, encryptionMethod: 'BCRYPT'}}, {}, (error) =>
-                    console.log "made it here"
                     if error
-                      console.log error
                       res.send 400, error 
                       next()
                     else

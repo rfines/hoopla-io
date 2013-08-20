@@ -1,3 +1,4 @@
+schedule = require('node-schedule')
 calculateSchedules = require('./jobs/calculateSchedules')
 promoteEvents = require('./jobs/promoteEvents')
 fiveMinutes = 300000
@@ -5,5 +6,6 @@ fiveMinutes = 300000
 module.exports.start = ->
   calculateSchedules.runOnce()
   promoteEvents.runOnce()
-  setInterval calculateSchedules.runOnce, fiveMinutes
-  setInterval promoteEvents.runOnce, fiveMinutes
+
+  schedule.scheduleJob "*/5 * * * *", calculateSchedules.runOnce
+  schedule.scheduleJob "*/5 * * * *", promoteEvents.runOnce
