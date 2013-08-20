@@ -16,9 +16,7 @@ class SearchableController extends RestfulController
     @hooks.search.pre req, res, (err) =>
       @validateRequest req, (error) =>
         if error.code
-          res.body = error
-          res.status = error.code
-          res.send()
+          res.send error.code, error
           next()
         else
           databaseResults = (cb) =>

@@ -16,16 +16,8 @@ EventSchema = new Schema
     type: String
     required: true
     trim: true
-  createdAt: 
-    type: Date
-    required: true
-    default: Date.now 
-  lastModifiedAt:
-    type: Date
-    required: true
-    default: Date.now
   host: {type:ObjectId, ref:'business'}
-  business : {type:ObjectId, ref:'business'}
+  business : {type:ObjectId, ref:'business', required:true}
   occurrences:[Date]
   tags: [String]
   cost: Number
@@ -86,7 +78,6 @@ EventSchema = new Schema
     minute:Number
     duration:Number
   }
-
   legacyId: String
   legacyBusinessId: String  
   legacyHostId : String 
