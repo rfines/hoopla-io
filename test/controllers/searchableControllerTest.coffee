@@ -135,6 +135,7 @@ describe "Operations for Searchable Routes", ->
       console.log res
       res.status.should.equal 400
       done()
+      
   it "should transform an image url to use the height and width parameters", (done)->
     mockedList = [{media:[{url:"http://res.cloudinary.com/durin-software/image/upload/v1375113455/p3ux4buvr7ayhbeykoiq.jpg"}]}]
     controller.rewriteImageUrl req, mockedList, (error, data)->

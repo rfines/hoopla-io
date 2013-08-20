@@ -37,7 +37,7 @@ class SearchableController extends RestfulController
 
             res.body = out
             if req.params.height and req.params.width
-              rewriteImageUrl req, res.body, (errors)=>
+              @rewriteImageUrl req, res.body, (errors)=>
                 console.log errors if errors
                 @hooks.search.post req, res, (error) =>
                   if error
@@ -97,7 +97,7 @@ class SearchableController extends RestfulController
       errors = {code:400, message: "No parameters received. A 'NEAR' or 'LL' parameter is required."} 
     cb errors
 
-  rewriteImageUrl = (req, originalList, callback) =>
+  rewriteImageUrl : (req, originalList, callback) =>
     modifyUrl = (item, cb) =>
       if item.media[0]?.url
         u = item.media[0]?.url
