@@ -25,10 +25,14 @@ describe "Business Hooks", ->
     }
     business = {}
     userSpy = sinon.spy(req.authUser, 'save')
-    hooks.create.post business, req, res, ->
-      userSpy.called.should.be.true
-      req.authUser.businessPrivileges.length.should.be.equal 1
-      done()
+    hooks.create.post 
+      target: business
+      req : req
+      res : res
+      success: =>
+        userSpy.called.should.be.true
+        req.authUser.businessPrivileges.length.should.be.equal 1
+        done()
 
   it 'should remove all user privileges when a business is deleted', (done) ->
     business = {

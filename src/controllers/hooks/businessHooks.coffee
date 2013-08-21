@@ -6,22 +6,19 @@ module.exports = exports =
   UserService : require('../../services/data/userService')
   create:
     pre : hookLibrary.default
-    post : (business, req, res, cb) ->  
-      req.authUser.businessPrivileges = req.authUser.businessPrivileges || []
-      req.authUser.businessPrivileges.push {business : business, role : 'OWNER'}
-      req.authUser.save (err) ->
-        cb() if cb
+    post : (options) ->  
+      options.req.authUser.businessPrivileges = options.req.authUser.businessPrivileges || []
+      options.req.authUser.businessPrivileges.push {business : options.target, role : 'OWNER'}
+      options.req.authUser.save (err) ->
+        options.success() if options.success
   update:
     pre : hookLibrary.default
     post : hookLibrary.default
   search:
-    pre : (req, res, cb) =>
-      cb null
-    post : (req, res, cb) =>    
-      cb null        
+    pre : hookLibrary.default
+    post : hookLibrary.default
   destroy:
-    pre : (options) =>
-      options.success() if options.success
+    pre : hookLibrary.default
     post : (options) =>
       removePriv = (user, cb) ->
         user.businessPrivileges = _.filter user.businessPrivileges, (item) ->

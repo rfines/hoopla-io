@@ -1,6 +1,7 @@
 TagMap= require('../../services/data/categoryMap')
 _ = require 'lodash'
 moment = require 'moment'
+hookLibrary = require('./hookLibrary')
   
 module.exports = exports =
   postalCodeService : require('../../services/postalCodeService')
@@ -107,26 +108,25 @@ module.exports = exports =
       return t.join('/')
 
   search:
-    pre : (req,res, cb) =>
-      exports.transformRequest req, res, (err, data) ->
+    pre : (options) =>
+      exports.transformRequest options.req, options.res, (err, data) ->
         if err
-          cb err, null
+          options.error(err, null) if options.error
         else
-          cb null, req
-    post : (req, res, cb) =>
-      exports.transformResponse res.body, res.body.imageHeight, res.body.imageWidth, (err, newData) ->
+          options.success() if options.success
+    post : (options) =>
+      exports.transformResponse options.res.body, options.res.body.imageHeight, options.res.body.imageWidth, (err, newData) ->
         if err
-          cb err,null
+          options.error(err, null) if options.error
         else
-          res.body = newData
-          cb null
+          options.res.body = newData
+          options.success() if options.success
   get:
-    pre : (req, res, cb) =>
-      cb null, req
-    post : (req, res, cb) =>
-      exports.transformResponse res.body, res.body.imageHeight, res.body.imageWidth, (err, newData) ->
+    pre : hookLibrary.default
+    post : (options) =>
+      exports.transformResponse options.res.body, options.res.body.imageHeight, options.res.body.imageWidth, (err, newData) ->
         if err
-          cb err,null
+          options.error(err, null) if options.error
         else
-          res.body = newData
-          cb null
+          options.res.body = newData
+          options.success() if options.success

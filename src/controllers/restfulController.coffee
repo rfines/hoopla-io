@@ -53,52 +53,52 @@ class RestfulController
       return next new restify.ResourceNotFoundError() if not target
       if @security.destroy(req.authUser, target)
         target.remove (err, doc) =>
-          if @hooks?.destroy?.post 
-            @hooks.destroy.post 
-              resource : target
-              req : req
-              res : res
-              success: () -> 
-                res.send 204
-                next()
-          else
-            res.send 204
-            next()        
+          @hooks.destroy.post 
+            resource : target
+            req : req
+            res : res
+            success: () -> 
+              res.send 204
+              next()    
       else
         return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")
   
   update: (req, res, next) =>
     @model.findById req.params.id, {}, {}, (err, target) =>
       if @security.update(req.authUser, target)
-        target.update req.body, (err, doc) ->
-          if @hooks?.update?.post
-            @hooks.update.post target, req, res, ->
+        target.update req.body, (err, doc) =>
+          @hooks.update.post
+            target : target
+            req : req
+            res : res
+            success: =>
               res.send(200, doc)
-              next()    
-          else
-            res.send(200, doc)
-            next()             
+              next()               
       else
         return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")        
 
   create: (req, res, next) =>
     target = new @model(req.body)
     if @security.create(req.authUser, target)
-      @hooks.create.pre target, req, res, (err) =>
-        target.validate (err) =>
-          if err
-            errors = err.errors
-            res.send 400, errors
-            next()
-          else
-            target.save (err, doc) =>
-              if @hooks?.create?.post 
-                @hooks.create.post target, req, res, -> 
-                  res.send 201, doc
-                  next()
-              else
-                res.send 201, doc
-                next()
+      @hooks.create.pre 
+        target : target
+        req : req
+        res : res
+        success: =>
+          target.validate (err) =>
+            if err
+              errors = err.errors
+              res.send 400, errors
+              next()
+            else
+              target.save (err, doc) =>
+                @hooks.create.post 
+                  target : target
+                  req : req
+                  res : res
+                  success: =>
+                    res.send 201, doc
+                    next()
     else
       next new restify.NotAuthorizedError("You are not permitted to perform this operation.")       
 

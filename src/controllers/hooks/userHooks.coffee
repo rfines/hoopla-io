@@ -4,33 +4,34 @@ module.exports = exports =
   bcryptService : require('../../services/bcryptService')
   collaboratorRequest : require('../../models/collaboratorRequest').CollaboratorRequest
   create:
-    pre : (user, req, res, cb) ->
+    pre : (options) ->
+      user = options.target
       exports.bcryptService.encrypt user.password, (encrypted) ->
         user.password = encrypted
         user.encryptionMethod = 'BCRYPT'
-        cb()
-    post: (user, cb) ->
+        options.success() if options.success
+    post: (options) ->
+      user = options.target
       exports.collaboratorRequest.findOne {email: user.email}, {}, {}, (err, collab) ->
         if collab
           collab.completedDate = new Date()
-          collab.save (errors)->
-            if errors
-              console.log errors
-              cb errors, null
+          collab.save (err)->
+            if err
+              options.error(err) if options.error
             else
               user.businessPrivileges.push
                 business: collab.businessId
                 role: 'COLLABORATOR'
               user.save (error)->
                 if error
-                  console.log error
-                  cb error, null
+                  options.error(error) if options.error
                 else
-                  cb null, null
+                  options.success() if options.success
         else
-          cb {code:401,message:"Could not find collaboration request."}, null
-
+          options.error({code:401,message:"Could not find collaboration request."}) if options.error
   update:
     pre : hookLibrary.default
     post : hookLibrary.default    
+  destroy:
+    pre : hookLibrary.default
     post : hookLibrary.default    

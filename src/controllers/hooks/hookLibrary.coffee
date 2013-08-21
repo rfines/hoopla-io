@@ -1,2 +1,2 @@
-module.exports.default = (target, req, res, cb) ->
-  cb() if cb
+module.exports.default = (options) ->
+  options.success() if options.success

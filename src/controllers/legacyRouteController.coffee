@@ -15,14 +15,17 @@ class LegacyRouteController extends SearchableController
 
   constructor : (@name) ->
     super(@name)
+
   get: (req, res, next) ->
-    @hooks.get.pre req,res,(err, req)=>
-      if err?.code
+    @hooks.get.pre 
+      req : req
+      res : res
+      error: (err) =>
         res.status = err.code
         res.body = err.message
         res.send()
         next()
-      else
+      success: =>
         id = req.params.id
         checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$")
         if not checkForHexRegExp.test(id)
@@ -35,11 +38,13 @@ class LegacyRouteController extends SearchableController
               if req.imageHeight or req.imageWidth
                 res.body.imageHeight = req.imageHeight
                 res.body.imageWidth = req.imageWidth 
-              @hooks.get.post req,res,(err)->
-                if err
+              @hooks.get.post 
+                req : req
+                res : res
+                error: (err) ->
                   res.send err.code, err.message
                   next()
-                else
+                success: ->
                   res.send 200, res.body
                   next()
 

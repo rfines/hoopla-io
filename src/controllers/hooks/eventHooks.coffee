@@ -4,22 +4,23 @@ module.exports = exports =
   scheduleService : require('../../services/schedulingService')
   update:
     pre : hookLibrary.default
-    post : (event, req, res, cb) =>
-      exports.scheduleService.calculate event, (err, occurrences) ->
+    post : (options) =>
+      exports.scheduleService.calculate options.target, (err, occurrences) ->
         if not err
-          event.occurrences = occurrences
-          event.save()
-          cb()
+          options.target.occurrences = occurrences
+          options.target.save()
+          options.success() if options.success
   create:
     pre : hookLibrary.default 
-    post : (event, req, res, cb) =>
-      exports.scheduleService.calculate event, (err, occurrences) ->
+    post : (options) =>
+      exports.scheduleService.calculate options.target, (err, occurrences) ->
         if not err
-          event.occurrences = occurrences
-          event.save()
-          cb()
+          options.target.occurrences = occurrences
+          options.target.save()
+          options.success() if options.success
   search:
-    pre : (req, res, cb) =>
-      cb null
-    post : (req, res, cb) =>    
-      cb null
+    pre : hookLibrary.default
+    post : hookLibrary.default
+  destroy:
+    pre : hookLibrary.default
+    post : hookLibrary.default    

@@ -14,32 +14,37 @@ class SearchableController extends RestfulController
     super(@name)
 
   search : (req, res, next) =>
-    async.series
-    @hooks.search.pre req, res, (err) =>
-      @validateRequest req, (error) =>
-        if error.code
-          res.send error.code, error
-          next()
-        else
-          databaseResults = (cb) =>
-            @searchDatabase(req, cb)
-          searchIndexResults = (cb) =>
-            @searchIndex(req, cb)
-          datasources = [databaseResults]
-          if req.params.keyword
-            datasources.push searchIndexResults
-          async.parallel datasources, (err, results) =>
-            out = @mergeSearches(results)
-            out = @rewriteImageUrl req, out if req.params.height and req.params.width
-            res.body = out
-            @hooks.search.post req, res, (error) =>
-              if error
-                res.status = error.code
-                res.send error.message
-                next()
-              else
-                res.send 200, res.body
-                next()
+    @hooks.search.pre
+      req : req
+      res : res
+      success: () =>
+        @validateRequest req, (error) =>
+          if error.code
+            res.send error.code, error
+            next()
+          else
+            databaseResults = (cb) =>
+              @searchDatabase(req, cb)
+            searchIndexResults = (cb) =>
+              @searchIndex(req, cb)
+            datasources = [databaseResults]
+            if req.params.keyword
+              datasources.push searchIndexResults
+            async.parallel datasources, (err, results) =>
+              out = @mergeSearches(results)
+              out = @rewriteImageUrl req, out if req.params.height and req.params.width
+              res.body = out
+              @hooks.search.post 
+                req : req
+                res : res
+                success : =>
+                  res.send 200, res.body
+                  next()
+                error : =>
+                  res.status = error.code
+                  res.send error.message
+                  next()
+
 
   mergeSearches: (results) ->
     if results[1]
