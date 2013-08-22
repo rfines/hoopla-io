@@ -34,8 +34,16 @@ class BusinessController extends SearchableController
         else
           res.send 200, result
           next()
+    else if req.params.businesses
+      @events.find {"business":{$in : req.params.businesses}}, {}, {lean:true}, (err, result)->
+        if err
+          res.send 400, err
+          next()
+        else
+          res.send 200, result
+          next()
     else
-      res.send 400, "Bad request. Missing required parameter"
+      res.send 400, "Invalid request."
       next()
 
 

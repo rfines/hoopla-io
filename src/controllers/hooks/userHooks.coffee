@@ -29,6 +29,7 @@ module.exports = exports =
                   options.success() if options.success
         else
           options.error({code:401,message:"Could not find collaboration request."}) if options.error
+
   update:
     pre : hookLibrary.default
     post : hookLibrary.default    

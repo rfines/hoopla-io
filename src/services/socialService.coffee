@@ -1,5 +1,9 @@
+CONFIG = require('config')
 graph = require('fbgraph')
 moment = require 'moment'
+twit = require('twit')
+_ = require('lodash')
+_request = require('request')
 
 facebookPost = (promotionRequest, cb) ->
   content = promotionRequest.content  
@@ -20,7 +24,25 @@ facebookEvent = (pr, cb) ->
     cb(err)
 
 twitterPost = (pr, cb) ->
-  cb null
+  tw = new twit({ 
+    consumer_key:CONFIG.twitter.consumer_key,
+    consumer_secret:CONFIG.twitter.consumer_secret,
+    access_token:pr.promotionTarget.accessToken,
+    access_token_secret: pr.promotionTarget.accessTokenSecret
+  })
+  if pr.media
+    status = {status:pr.message+' '+pr.media[0].url}
+  else
+    status = {status:pr.message}
+
+  console.log status
+  tw.post 'statuses/update', status, (error, reply)->
+    if error
+      cb error, null
+    else
+      console.log reply
+      cb null, reply
+
 
 module.exports.publish = (promotionRequest, cb) ->
   switch promotionRequest.pushType
@@ -29,3 +51,4 @@ module.exports.publish = (promotionRequest, cb) ->
     when 'TWITTER-POST' then twitterPost(promotionRequest, cb)
     else
       console.log 'unsupported type'
+      cb "Unsupported type error"
