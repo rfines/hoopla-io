@@ -19,6 +19,7 @@ build = ->
   server.use restify.CORS()
   server.use restify.fullResponse()
   server.use restify.authorizationParser()
+  server.use restify.gzipResponse()
   server.use restify.bodyParser({ mapParams: false })
   server.use restify.queryParser()
   server.use restifyPlugins.AuthorizationParser
