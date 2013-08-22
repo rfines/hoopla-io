@@ -17,12 +17,6 @@ BusinessSchema = new Schema
     trim: true
   hours:
     type: String
-  createdAt: 
-    type: Date
-    default: Date.now 
-  lastModifiedAt:
-    type: Date
-    default: Date.now
   tags:[String]
   website:
     type: String
@@ -43,7 +37,6 @@ BusinessSchema = new Schema
       coordinates: [Number]
     }    
   }
-
   socialMediaLinks:[SocialMediaLink]
   promotionTargets: [{type:ObjectId, ref : 'promotionTarget'}]
   legacyId: String

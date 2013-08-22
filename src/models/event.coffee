@@ -44,8 +44,8 @@ EventSchema = new Schema
       coordinates: [Number]
     }
   }    
-  ticketingLinks:[TicketingLink]
-  socialMediaLinks:[SocialMediaLinks]
+  ticketingLinks: [TicketingLink]
+  socialMediaLinks: [SocialMediaLinks]
   schedules: [
     {
       hour: Number
