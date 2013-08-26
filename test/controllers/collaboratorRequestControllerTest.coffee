@@ -37,6 +37,12 @@ describe "Operations for Collaboration Requests", ->
       findOne:(query, fields, opts,cb) =>
         cb(null, mockUser)
     }
+    controller.collaborator = class Collaborator
+      constructor: () ->
+        return {
+          save: (cb) ->
+            cb() if cb
+        } 
     controller.user = mockModel
     controller.business = mockBusinessModel
     controller.emailService = emailService
@@ -50,23 +56,16 @@ describe "Operations for Collaboration Requests", ->
   it 'should add a business privileges to a user', (done) ->
     responseSpy = sinon.spy(res, 'send')
     controller.addCollaborator req, res, (err, message) ->
-      if err
-        console.log err
-        done()
-      else
-        responseSpy.calledWith(200).should.be.true
-        done()
+      responseSpy.calledWith(200).should.be.true
+      done()
+
   it 'should not add a business privileges to a user when no business is passed', (done) ->
-    responseSpy = sinon.spy(res, 'send')
     req = 
       body: {email:'user1@localruckus.com'}
     controller.addCollaborator req, res, (err, message) ->
-      if err
-        console.log err
-        done()
-      else
-        responseSpy.calledWith(401).should.be.true
-        done()
+      err.statusCode.should.be.equal 400
+      done()
+
   it 'should send an email to a user that is not found', (done) ->
     mailSpy = sinon.spy(emailService, 'send')
     mockModel = {
@@ -80,12 +79,7 @@ describe "Operations for Collaboration Requests", ->
         'global_merge_vars' : [{name : 'REGISTER_URL', content : "http://localhost:3000/demo/register"},{name:'BUSINESS_NAME', content:"Zona Rosa"}]
       template_name : 'add-business-collaborator'
       template_content : []
-
     controller.addCollaborator req, res, (err, message) ->
-      if err
-        console.log err
-        done()
-      else
-        mailSpy.calledWith(options).should.be.true
-        done()
+      mailSpy.calledWith(options).should.be.true
+      done()
       

@@ -1,6 +1,6 @@
 CONFIG = require('config')
-mongoose = require 'mongoose'
-async = require 'async'
+restify = require 'restify'
+
 class CollaboratorRequestController
   emailService : require('../services/emailService')
   user : require('../models/user').User
@@ -15,43 +15,30 @@ class CollaboratorRequestController
       @user.findOne {email : body.email}, {}, {}, (err, u) =>
         @business.findOne {"_id": body.business}, {}, {lean:true}, (e, b)=>
           if not err and u?._id
-            console.log b.name
             if not e and b?._id
-              console.log b.name
               u.businessPrivileges.push
                 business: b
                 role:"COLLABORATOR"
-              console.log u
               u.save (err, doc)->
                 if err
-                  console.log err
-                  res.send 401, JSON.stringify({"code": 401, "message": "#{err}"})
-                  next()
+                  next(new restify.InternalError())
                 else
-                  res.send 200, JSON.stringify({"code": 200, "message": "Collaborator added."})
+                  res.send 200
                   next()
             else
-              res.send 401, JSON.stringify({"code": 401, "message": "Invalid request"})
-              next()
+              next(new restify.BadDigestError())
           else
             @sendInviteEmail body.email, b.name, (er, data) =>
-              collab = new @collaborator()
-              collab.email = body.email
-              collab.requestDate= new Date()
-              collab.businessId = body.business
-              collab.save (err, doc)=>
+              new @collaborator({email : body.email, requestDate : new Date(), businessId : body.business}).save (err, doc)=>
                 if err
-                  console.log err
-                  res.send 401, JSON.stringify({"code": 401, "message": "Something went wrong."})
+                  next(new restify.InternalError())
                 else
-                  res.send 200, JSON.stringify({"code": 200, "message": "Collaborator added."})
-            next()
+                  res.send 200
+                  next()
     else
-      res.send 401, JSON.stringify({"code": 401, "message": "Invalid request"}) 
-      next()       
+      next(new restify.BadDigestError())     
+
   sendInviteEmail :(email, name, cb) =>
-    console.log email
-    console.log name
     emailOptions = 
       message: 
           'to' : [{email:email}]
@@ -60,10 +47,8 @@ class CollaboratorRequestController
         template_content : []
     @emailService.send emailOptions, (err)=>
       if err
-        console.log err 
         cb err, null
       else
         cb null,null
-    cb 
 
 module.exports =  new CollaboratorRequestController()
