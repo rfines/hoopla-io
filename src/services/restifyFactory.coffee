@@ -13,6 +13,7 @@ feedController = require '../controllers/feedController'
 widgetController = require '../controllers/widgetController'
 promotionTargetController = require '../controllers/promotionTargetController'
 promotionRequestController = require '../controllers/promotionRequestController'
+mediaController = require '../controllers/mediaController'
 
 build = ->
   server = restify.createServer(name: "hoopla-io-api")
@@ -43,6 +44,7 @@ build = ->
     ['get', '/user/:id/businesses', userController, {handler:'businesses'}]
     ['get', '/user/:id/events', userController, {handler:'events'}]
     ['put', '/user/:id/password', userController, {handler:'password'}]
+    ['post', '/media/upload', mediaController, {handler:'uploads'}]
   ]
 
   scaffold = (resource, controller) ->

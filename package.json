@@ -21,7 +21,8 @@
     "request": "~2.25.0",
     "mandrill-api": "~1.0.28",
     "fbgraph": "~0.2.7",
-    "twit":"*"
+    "twit": "*",
+    "cloudinary": "~1.0.5"
   },
   "optionalDependencies": {
     "hiredis": "~0.1.15"

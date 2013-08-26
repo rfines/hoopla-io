@@ -27,5 +27,12 @@
     "access_token_url":"https://api.twitter.com/oauth/access_token",
     "my_access_token":"463149108-uXwvgcMuMY3AvMR7ReWZUJONmEv81w1tHTJXZK8k",
     "my_access_token_secret":"xVxbh681oP3KhmSx5XssTG1qNk9XN6nbJ1l3UPOio8g"
+  },
+  "cloudinary":{
+    "cloud_name":"hu9ncnicw",
+    "api_key": "455736716834584",
+    "api_secret":"F7IF2obNLguBajXvvm5Klci1qII"
+
   }
+
 }

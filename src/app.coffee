@@ -1,8 +1,10 @@
 CONFIG = require('config')
 mongoService = require './services/mongoService'
 restifyFactory = require './services/restifyFactory'
+cloudinaryService = require './services/cloudinaryService'
 
 mongoService.init()
+cloudinaryService.init()
 server = restifyFactory.build()
 
 require('./services/cacheService')
