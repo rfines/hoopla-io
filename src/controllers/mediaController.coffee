@@ -2,10 +2,9 @@ _ = require 'lodash'
 RestfulController = require('./restfulController')
 securityConstraints = require('./helpers/securityConstraints')
 cloudinaryService = require('../services/cloudinaryService')
-Media = require('../models/media')
 
 class MediaController extends RestfulController
-  model = require('../models/media')
+  model : require('../models/media').Media
 
   security: 
     get : securityConstraints.anyone
@@ -24,7 +23,7 @@ class MediaController extends RestfulController
   uploads:(req,res, next) =>
     console.log req.body
     if (req.body)
-      cloudinaryService.uploadImage req.body, (error,result) ->
+      cloudinaryService.uploadImage req.body, (error,result) =>
         if error
           console.log error
           console.log(">> Error!: " + error)
@@ -32,7 +31,8 @@ class MediaController extends RestfulController
           res.send({ success: false, error: error }, { 'Content-type': 'application/json' }, 401)
           next()
         else
-          model = new Media({ url : result.url}).save (err, media) ->
+          med = new @model({ url : result.url})
+          med.save (err, media) ->
             if (err) 
               console.log(">> Error!: " + err.toString())
               res.status = 401

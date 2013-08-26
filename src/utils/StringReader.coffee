@@ -10,10 +10,7 @@ class StringReader extends Stream
     @encoding = encoding
   pause: ->
   resume : ->
-    if @encoding and Buffer.isBuffer(@data)
-      @emit "data", @data.toString(@encoding)
-    else
-      @emit "data", @data
-      @emit "end"
-      @emit "close"
+    @emit "data", @data
+    @emit "end"
+    @emit "close"
 module.exports = StringReader

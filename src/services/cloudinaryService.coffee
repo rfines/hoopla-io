@@ -25,7 +25,7 @@ uploadImage = (data, cb) =>
     else
       console.log "Wrote the file"
       stream = cloudinary.uploader.upload_stream (result) ->
-        console.log "Pushed image to cloudinary."
+        console.log result
         if result.error
           cb result.error, null
         else
