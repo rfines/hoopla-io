@@ -1,4 +1,3 @@
-_ = require 'lodash'
 RestfulController = require('./restfulController')
 securityConstraints = require('./helpers/securityConstraints')
 

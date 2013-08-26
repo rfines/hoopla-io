@@ -1,6 +1,7 @@
 CONFIG = require('config')
 restify = require 'restify'
 
+
 class CollaboratorRequestController
   emailService : require('../services/emailService')
   user : require('../models/user').User
@@ -47,8 +48,8 @@ class CollaboratorRequestController
         template_content : []
     @emailService.send emailOptions, (err)=>
       if err
-        cb err, null
+        cb(err)
       else
-        cb null,null
+        cb()
 
 module.exports =  new CollaboratorRequestController()

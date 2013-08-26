@@ -1,7 +1,4 @@
 restify = require("restify")
-mongoose = require 'mongoose'
-_ = require 'lodash'
-authorizationService = require '../services/authorizationService'
 securityConstraints = require('./helpers/securityConstraints')
 
 class RestfulController
