@@ -39,7 +39,9 @@ class UserController extends RestfulController
           if data
             privIds = _.without(_.pluck(data?.businessPrivileges, "business"), undefined)
             if privIds.length > 0
-              @businessModel.find {'_id': {$in:privIds} }, {}, {lean:true}, (error,busData)->
+              q = @businessModel.find {'_id': {$in:privIds} }, {}, {lean:true}
+              q.populate('media')
+              q.exec (error,busData) ->
                 if error
                   res.send 500, error
                   next()
