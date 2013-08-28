@@ -6,9 +6,13 @@ module.exports = exports =
   UserService : require('../../services/data/userService')
   create:
     pre : (options)=>
-      if options.target.media
-        media = _.pluck(options.target.media, _id)
-        options.target.media = media
+      if options.req.body.media?.length > 0 
+        console.log options.req.body.media
+        options.req.body.media = _.pluck(options.req.body.media, '_id')
+        _.each(options.req.body.media, (element, index)->
+          options.req.body.media[index] = element.toString()
+        )
+        console.log options.target
         options.success() if options.success
     post : (options) ->  
       options.req.authUser.businessPrivileges = options.req.authUser.businessPrivileges || []
@@ -17,12 +21,10 @@ module.exports = exports =
         options.success() if options.success
   update:
     pre : (options)=>
-      if options.req.body.media
-        console.log options.req.body.media
+      if options.req.body.media?.length > 0
         media = _.pluck(options.req.body.media, '_id')
-        console.log media
         options.req.body.media = media
-      options.success() if options.success
+        options.success() if options.success
 
     post : hookLibrary.default
   search:

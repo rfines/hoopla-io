@@ -24,7 +24,9 @@ BusinessSchema = new Schema
     trim: true
   createdBy: ObjectId
   media:[{type : ObjectId, ref : 'media'}]
-  contacts: [Contact]
+  contactName: String
+  contactPhone: String
+  contactEmail: String
   location: {
     address: {type: String, required: true}
     neighborhood : String

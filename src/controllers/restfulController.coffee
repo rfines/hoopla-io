@@ -67,10 +67,10 @@ class RestfulController
         @hooks.update.pre
           target:target
           req: req
-          success: () ->
+          success: () =>
             target.update req.body, (err, doc) =>
               if err
-                res.send 401, err
+                res.send 400, err
               else
                 @hooks.update.post
                   target : target
@@ -83,27 +83,31 @@ class RestfulController
         return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")        
 
   create: (req, res, next) =>
-    target = new @model(req.body)
     if @security.create(req.authUser, target)
       @hooks.create.pre 
-        target : target
         req : req
         res : res
         success: =>
+          target = new @model(req.body)
+          console.log target.media
           target.validate (err) =>
             if err
-              errors = err.errors
-              res.send 400, errors
+              console.log err
+              res.send 400, err
               next()
             else
+              console.log target.media
               target.save (err, doc) =>
-                @hooks.create.post 
-                  target : target
-                  req : req
-                  res : res
-                  success: =>
-                    res.send 201, doc
-                    next()
+                if err
+                  res.send 400, err
+                else
+                  @hooks.create.post 
+                    target : target
+                    req : req
+                    res : res
+                    success: =>
+                      res.send 201, doc
+                      next()
     else
       next new restify.NotAuthorizedError("You are not permitted to perform this operation.")       
 
