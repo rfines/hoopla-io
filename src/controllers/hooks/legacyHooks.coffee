@@ -51,7 +51,7 @@ module.exports = exports =
           ca.push inverted[i]
         x.id = x.legacyId || x._id
         x.categories = ca.join ', '
-        x.contactName = x.contacts.name
+        x.contactName = x.contactName
         x.venueId = x.legacyBusinessId || x.legacyHostId || x.business.legacyId || x.business._id
         x.venueName = x.business.name
         x.start = x.legacySchedules?[0]?.start || x.schedules?[0]?.start || x.fixedOccurrences?[0]?.start
@@ -66,8 +66,8 @@ module.exports = exports =
           x.venueImage = x.business.media?[0]?.url || ""
         x.startTime = new moment(x.start).format('hh:mm A')
         x.endTime = new moment(x.legacyEndDate).format('hh:mm A')
-        x.phone = x.contacts?.phone
-        x.email = x.contacts?.email
+        x.phone = x.contactPhone
+        x.email = x.contactEmail
         x.address = x.location.address
         x.latitude = x.location.geo.coordinates[1]
         x.longitude = x.location.geo.coordinates[0]
