@@ -31,7 +31,9 @@ EventSchema = new Schema
     required: false
   bands: [String]
   media:[{type : ObjectId, ref : 'media'}]
-  contacts: [Contact]
+  contactName: String
+  contactEmail: String
+  contactPhone: String
   location: {
     address: {type: String, required: true}
     neighborhood : String
