@@ -83,33 +83,33 @@ class RestfulController
         return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")        
 
   create: (req, res, next) =>
-    if @security.create(req.authUser, target)
       @hooks.create.pre 
         req : req
         res : res
         success: =>
           target = new @model(req.body)
-          console.log target.media
-          target.validate (err) =>
-            if err
-              console.log err
-              res.send 400, err
-              next()
-            else
-              console.log target.media
-              target.save (err, doc) =>
-                if err
-                  res.send 400, err
-                else
-                  @hooks.create.post 
-                    target : target
-                    req : req
-                    res : res
-                    success: =>
-                      res.send 201, doc
-                      next()
-    else
-      next new restify.NotAuthorizedError("You are not permitted to perform this operation.")       
+          if @security.create(req.authUser, target)
+            console.log target.media
+            target.validate (err) =>
+              if err
+                console.log err
+                res.send 400, err
+                next()
+              else
+                console.log target.media
+                target.save (err, doc) =>
+                  if err
+                    res.send 400, err
+                  else
+                    @hooks.create.post 
+                      target : target
+                      req : req
+                      res : res
+                      success: =>
+                        res.send 201, doc
+                        next()
+          else
+            next new restify.NotAuthorizedError("You are not permitted to perform this operation.")       
 
 
 module.exports = RestfulController
