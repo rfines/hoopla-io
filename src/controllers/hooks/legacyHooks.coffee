@@ -95,7 +95,7 @@ module.exports = exports =
         delete x._id
         delete x.legacyEndDate
         delete x.legacyImage
-        delete x.ticketingLinks
+        delete x.ticketUrl
         result.data.push x
       cb null, result
 

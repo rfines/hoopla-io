@@ -3,7 +3,6 @@ Schema = mongoose.Schema
 ObjectId = mongoose.Schema.ObjectId
 Media = require('./media').MediaSchema
 Contact = require('./contact').ContactSchema
-TicketingLink = require('./ticketingLink').TicketingLinkSchema
 SocialMediaLinks = require('./socialMediaLink').SocialMediaLinkSchema
 Business= require('./business').BusinessSchema
 
@@ -46,7 +45,7 @@ EventSchema = new Schema
       coordinates: [Number]
     }
   }    
-  ticketingLinks: [TicketingLink]
+  ticketUrl: String
   socialMediaLinks: [SocialMediaLinks]
   schedules: [
     {

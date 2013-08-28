@@ -21,7 +21,6 @@ class MediaController extends RestfulController
     super(@name)
  
   uploads:(req,res, next) =>
-    console.log req.body
     if (req.body)
       cloudinaryService.uploadImage req.body, (error,result) =>
         if error
