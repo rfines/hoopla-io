@@ -64,14 +64,21 @@ class RestfulController
     delete req.body._id
     @model.findById req.params.id, {}, {}, (err, target) =>
       if @security.update(req.authUser, target)
-        target.update req.body, (err, doc) =>
-          @hooks.update.post
-            target : target
-            req : req
-            res : res
-            success: =>
-              res.send(200, doc)
-              next()               
+        @hooks.update.pre
+          target:target
+          req: req
+          success: () ->
+            target.update req.body, (err, doc) =>
+              if err
+                res.send 401, err
+              else
+                @hooks.update.post
+                  target : target
+                  req : req
+                  res : res
+                  success: =>
+                    res.send(200, doc)
+                    next()               
       else
         return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")        
 
