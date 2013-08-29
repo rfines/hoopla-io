@@ -26,7 +26,8 @@ class BusinessController extends SearchableController
     super(@name)
 
   getEvents : (req,res,next) =>
-    if req.params.id
+    console.log req
+    if req.params.id and not req.query.ids
       @events.find {"business": req.params.id}, {},{lean:true}, (err, result)->
         if err
           res.send 400, err
@@ -34,8 +35,11 @@ class BusinessController extends SearchableController
         else
           res.send 200, result
           next()
-    else if req.params.businesses
-      @events.find {"business":{$in : req.params.businesses}}, {}, {lean:true}, (err, result)->
+    else if req.query.addition_ids
+      ids = req.query.additional_ids.split ','
+      if _.indexOf(ids, req.params.id) is -1
+        ids.push req.params.id
+      @events.find {"business":{$in : ids}}, {}, {lean:true}, (err, result)->
         if err
           res.send 400, err
           next()

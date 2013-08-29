@@ -7,6 +7,8 @@ MediaSchema= new Schema
       type:String
       required:false
     legacyUrl: String
+    user: {type : ObjectId, ref : 'user'}
+
 
 module.exports=
   Media: mongoose.model('media',MediaSchema, 'media')

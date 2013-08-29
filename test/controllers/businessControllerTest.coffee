@@ -17,6 +17,7 @@ describe "Operations for Business Routes", ->
       find : (query, fields, options, cb) ->
         cb null, document
 
+
     controller.events = modelSpy      
     req =
       body : {}
@@ -69,4 +70,13 @@ describe "Operations for Business Routes", ->
     spy = sinon.spy(controller.events, 'find') 
     controller.getEvents req, res,(err,result) ->
       spy.calledWith({'business' : req.params.id}).should.be.true
-      done()             
+      done()
+
+  it 'should return a list of all events owned by all businesses', (done) ->
+    req.params = {}
+    req.params.businesses = ["123", "354","546"]
+    req.params.ll  = '-94.595033,39.102704'
+    spy = sinon.spy(controller.events, 'find') 
+    controller.getEvents req, res,(err,result) ->
+      spy.calledWith({'business' : {$in:["123", "354","546"]}}).should.be.true
+      done()                   

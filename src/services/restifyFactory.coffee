@@ -38,13 +38,14 @@ build = ->
     ['get', '/dev/bcryptPassword', devController, {handler:'bcryptPassword'}]
     ['get', '/api/getevents', legacyRouteController, {handler: 'search'}]
     ['get', '/api/getevent', legacyRouteController, {handler:'get'}]
-    ['get', '/business/:id/events', businessController, {handler:'getEvents'}]
+    ['get', '/business/:id/', businessController, {handler:'getEvents'}]
     ['get', '/feed/:id/results', feedController, {handler: 'getResults'}]
     ['get', '/widget/:id/results', widgetController, {handler: 'getResults'}]
     ['get', '/user/:id/businesses', userController, {handler:'businesses'}]
     ['get', '/user/:id/events', userController, {handler:'events'}]
     ['put', '/user/:id/password', userController, {handler:'password'}]
     ['post', '/media/upload', mediaController, {handler:'uploads'}]
+    ['get', '/user/:id/media', mediaController, {handler:'media'}]
   ]
 
   scaffold = (resource, controller) ->
