@@ -44,7 +44,7 @@ build = ->
     ['get', '/user/:id/businesses', userController, {handler:'businesses'}]
     ['get', '/user/:id/events', userController, {handler:'events'}]
     ['put', '/user/:id/password', userController, {handler:'password'}]
-    ['post', '/media/upload', mediaController, {handler:'uploads'}]
+    ['post', '/media', mediaController, {handler:'uploads'}]
     ['get', '/user/:id/media', mediaController, {handler:'media'}]
   ]
 
@@ -60,6 +60,7 @@ build = ->
   scaffold('user', userController)
   scaffold('feed', feedController)
   scaffold('widget', widgetController)
+  scaffold('media', mediaController)
   scaffold('promotionTarget', promotionTargetController)
   scaffold('promotionRequest', promotionRequestController)
 

@@ -4,3 +4,9 @@ module.exports.resize = (width, height, url) ->
   a = t.indexOf('upload')
   t[a+1] = "c_fill,h_#{height},w_#{width}"
   t.join('/')
+
+module.exports.getId = (url) ->
+  t = url.split('/')
+  final = t[t.length-1]
+  return final
+  

@@ -49,14 +49,27 @@ class RestfulController
     @model.findById req.params.id, {}, {}, (err, target) =>
       return next new restify.ResourceNotFoundError() if not target
       if @security.destroy(req.authUser, target)
-        target.remove (err, doc) =>
-          @hooks.destroy.post 
-            resource : target
-            req : req
-            res : res
-            success: () -> 
-              res.send 204
-              next()    
+        @hooks.destroy.pre
+          req:req
+          res:res
+          target:target
+          fail: ()->
+              res.send {success:false,message:"This media is in use."}, { 'Content-type': 'application/json' }, 400
+              console.log 'failed'
+              next()
+          success: ()=>  
+            target.remove (err, doc) =>
+              if err
+                console.log err
+              else 
+                console.log doc
+                @hooks.destroy.post 
+                  resource : target
+                  req : req
+                  res : res
+                  success: () -> 
+                    res.send 204
+                    next()  
       else
         return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")
   
