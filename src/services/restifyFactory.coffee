@@ -46,6 +46,7 @@ build = ->
     ['put', '/user/:id/password', userController, {handler:'password'}]
     ['post', '/media', mediaController, {handler:'uploads'}]
     ['get', '/user/:id/media', mediaController, {handler:'media'}]
+    ['get', '/user/:id/widgets', widgetController, {handler:'getForUser'}]
   ]
 
   scaffold = (resource, controller) ->

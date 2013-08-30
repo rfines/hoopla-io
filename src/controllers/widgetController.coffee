@@ -28,4 +28,16 @@ class WidgetController extends RestfulController
           res.send err.code || 500, err.message || "Internal Error Occurred"
         else
           res.send 200, data
+
+  getForUser : (req, res, next) =>
+    if req.params.id
+      @model.find {"user": req.params.id}, {}, {lean:true}, (err, widgets)=>
+        if err
+          res.status = 400
+          res.send({ success: false, error: "Could not find widgets for this user." }, { 'Content-type': 'application/json' }, 400)
+          next()
+        else
+          res.send 200, widgets
+          next()  
+          
 module.exports = new WidgetController()
