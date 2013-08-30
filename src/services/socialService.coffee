@@ -35,7 +35,6 @@ twitterPost = (pr, cb) ->
   else
     status = {status:pr.message}
 
-  console.log status
   tw.post 'statuses/update', status, (error, reply)->
     if error
       cb error, null
@@ -50,5 +49,4 @@ module.exports.publish = (promotionRequest, cb) ->
     when 'FACEBOOK-POST' then facebookPost(promotionRequest, cb)
     when 'TWITTER-POST' then twitterPost(promotionRequest, cb)
     else
-      console.log 'unsupported type'
       cb "Unsupported type error"

@@ -11,13 +11,11 @@ init = ->
 
 uploadImage = (data, cb) =>
   stream = cloudinary.uploader.upload_stream (result) ->
-    console.log result
     if result.error
       cb result.error, null
     else
       cb null, result
   reader = new StringReader(data)
-  console.log reader
   reader.on('data', stream.write)
   reader.on('end', stream.end)
   reader.resume()

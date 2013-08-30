@@ -89,14 +89,12 @@ class RestfulController
         success: =>
           target = new @model(req.body)
           if @security.create(req.authUser, target)
-            console.log target.media
             target.validate (err) =>
               if err
                 console.log err
                 res.send 400, err
                 next()
               else
-                console.log target.media
                 target.save (err, doc) =>
                   if err
                     res.send 400, err

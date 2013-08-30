@@ -26,7 +26,6 @@ class BusinessController extends SearchableController
     super(@name)
 
   getEvents : (req,res,next) =>
-    console.log req
     if req.params.id and not req.query.ids
       @events.find {"business": req.params.id}, {},{lean:true}, (err, result)->
         if err
