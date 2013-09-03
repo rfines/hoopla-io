@@ -34,9 +34,9 @@ class BusinessController extends SearchableController
         else
           res.send 200, result
           next()
-    else if req.query.addition_ids
+    else if req.query.additional_ids
       ids = req.query.additional_ids.split ','
-      if _.indexOf(ids, req.params.id) is -1
+      if _.indexOf(ids, req.params.id) is -1 and req.params.id
         ids.push req.params.id
       @events.find {"business":{$in : ids}}, {}, {lean:true}, (err, result)->
         if err

@@ -65,6 +65,7 @@ describe "Operations for Business Routes", ->
 
   it 'should return a list of events owned by a business', (done) ->
     req.params = {}
+    req.query  = {}
     req.params.id = "123"
     req.params.ll  = '-94.595033,39.102704'
     spy = sinon.spy(controller.events, 'find') 
@@ -74,7 +75,8 @@ describe "Operations for Business Routes", ->
 
   it 'should return a list of all events owned by all businesses', (done) ->
     req.params = {}
-    req.params.businesses = ["123", "354","546"]
+    req.query  = {}
+    req.query.additional_ids = "123,354,546"
     req.params.ll  = '-94.595033,39.102704'
     spy = sinon.spy(controller.events, 'find') 
     controller.getEvents req, res,(err,result) ->
