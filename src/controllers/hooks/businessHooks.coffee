@@ -5,14 +5,14 @@ hookLibrary = require('./hookLibrary')
 module.exports = exports = 
   UserService : require('../../services/data/userService')
   create:
-    pre : hookLibrary.unpopulateMedia
+    pre : hookLibrary.unpopulate
     post : (options) ->  
       options.req.authUser.businessPrivileges = options.req.authUser.businessPrivileges || []
       options.req.authUser.businessPrivileges.push {business : options.target, role : 'OWNER'}
       options.req.authUser.save (err) ->
         options.success() if options.success
   update:
-    pre : hookLibrary.unpopulateMedia
+    pre : hookLibrary.unpopulate
     post : hookLibrary.default
   search:
     pre : hookLibrary.default

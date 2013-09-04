@@ -41,6 +41,7 @@ class UserController extends RestfulController
             if privIds.length > 0
               q = @businessModel.find {'_id': {$in:privIds} }, {}, {lean:true}
               q.populate('media')
+              q.populate('promotionTargets')
               q.exec (error,busData) ->
                 if error
                   res.send 500, error

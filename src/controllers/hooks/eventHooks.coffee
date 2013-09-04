@@ -3,7 +3,7 @@ hookLibrary = require('./hookLibrary')
 module.exports = exports =
   scheduleService : require('../../services/schedulingService')
   create:
-    pre : hookLibrary.unpopulateMedia
+    pre : hookLibrary.unpopulate
     post : (options) =>
       exports.scheduleService.calculate options.target, (err, occurrences) ->
         if not err
@@ -11,7 +11,7 @@ module.exports = exports =
           options.target.save()
           options.success() if options.success  
   update:
-    pre : hookLibrary.unpopulateMedia
+    pre : hookLibrary.unpopulate
     post : (options) =>
       exports.scheduleService.calculate options.target, (err, occurrences) ->
         if not err
