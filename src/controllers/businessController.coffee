@@ -7,6 +7,7 @@ class BusinessController extends SearchableController
   model : require('../models/business').Business
   searchService : require('../services/searchService')
   events : require('../models/event').Event
+  promoTarget: require('../models/promotionTarget').PromotionTarget
 
   security: 
     get : securityConstraints.anyone
@@ -48,6 +49,20 @@ class BusinessController extends SearchableController
     else
       res.send 400, "Invalid request."
       next()
-
-
+  addPromotionTarget: (req,res,next)=>
+    if req.body
+      if req.body._id
+        console.log "here is an id"
+      else
+        target = new @promoTarget(req.body)
+        target.save (err)=>
+          console.log target._id
+          business = @model.findByIdAndUpdate req.params.id, {$push: {'promotionTargets': target}}, (er, doc)->
+            console.log er
+            console.log doc
+            res.send 201
+            next()
+    else
+      res.send 500
+      next()
 module.exports = new BusinessController()
