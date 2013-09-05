@@ -5,6 +5,7 @@ Media = require('./media').MediaSchema
 Contact = require('./contact').ContactSchema
 SocialMediaLinks = require('./socialMediaLink').SocialMediaLinkSchema
 Business= require('./business').BusinessSchema
+PromotionRequest = require('./promotionRequest').PromtionRequestSchema
 
 EventSchema = new Schema
   name: 
@@ -21,6 +22,8 @@ EventSchema = new Schema
     start: Date
     end: Date
   }]
+  promotionRequests:[{type:ObjectId, ref:'promotionRequest'}]
+ 
   tags: [String]
   cost: Number
   website:

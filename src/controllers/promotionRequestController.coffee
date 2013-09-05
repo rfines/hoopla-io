@@ -14,5 +14,5 @@ class PromotionRequestController extends RestfulController
 
   constructor : (@name) ->
     super(@name)
-
+  
 module.exports = new PromotionRequestController()
