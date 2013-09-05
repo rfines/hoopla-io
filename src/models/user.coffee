@@ -9,7 +9,8 @@ UserSchema = new Schema
     required: true
     lowercase: true
     trim: true
-  name: String
+  firstName: String
+  lastName: String
   password:
     type: String
   encryptionMethod:
