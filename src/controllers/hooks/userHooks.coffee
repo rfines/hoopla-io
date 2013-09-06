@@ -5,10 +5,9 @@ module.exports = exports =
   collaboratorRequest : require('../../models/collaboratorRequest').CollaboratorRequest
   create:
     pre : (options) ->
-      user = options.target
-      exports.bcryptService.encrypt user.password, (encrypted) ->
-        user.password = encrypted
-        user.encryptionMethod = 'BCRYPT'
+      exports.bcryptService.encrypt options.req.body.password, (encrypted) ->
+        options.req.body.password = encrypted
+        options.req.body.encryptionMethod = 'BCRYPT'
         options.success() if options.success
     post: (options) ->
       user = options.target
