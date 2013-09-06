@@ -2,6 +2,7 @@ _ = require 'lodash'
 SearchableController = require('./searchableController')
 securityConstraints = require('./helpers/securityConstraints')
 
+
 class BusinessController extends SearchableController
   type: 'business'
   model : require('../models/business').Business
@@ -56,7 +57,6 @@ class BusinessController extends SearchableController
       else
         target = new @promoTarget(req.body)
         target.save (err)=>
-          console.log target._id
           business = @model.findByIdAndUpdate req.params.id, {$push: {'promotionTargets': target}}, (er, doc)->
             console.log er
             console.log doc

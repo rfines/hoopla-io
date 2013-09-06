@@ -7,6 +7,8 @@ PromotionTargetSchema = new mongoose.Schema
     enum: ['TWITTER', 'FACEBOOK']
   accessToken: String
   accessTokenSecret: String
+  profileImageUrl: String
+  profileName: String
   expiration: Date
 
 module.exports = 

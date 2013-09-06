@@ -42,7 +42,6 @@ twitterPost = (pr, cb) ->
       console.log reply
       cb null, reply
 
-
 module.exports.publish = (promotionRequest, cb) ->
   switch promotionRequest.pushType
     when 'FACEBOOK-EVENT' then facebookEvent(promotionRequest, cb)
