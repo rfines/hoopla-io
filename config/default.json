@@ -15,7 +15,6 @@
     "pwResetUrl" : "http://localhost:3000/password/reset",
     "registerUrl": "http://localhost:3000/demo/register"
   },
-
   "jobs" : {
     "run" : true
   },
