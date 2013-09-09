@@ -22,7 +22,7 @@ WidgetSchema = new Schema
       default: 'Point'
     coordinates: [Number]
   } 
-  businessId: {type:ObjectId, ref:'business'}
+  businesses: [{type:ObjectId, ref:'business'}]
   radius : Number
   tags : [String]
   user: {type:ObjectId, ref:'user'}

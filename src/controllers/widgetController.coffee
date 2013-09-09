@@ -12,22 +12,27 @@ class WidgetController extends RestfulController
     update : securityConstraints.hasAuthUser
     destroy : securityConstraints.hasAuthUser
   getFields:{}
-  hooks : require('./hooks/restfulHooks.coffee')
+  hooks : require('./hooks/widgetHooks.coffee')
   constructor : (@name) ->
     super(@name)
 
   getResults : (req, res, next) =>
     id = req.params.id
     @model.findById id, (err, data) =>
-      if data.businessId
-        criteria = {'business': data.businessId}
-      else
-        criteria = new SearchQuery().ofCoordinates(data.geo.coordinates[0], data.geo.coordinates[1]).within(data.radius).withTags(data.tags).build()
-      @event.find criteria, {}, {lean:true}, (err, data) ->
-        if err 
-          res.send err.code || 500, err.message || "Internal Error Occurred"
+      if data
+        if data.businessId
+          criteria = {'business': data.businessId}
         else
-          res.send 200, data
+          criteria = new SearchQuery().ofCoordinates(data.geo.coordinates[0], data.geo.coordinates[1]).within(data.radius).withTags(data.tags).build()
+        @event.find criteria, {}, {lean:true}, (err, data) ->
+          if err 
+            res.send err.code || 500, err.message || "Internal Error Occurred"
+          else
+            res.send 200, data
+          next()
+      else
+        res.send 404
+        next()
 
   getForUser : (req, res, next) =>
     if req.params.id
