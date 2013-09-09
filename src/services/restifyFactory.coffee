@@ -14,6 +14,7 @@ widgetController = require '../controllers/widgetController'
 promotionTargetController = require '../controllers/promotionTargetController'
 promotionRequestController = require '../controllers/promotionRequestController'
 mediaController = require '../controllers/mediaController'
+eventTagController = require '../controllers/eventTagController'
 
 build = ->
   server = restify.createServer(name: "hoopla-io-api")
@@ -65,6 +66,7 @@ build = ->
   scaffold('media', mediaController)
   scaffold('promotionTarget', promotionTargetController)
   scaffold('promotionRequest', promotionRequestController)
+  scaffold('eventTag', eventTagController)
 
   routingService.init server, routes
   return server

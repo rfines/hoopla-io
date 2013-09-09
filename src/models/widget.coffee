@@ -5,15 +5,15 @@ Business= require('./business').BusinessSchema
 User = require('./user').UserSchema
 
 WidgetSchema = new Schema
-  name: String
-  filters: Boolean
-  limit:Number
-  type: {
+  widgetType: {
     type:String
     enum:["event-by-location","event-by-business"]
     required:true
     default:'event-by-location'
   }
+  name: String
+  filters: Boolean
+  limit:Number
   geo: {
     'type':
       type: String,
@@ -26,6 +26,12 @@ WidgetSchema = new Schema
   radius : Number
   tags : [String]
   user: {type:ObjectId, ref:'user'}
+  height: Number
+  width: Number
+  widgetStyle: {
+    type:String
+    enum: ['dark','light']
+  }
 
 module.exports = 
   Widget : mongoose.model('widget', WidgetSchema, 'widget')
