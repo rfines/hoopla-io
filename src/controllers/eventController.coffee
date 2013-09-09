@@ -27,7 +27,7 @@ class EventController  extends SearchableController
   constructor : (@name) ->
     super(@name)  
 
-  addPromotionRequest : (req, res, next)->
+  addPromotionRequest : (req, res, next)=>
     if req.body
       console.log req.body
       if req.body._id
@@ -39,7 +39,7 @@ class EventController  extends SearchableController
             console.log err
             next()
           else
-            event = @model.findByIdAndUpdate req.params.id, {$push: {'promotionRequests': target}}, (er, doc)->
+            event = @model.findByIdAndUpdate req.params.id, {$push: {'promotionRequests': target}}, (er, doc)=>
               if er
                 console.log er
                 res.send 400, er
