@@ -14,14 +14,17 @@ WidgetSchema = new Schema
   name: String
   filters: Boolean
   limit:Number
-  geo: {
-    'type':
-      type: String,
-      required: true,
-      enum: ['Point', 'LineString', 'Polygon'],
-      default: 'Point'
-    coordinates: [Number]
-  } 
+  location: {
+    address: {type: String}
+    neighborhood : String
+    geo: {
+      'type':
+        type: String,
+        enum: ['Point', 'LineString', 'Polygon'],
+        default: 'Point'
+      coordinates: [Number]
+    }    
+  }
   businesses: [{type:ObjectId, ref:'business'}]
   radius : Number
   tags : [String]

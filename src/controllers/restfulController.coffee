@@ -55,14 +55,12 @@ class RestfulController
           target:target
           fail: ()->
               res.send {success:false,message:"This media is in use."}, { 'Content-type': 'application/json' }, 400
-              console.log 'failed'
               next()
           success: ()=>  
             target.remove (err, doc) =>
               if err
                 console.log err
               else 
-                console.log doc
                 @hooks.destroy.post 
                   resource : target
                   req : req

@@ -29,9 +29,14 @@ calculate= (item,cb) ->
         else
           endRange = new Date(x.end)
       occurrences = later.schedule({schedules:[transformed]}).next(dayCount,startRange,endRange)
+      occurrences = _.map occurrences, (o) ->
+        m = moment(o)
+        return {start: m.toDate(), end: m.add('minutes', x.duration).toDate()}
     cb null, occurrences
   else
-    cb null, _.pluck(item.fixedOccurrences, 'start')
+    o = _.map item.fixedOccurrences, (item) ->
+      {start : item.start, end : item.end}
+    cb null, o
 
 forLater = (item, cb) ->
   output = {}

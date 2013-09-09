@@ -20,10 +20,10 @@ class WidgetController extends RestfulController
     id = req.params.id
     @model.findById id, (err, data) =>
       if data
-        if data.businessId
-          criteria = {'business': data.businessId}
+        if data.businesses
+          criteria = {'business': {$in : data.businesses}}
         else
-          criteria = new SearchQuery().ofCoordinates(data.geo.coordinates[0], data.geo.coordinates[1]).within(data.radius).withTags(data.tags).build()
+          criteria = new SearchQuery().ofCoordinates(data.location.geo.coordinates[0], data.location.geo.coordinates[1]).within(data.radius).withTags(data.tags).build()
         @event.find criteria, {}, {lean:true}, (err, data) ->
           if err 
             res.send err.code || 500, err.message || "Internal Error Occurred"

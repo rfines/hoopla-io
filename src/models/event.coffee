@@ -17,7 +17,10 @@ EventSchema = new Schema
     trim: true
   host: {type:ObjectId, ref:'business'}
   business : {type:ObjectId, ref:'business', required:true}
-  occurrences:[Date]
+  occurrences:[{
+    start: Date
+    end: Date
+  }]
   tags: [String]
   cost: Number
   website:
