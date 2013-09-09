@@ -1,3 +1,6 @@
+process.on 'uncaughtException', (err) ->
+  console.log 'caught unhandled exception:'
+  console.log err.stack || err
 CONFIG = require('config')
 mongoService = require './services/mongoService'
 restifyFactory = require './services/restifyFactory'
