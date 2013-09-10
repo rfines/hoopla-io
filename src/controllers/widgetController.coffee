@@ -24,6 +24,7 @@ class WidgetController extends RestfulController
           criteria = {'business': {$in : data.businesses}}
         else
           criteria = new SearchQuery().ofCoordinates(data.location.geo.coordinates[0], data.location.geo.coordinates[1]).within(data.radius).withTags(data.tags).build()
+        criteria['occurrences.start'] = {$gte : new Date()}
         @event.find criteria, {}, {lean:true}, (err, data) ->
           if err 
             res.send err.code || 500, err.message || "Internal Error Occurred"
