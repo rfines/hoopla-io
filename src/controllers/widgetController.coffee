@@ -24,7 +24,9 @@ class WidgetController extends RestfulController
         if data.widgetType is 'event-by-business'
           criteria = {'business': {$in : data.businesses}}
         else
-          criteria = new SearchQuery().ofCoordinates(data.location.geo.coordinates[0], data.location.geo.coordinates[1]).within(data.radius).withTags(data.tags).build()
+          sq = new SearchQuery().ofCoordinates(data.location.geo.coordinates[0], data.location.geo.coordinates[1]).within(data.radius)
+          sq.withTags(data.tags) if data.tags and data.tags.legnth > 0
+          criteria = sq.build()
         criteria['occurrences.start'] = {$gte : new Date()}
         q = @event.find criteria, fields, {lean:true}
         q.populate('host', 'name')
