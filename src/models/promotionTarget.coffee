@@ -9,6 +9,8 @@ PromotionTargetSchema = new mongoose.Schema
   accessTokenSecret: String
   profileImageUrl: String
   profileName: String
+  profileCoverPhoto:String
+  profileId: String
   expiration: Date
 
 module.exports = 

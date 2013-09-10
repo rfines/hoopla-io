@@ -6,12 +6,13 @@ _ = require('lodash')
 _request = require('request')
 
 facebookPost = (promotionRequest, cb) ->
-  content = promotionRequest.content  
+  content = promotionRequest.message  
   graph.setAccessToken promotionRequest.promotionTarget.accessToken
+  page = promotionRequest.profileId
   wallPost = {
     message: content
   }
-  graph.post "me/feed", wallPost, (err, res) ->
+  graph.post "#{{page}}/feed", wallPost, (err, res) ->
     cb(err)
 
 facebookEvent = (pr, cb) ->
@@ -19,8 +20,11 @@ facebookEvent = (pr, cb) ->
     name : pr.title
     start_time: pr.startTime
     descrition : pr.message
+    picture: pr.media[0]?.url
+
   }
-  graph.post "me/events", event, (err, res) ->
+  page = pr.profileId
+  graph.post "#{{page}}/events", event, (err, res) ->
     cb(err)
 
 twitterPost = (pr, cb) ->
