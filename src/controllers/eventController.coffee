@@ -37,14 +37,15 @@ class EventController  extends SearchableController
         target.save (err)=>
           if err
             console.log err
+            res.send 400, err
             next()
           else
             event = @model.findByIdAndUpdate req.params.id, {$push: {'promotionRequests': target}}, (er, doc)=>
+              console.log "Saved the promotion request"
               if er
-                console.log er
                 res.send 400, er
+                next()
               else
-                console.log doc
                 res.send 201
-              next()
+                next()
 module.exports = new EventController()

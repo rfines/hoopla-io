@@ -7,25 +7,47 @@ _request = require('request')
 
 facebookPost = (promotionRequest, cb) ->
   content = promotionRequest.message  
-  graph.setAccessToken promotionRequest.promotionTarget.accessToken
-  page = promotionRequest.profileId
+  page = promotionRequest.pageId
   wallPost = {
     message: content
   }
-  graph.post "#{{page}}/feed", wallPost, (err, res) ->
-    cb(err)
+  console.log "Posting status update to feed with this id:"
+  console.log page
+  if page.length > 0 && promotionRequest.pageAccessToken.length > 0
+    graph.setAccessToken promotionRequest.pageAccessToken
+    graph.post "#{{page}}/feed/", wallPost, (err, res) ->
+      console.log err?.message
+      console.log res
+      cb(err)
+  else
+    graph.setAccessToken promotionRequest.promotionTarget.accessToken
+    graph.post "me/feed/", wallPost, (err, res) ->
+      console.log err?.message
+      console.log res
+      cb(err)
 
 facebookEvent = (pr, cb) ->
   event = {
     name : pr.title
-    start_time: pr.startTime
-    descrition : pr.message
+    start_time: moment(pr.startTime).toDate().toISOString()
+    description : pr.message
     picture: pr.media[0]?.url
 
   }
-  page = pr.profileId
-  graph.post "#{{page}}/events", event, (err, res) ->
-    cb(err)
+  page = pr.pageId
+  if page.length > 0 && pr.pageAccessToken.length > 0
+    graph.setAccessToken pr.pageAccessToken
+    console.log page
+    graph.post "#{{page}}/events", event, (err, res) ->
+      console.log err?.message 
+      console.log res
+      cb(err)
+  else
+    graph.setAccessToken pr.promotionTarget.accessToken
+    graph.post "me/events/", wallPost, (err, res) ->
+      console.log err?.message
+      console.log res
+      cb(err)
 
 twitterPost = (pr, cb) ->
   tw = new twit({ 

@@ -9,6 +9,8 @@ PromotionRequestSchema = new mongoose.Schema
   startTime : Date
   location : String
   pageId: String
+  pageAccessToken:String
+  promotionTime: Date
   promotionTarget : {type: ObjectId, ref:'promotionTarget'}
   media:[{type : ObjectId, ref : 'media'}]
   status : {

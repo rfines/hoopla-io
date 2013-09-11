@@ -12,8 +12,9 @@ module.exports.runOnce = (onComplete) ->
       else        
         item.update {$set : {'status.code' : 'COMPLETE', 'status.completedDate' : new Date()}}, (err) ->
           cb(err)
-  q = promotionRequest.find { 'status.code' : {$ne : 'COMPLETE'}, 'status.retryCount' : {$lt : 3}}
+  q = promotionRequest.find { 'status.code' : {$ne : 'COMPLETE'},'promotionTime':{$lte :new Date()}, 'status.retryCount' : {$lt : 3}}
   q.populate('promotionTarget')
+  q.populate('media')
   q.exec (err, data) ->
     async.eachLimit data, 10, promote, (err) ->
       onComplete() if onComplete
