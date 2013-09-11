@@ -58,9 +58,7 @@ class BusinessController extends SearchableController
         target = new @promoTarget(req.body)
         target.save (err)=>
           business = @model.findByIdAndUpdate req.params.id, {$push: {'promotionTargets': target}}, (er, doc)->
-            console.log er
-            console.log doc
-            res.send 201
+            res.send 200, doc
             next()
     else
       res.send 500

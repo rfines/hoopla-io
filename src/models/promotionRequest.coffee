@@ -14,6 +14,7 @@ PromotionRequestSchema = new mongoose.Schema
   promotionTarget : {type: ObjectId, ref:'promotionTarget'}
   media:[{type : ObjectId, ref : 'media'}]
   status : {
+    postId:String
     code :
       type: String
       default: 'WAITING'

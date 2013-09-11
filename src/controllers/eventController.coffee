@@ -46,6 +46,10 @@ class EventController  extends SearchableController
                 res.send 400, er
                 next()
               else
-                res.send 201
+                console.log "returning"
+                res.send 200, doc
                 next()
+    else
+      res.send 500
+      next()
 module.exports = new EventController()
