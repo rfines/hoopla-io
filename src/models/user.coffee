@@ -4,6 +4,9 @@ ObjectId = mongoose.Schema.ObjectId
 Business = require('./business').BusinessSchema
 
 UserSchema = new Schema
+  userType:
+    type: String
+    enum: ['BUSINESS','PUBLISHER']
   email:
     type: String
     required: true
