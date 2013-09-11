@@ -16,20 +16,20 @@ describe "User Routes", ->
 
   it "should bcrypt a password on user creation", (done) ->
     bcryptSpy = sinon.spy(hooks.bcryptService, 'encrypt')
-    req = {}
+    req = {
+      body:
+        password : 'myPassword'
+    }
     res = {}
     next = ->
       console.log 'next'
-    user = 
-      password : 'myPassword'
     hooks.create.pre 
-      target : user
       req : req
       res: res
       success: ->
         bcryptSpy.calledWith('myPassword').should.be.true
-        user.password.should.be.equal 'encryptedPassword'
-        user.encryptionMethod.should.be.equal 'BCRYPT'
+        req.body.password.should.be.equal 'encryptedPassword'
+        req.body.encryptionMethod.should.be.equal 'BCRYPT'
         done()
     
 

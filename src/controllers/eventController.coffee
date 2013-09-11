@@ -5,7 +5,6 @@ securityConstraints = require('./helpers/securityConstraints')
 class EventController  extends SearchableController
   model : require('../models/event').Event
   type: 'event'
-  populate: ['media']
   hooks: require('./hooks/eventHooks')
   promoRequest : require('../models/promotionRequest').PromotionRequest
   
