@@ -19,7 +19,7 @@ class UserController extends RestfulController
     destroy : (authenticatedUser, targetUser) ->
       authenticatedUser?._id and authenticatedUser._id.equals(targetUser._id) 
     update : (authenticatedUser, targetUser) ->
-      authenticatedUser and authenticatedUser._id is targetUser._id
+      authenticatedUser and authenticatedUser._id.equals(targetUser._id)
     create : () ->
       true
 
