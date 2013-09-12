@@ -50,6 +50,7 @@ build = ->
     ['get', '/user/:id/widgets', widgetController, {handler:'getForUser'}]
     ['post', '/business/:id/promotionTarget', businessController, {handler: 'addPromotionTarget'}]
     ['post', '/event/:id/promotionRequest', eventController, {handler:'addPromotionRequest'}]
+    ['get', '/venues', businessController, {handler: 'allVenues'}]
   ]
 
   scaffold = (resource, controller) ->

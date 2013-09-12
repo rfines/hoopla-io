@@ -59,7 +59,8 @@ class RestfulController
           success: ()=>  
             target.remove (err, doc) =>
               if err
-                console.log err
+                res.send 500, err
+                next()
               else 
                 @hooks.destroy.post 
                   resource : target
@@ -89,13 +90,7 @@ class RestfulController
                   req : req
                   res : res
                   success: =>
-                    if @populate?.length > 0
-                      out = target.toObject()
-                      for x in @populate
-                        out[x] = originalBody[x]
-                      res.send 200, out
-                    else
-                      res.send 200, doc
+                    res.send 200, req.body
                     next()               
       else
         return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")        
