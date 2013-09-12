@@ -10,6 +10,9 @@ PromotionRequestSchema = new mongoose.Schema
   location : String
   pageId: String
   pageAccessToken:String
+  ticket_uri: String
+  link: String
+  caption:String
   promotionTime: Date
   promotionTarget : {type: ObjectId, ref:'promotionTarget'}
   media:[{type : ObjectId, ref : 'media'}]
