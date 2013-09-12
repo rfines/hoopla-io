@@ -5,12 +5,12 @@ ss = require '../services/socialService'
 
 module.exports.runOnce = (onComplete) ->
   promote = (item, cb) ->
-    ss.publish item, (err) ->
+    ss.publish item, (err,id) ->
       if err
         item.update {$set : {'status.code' : 'FAILED', 'status.lastError' : err}, $inc : {'status.retryCount' : 1}}, (err) ->
           cb err
       else        
-        item.update {$set : {'status.code' : 'COMPLETE', 'status.completedDate' : new Date()}}, (err) ->
+        item.update {$set : {'status.code' : 'COMPLETE','status.postId' :id, 'status.completedDate' : new Date()}}, (err) ->
           cb(err)
   q = promotionRequest.find { 'status.code' : {$ne : 'COMPLETE'},'promotionTime':{$lte :new Date()}, 'status.retryCount' : {$lt : 3}}
   q.populate('promotionTarget')
