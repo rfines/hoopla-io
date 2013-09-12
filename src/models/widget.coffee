@@ -35,6 +35,7 @@ WidgetSchema = new Schema
     type:String
     enum: ['dark','light']
   }
+  accentColor: String
 
 module.exports = 
   Widget : mongoose.model('widget', WidgetSchema, 'widget')
