@@ -90,7 +90,7 @@ class RestfulController
                   res : res
                   success: =>
                     if @populate?.length > 0
-                      out = doc.toObject()
+                      out = target.toObject()
                       for x in @populate
                         out[x] = originalBody[x]
                       res.send 200, out
