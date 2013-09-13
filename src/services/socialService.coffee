@@ -52,7 +52,7 @@ facebookEvent = (pr, cb) ->
 
   }
   page = pr.pageId
-  if page?.length > 0 && pr.pageAccessToken.length > 0
+  if page?.length > 0 && pr.pageAccessToken?.length > 0
     graph.setAccessToken pr.pageAccessToken
     url="#{page}/events/"
   else
