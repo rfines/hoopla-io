@@ -28,10 +28,12 @@ calculate= (item,cb) ->
           endRange = new Date(moment().add('days', dayCount))
         else
           endRange = new Date(x.end)
-      occurrences = later.schedule({schedules:[transformed]}).next(dayCount,startRange,endRange)
+      occurrences = later.schedule({schedules:[transformed]}).next(2,startRange,endRange)
       occurrences = _.map occurrences, (o) ->
         m = moment(o)
-        return {start: m.toDate(), end: m.add('minutes', x.duration).toDate()}
+        s = moment(m.toDate()).toDate()
+        e = moment(m.toDate()).add('minutes', x.duration).toDate()
+        return {start: s, end: e}
     cb null, occurrences
   else
     o = _.map item.fixedOccurrences, (item) ->
@@ -44,14 +46,26 @@ forLater = (item, cb) ->
     output.d = item.day
   else if item.days?.length
     output.d = item.days
-  if item.h?.length
-    output.h= item.h
-  else if item.hour?.length
-    output.h = item.hour
-  if item.m?.length
-    output.m= item.m
-  else if item.minute?.length
-    output.m = item.minute
+  if item.h
+    if _.isArray(item.h)
+      output.h= item.h
+    else
+      output.h = [item.h]
+  else if item.hour
+    if _.isArray(item.hour)
+      output.h= item.hour
+    else
+      output.h = [item.hour]
+  if item.m
+    if _.isArray(item.h)
+      output.m= item.m
+    else
+      output.m = [item.m]
+  else if item.minute
+    if _.isArray(item.h)
+      output.m= item.minute
+    else
+      output.m = [item.minute]
   if item.dayOfWeek?.length
     output.dw= item.dayOfWeek
   else if item.dw?.length
