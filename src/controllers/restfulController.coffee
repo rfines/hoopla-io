@@ -25,7 +25,10 @@ class RestfulController
     id = req.params.id
     checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$")
     if not checkForHexRegExp.test(id)
-      @model.findOne {legacyId : req.params.id}, @getFields, {lean : true}, (err, target) =>
+      q = @model.findOne {legacyId : req.params.id}, @getFields
+      q.lean()
+      q.populate(@populate.join(' ')) if @populate
+      q.exec (err, target) =>
         if @security.get(req.authUser, target)
           if not err and not target
             res.send 404
@@ -35,7 +38,10 @@ class RestfulController
         else
           return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")
     else
-      @model.findById req.params.id, @getFields, {lean : true}, (err, target) =>
+      q = @model.findById req.params.id, @getFields
+      q.lean()
+      q.populate(@populate.join(' ')) if @populate
+      q.exec (err, target) =>
         if @security.get(req.authUser, target)
           if not err and not target
             res.send 404
