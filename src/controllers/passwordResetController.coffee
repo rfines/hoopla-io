@@ -17,6 +17,7 @@ class PasswordResetController
 
   requestResetEmail : (req, res, next) =>  
     body = req.body
+    console.log CONFIG.hooplaIoWeb.pwResetUrl
     pr = new @passwordReset()
     pr.email = body.email
     pr.token = @tokenService.generateWithTimestamp(12)
