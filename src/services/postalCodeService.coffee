@@ -1,9 +1,10 @@
 PostalCode = require('../models/postalCode').PostalCode
 cache = require('../services/cacheService')
+_ = require 'lodash'
 
 module.exports.get = (code, cb) ->
   cache.get "POSTALCODE:#{code}" , (error, value, extras) ->
-      if not error and not value
+      if errr or (not value or value is 'null')
         PostalCode.findOne {'code':code}, {}, {lean:true}, (err,doc) ->
           cache.setex "POSTALCODE:#{code}", 2592000, JSON.stringify(doc)
           cb(err, doc) if cb
