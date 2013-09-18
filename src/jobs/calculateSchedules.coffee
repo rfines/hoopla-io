@@ -7,16 +7,22 @@ module.exports.runOnce = (onComplete) ->
   calculateSchedules = (item,cb)=>
     scheduleService.calculate item, (error, occurrences) ->
       if error
-        cb error, null
+        console.log error
+        cb null
       else  
         item.occurrences = occurrences
         item.save (errors, next)=>
           if errors
-            cb errors, null
+            console.log errors
+            cb null, null
           else
             cb null, null
 
-  events.find {$or:["schedules.end":{$gte: Date.now()}, {"fixedOccurrences.end":{$gte:Date.now()}}]},{}, {}, (err, data) ->
-    async.each data, calculateSchedules, ->
+  query = {$or:["schedules.end":{$gte: Date.now()}, {"fixedOccurrences.end":{$gte:Date.now()}}, {'schedules.end' : {$exists : false}}]}
+  events.find query,{}, {}, (err, data) ->
+    console.log 'calculate schedules'
+    async.eachSeries data, calculateSchedules, (err) ->
+      console.log err
+      console.log 'all done'
       onComplete() if onComplete
       

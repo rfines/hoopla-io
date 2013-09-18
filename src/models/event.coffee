@@ -30,10 +30,6 @@ EventSchema = new Schema
     type: String
     required: false
     trim: true
-  eventType:
-    type: [String]
-    enum: ['ENTERTAINMENT', 'ARTS', 'MUSIC','FAMILY','FOOD']
-    required: false
   bands: [String]
   media:[{type : ObjectId, ref : 'media'}]
   contactName: String

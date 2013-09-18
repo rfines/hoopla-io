@@ -27,6 +27,8 @@ indexBusiness = (business, cb) ->
     name : business.name
     description : business.description
   elasticSearchClient.index(index, "business", doc, business._id.toString()
+  ).on('data', (d) ->
+    cb()
   ).on('error', (err) ->
     cb err
   ).exec()
@@ -37,6 +39,8 @@ indexEvent = (event, cb) ->
     description : event.description
     bands : event.bands  
   elasticSearchClient.index(index, "event", doc, event._id.toString()  
+  ).on('data', (d) ->
+    cb()  
   ).on('error', (err) ->
     cb err
   ).exec()  
