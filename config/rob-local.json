@@ -29,9 +29,9 @@
     "my_access_token_secret":"xVxbh681oP3KhmSx5XssTG1qNk9XN6nbJ1l3UPOio8g"
   },
   "cloudinary":{
-    "cloud_name":"hu9ncnicw",
-    "api_key": "455736716834584",
-    "api_secret":"F7IF2obNLguBajXvvm5Klci1qII"
+    "cloud_name":"robs-cloud",
+    "api_key": "684181961883665",
+    "api_secret":"DXpm6IcpfVU1AUDNQZB8iAlz_Zw"
 
   }
 
