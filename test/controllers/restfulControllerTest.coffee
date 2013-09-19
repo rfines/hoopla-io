@@ -25,10 +25,25 @@ describe "Base Operations for RESTful Routes", ->
     res = 
       send: ( (status, body) ->)        
     modelSpy = 
-      findById : (id, fields, options, cb) ->
-        cb null, document
+      findById : (id, fields, options) ->
+        return {
+          lean : ->
+            console.log 'populate'
+          populate: ->
+            console.log 'populate'
+          exec : (cb) ->
+            cb null, document
+        }
+        
       findOne : (query, fields, options, cb) ->
-        cb null, document
+        return {
+          lean : ->
+            console.log 'populate'
+          populate: ->
+            console.log 'populate'
+          exec : (cb) ->
+            cb null, document
+        }
       remove : (query, cb) ->
         cb null, document
       findByIdAndUpdate : (id, body, cb) ->
@@ -62,8 +77,15 @@ describe "Base Operations for RESTful Routes", ->
       done()            
   
   it "should return a 404 when the resource is not found", (done) ->
-    controller.model.findById = (id, fields, options, cb) ->
-      cb(null, null)   
+    controller.model.findById = (id, fields, options) ->
+      return {
+        lean : ->
+          console.log 'populate'
+        populate: ->
+          console.log 'populate'
+        exec : (cb) ->
+          cb null, null
+      } 
     spy = sinon.spy(res, "send");
     controller.get req, res, ->
       spy.calledWith(404).should.be.true

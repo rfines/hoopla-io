@@ -39,13 +39,14 @@ class SearchQuery
       query.maxCost = 
         $lte: @maxCost
     if @start and @end
-      query.occurrences=
+      query['occurrences.start'] =
         $gte: @start,$lte:@end
     else if @start
-      query.occurrences = 
+      query['occurrences.start'] = 
         $gte:@start
     if @businessId
       query.business =@businessId
+    console.log query
     return query 
 
   buildFromParams: (params) ->
