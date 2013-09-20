@@ -45,4 +45,3 @@ module.exports = exports =
   destroy:
     pre : hookLibrary.default
     post : hookLibrary.default  
-

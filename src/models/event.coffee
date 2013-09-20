@@ -61,6 +61,7 @@ EventSchema = new Schema
       end: Date
     }
   ]
+  scheduleText: String
   fixedOccurrences: [
     {
       start: Date

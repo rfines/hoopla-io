@@ -46,7 +46,6 @@ class SearchQuery
         $gte:@start
     if @businessId
       query.business =@businessId
-    console.log query
     return query 
 
   buildFromParams: (params) ->

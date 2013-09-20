@@ -36,7 +36,6 @@ module.exports = exports =
           else
             event.find {media:options.target._id}, {},{lean:true}, (error, docs)=>
               if error
-                console.log error
                 options.error = error
                 options.fail()
               else if docs.length > 0

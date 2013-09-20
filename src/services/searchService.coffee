@@ -20,9 +20,7 @@ init= () ->
   elasticSearchClient = new ElasticSearchClient(serverOptions)
 
 deleteIndex = (cb) ->
-  console.log 'in the fucking delete'
   elasticSearchClient.deleteIndex(index).exec ->
-    console.log 'deleted index, now create'
     elasticSearchClient.createIndex(index).exec cb
 
 

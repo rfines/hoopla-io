@@ -52,14 +52,11 @@ class BusinessController extends SearchableController
       next()
   addPromotionTarget: (req,res,next)=>
     if req.body
-      if req.body._id
-        console.log "here is an id"
-      else
-        target = new @promoTarget(req.body)
-        target.save (err)=>
-          business = @model.findByIdAndUpdate req.params.id, {$push: {'promotionTargets': target}}, (er, doc)->
-            res.send 200, doc
-            next()
+      target = new @promoTarget(req.body)
+      target.save (err)=>
+        business = @model.findByIdAndUpdate req.params.id, {$push: {'promotionTargets': target}}, (er, doc)->
+          res.send 200, doc
+          next()
     else
       res.send 500
       next()

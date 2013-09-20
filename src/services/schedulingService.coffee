@@ -12,23 +12,17 @@ calculate= (item,cb) ->
     now = moment()
     startRange = new Date()
     endRange = new Date()
-    if item.startRange?.length
-      startRange = new Date(item.startRange)
-    else
-      startRange = new Date(now)
+    startRange = new Date(now)
     for x in item.schedules
       transformed = {}
       forLater x, (err,result)->
         if not err
           transformed = result
-      if item.endRange?.length
-        endRange = new Date(item.endRange)
+      if moment().add('days', dayCount) < moment(x.end)
+        endRange = new Date(moment().add('days', dayCount))
       else
-        if moment().add('days', dayCount) < moment(x.end)
-          endRange = new Date(moment().add('days', dayCount))
-        else
-          endRange = new Date(x.end)
-      occurrences = later.schedule({schedules:[transformed]}).next(2,startRange,endRange)
+        endRange = new Date(x.end)
+      occurrences = later.schedule({schedules:[transformed]}).next(dayCount,startRange,endRange)
       occurrences = _.map occurrences, (o) ->
         m = moment(o)
         s = moment(m.toDate()).toDate()
@@ -39,6 +33,9 @@ calculate= (item,cb) ->
     o = _.map item.fixedOccurrences, (item) ->
       {start : item.start, end : item.end}
     cb null, o
+
+scheduleText: (item, cb) ->
+  cb null, 'test'
 
 forLater = (item, cb) ->
   output = {}
@@ -62,7 +59,7 @@ forLater = (item, cb) ->
     else
       output.m = [item.m]
   else if item.minute
-    if _.isArray(item.h)
+    if _.isArray(item.minute)
       output.m= item.minute
     else
       output.m = [item.minute]
