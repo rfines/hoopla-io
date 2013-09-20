@@ -10,7 +10,7 @@ module.exports.runOnce = (onComplete) ->
         item.update {$set : {'status.code' : 'FAILED', 'status.lastError' : err}, $inc : {'status.retryCount' : 1}}, (err) ->
           cb err
       else        
-        item.update {$set : {'status.code' : 'COMPLETE','status.postId' :id, 'status.completedDate' : new Date()}}, (err) ->
+        item.update {$set : {'status.code' : 'COMPLETE','status.postId' :id.id, 'status.completedDate' : new Date()}}, (err) ->
           cb(err)
   q = promotionRequest.find { 'status.code' : {$ne : 'COMPLETE'},'promotionTime':{$lte :new Date()}, 'status.retryCount' : {$lt : 3}}
   q.populate('promotionTarget')
