@@ -23,5 +23,4 @@ module.exports.runOnce = (onComplete) ->
           async.eachSeries events, indexEvent, (err) ->
             cb null, null              
     }, (err, results) ->
-      console.log 'done'
       onComplete() if onComplete

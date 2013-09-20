@@ -25,7 +25,6 @@ class AuthTokenController
             onPass = =>
               match = _.find doc.authTokens, (item)=>
                 return item.apiKey is req.authorization.basic.username
-              console.log match
               if not match
                 token = "#{@tokenService.generateWithTimestamp(12)}"
                 @updateToken(doc, req.authorization.basic.username, token)

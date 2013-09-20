@@ -82,12 +82,8 @@ twitterPost = (pr, cb) ->
 
 bitlyShorten=(url, cb)=>
   bit = new bitly(CONFIG.bitly.username, CONFIG.bitly.apiKey)
-  console.log bit
   bit.shorten url, (err,response) =>
-    console.log err
-    console.log response
     if not response.status_code is 200
-      console.log response.status_text
       cb err, ''
     else
       cb null, response.data.url
