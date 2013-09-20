@@ -29,8 +29,9 @@ class WidgetController extends RestfulController
           criteria = sq.build()
         criteria['occurrences.start'] = {$gte : new Date()}
         q = @event.find criteria, fields, {lean:true}
-        q.populate('host', 'name')
+        q.populate('business', 'name')
         q.exec (err, data) ->
+          console.log data[0].business
           if err 
             res.send err.code || 500, err.message || "Internal Error Occurred"
           else
