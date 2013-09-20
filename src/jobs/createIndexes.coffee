@@ -16,11 +16,11 @@ module.exports.runOnce = (onComplete) ->
     async.parallel {
       businesses: (cb) ->
         Business.find {}, {}, {lean:true}, (err, businesses) ->
-          async.eachLimit businesses, 20, indexBusiness, (err) ->
+          async.eachSeries businesses, indexBusiness, (err) ->
             cb null, null
       events: (cb) ->
         Event.find {}, {}, {lean:true}, (err, events) ->
-          async.eachLimit events, 20, indexEvent, (err) ->
+          async.eachSeries events, indexEvent, (err) ->
             cb null, null              
     }, (err, results) ->
       console.log 'done'
