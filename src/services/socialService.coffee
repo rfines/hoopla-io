@@ -7,6 +7,7 @@ _request = require('request')
 Events = require('../models/event').Event
 eventUtils = require('../utils/eventUtils')
 moment = require 'moment'
+bitly = require 'bitly'
 
 facebookPost = (promotionRequest, cb) ->
   content = promotionRequest.message  
@@ -62,16 +63,34 @@ twitterPost = (pr, cb) ->
     access_token:pr.promotionTarget.accessToken,
     access_token_secret: pr.promotionTarget.accessTokenSecret
   })
-  if pr.media
-    status = {status:pr.message+' '+pr.media[0].url}
+
+  if pr.media.length > 0
+    bitlyShorten pr.media[0].url, (err, url)=>
+      status = {status:pr.message+'\n'+ url }
+      tw.post 'statuses/update', status, (error, reply)->
+        if error
+          cb error, null
+        else
+          cb null, reply
   else
     status = {status:pr.message}
+    tw.post 'statuses/update', status, (error, reply)->
+      if error
+        cb error, null
+      else
+        cb null, reply
 
-  tw.post 'statuses/update', status, (error, reply)->
-    if error
-      cb error, null
+bitlyShorten=(url, cb)=>
+  bit = new bitly(CONFIG.bitly.username, CONFIG.bitly.apiKey)
+  console.log bit
+  bit.shorten url, (err,response) =>
+    console.log err
+    console.log response
+    if not response.status_code is 200
+      console.log response.status_text
+      cb err, ''
     else
-      cb null, reply
+      cb null, response.data.url
 
 module.exports.publish = (promotionRequest, cb) ->
   switch promotionRequest.pushType

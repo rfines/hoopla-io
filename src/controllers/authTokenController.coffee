@@ -1,5 +1,6 @@
 mongoose = require 'mongoose'
 restify = require 'restify'
+_ = require 'lodash'
 
 class AuthTokenController
   model : require('../models/user').User
@@ -22,9 +23,15 @@ class AuthTokenController
             next new restify.NotAuthorizedError("Username or password is invalid")
           if doc.encryptionMethod is 'BCRYPT'
             onPass = =>
-              token = "#{@tokenService.generateWithTimestamp(12)}"
-              @updateToken(doc, req.authorization.basic.username, token)
-              res.send 200, {authToken : token, user : doc._id}
+              match = _.find doc.authTokens, (item)=>
+                return item.apiKey is req.authorization.basic.username
+              console.log match
+              if not match
+                token = "#{@tokenService.generateWithTimestamp(12)}"
+                @updateToken(doc, req.authorization.basic.username, token)
+                res.send 200, {authToken : token, user : doc._id}
+              else
+                res.send 200, {authToken: match.authToken, user : doc._id}
               next()  
             @bcryptService.check body.password, doc.password, onPass, onFail
           else
@@ -37,7 +44,7 @@ class AuthTokenController
             @sha1Service.check body.password, doc.password, onPass, onFail
 
   updateToken: (user, apiKey, token) ->
-    user.update { $pull : {authTokens : { 'apiKey' : apiKey}}}, (err) ->
+    user.update {authTokens : { 'apiKey' : apiKey}}, (err) ->
       user.update { $push : {authTokens: {apiKey : apiKey, authToken: token}}}, (err) ->
         console.log err if err
 

@@ -9,5 +9,9 @@
   }, 
   "jobs" : {
     "run" : false
+  },
+  "bitly":{
+    "apiKey":"R_44d5cd00ef3d3a578d2a4fea2fe9d7e5",
+    "username":"localruckus"
   }  
 }
