@@ -62,7 +62,8 @@ class BusinessController extends SearchableController
       next()
 
   allVenues : (req, res, next) =>  
-    q = @model.find {}, @getFields, {lean:true}
+    fields = {name:1,location:1}
+    q = @model.find {}, fields, {lean:true}
     q.populate(@populate.join(' '))
     q.exec (err, data) ->
       res.send data
