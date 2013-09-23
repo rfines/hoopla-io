@@ -4,8 +4,6 @@ _ = require 'lodash'
 
 later.date.localTime();
 calculate= (item,cb) ->
-  if item._id.toString() is '523ca70c5b4d99afc3012ac3'
-    console.log 'found it'
   if item.schedules.length
     occurrences = []
     dayCount = 90
