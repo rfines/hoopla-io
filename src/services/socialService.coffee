@@ -54,7 +54,7 @@ facebookEvent = (pr, cb) ->
     url="me/events/"
   
   graph.post "#{url}", event, (err, res) ->
-      cb(err, res.id)
+      cb(err, res?.id)
 
 twitterPost = (pr, cb) ->
   tw = new twit({ 
@@ -71,14 +71,14 @@ twitterPost = (pr, cb) ->
         if error
           cb error, null
         else
-          cb null, reply
+          cb null, reply?.id
   else
     status = {status:pr.message}
     tw.post 'statuses/update', status, (error, reply)->
       if error
         cb error, null
       else
-        cb null, reply
+        cb null, reply?.id
 
 bitlyShorten=(url, cb)=>
   bit = new bitly(CONFIG.bitly.username, CONFIG.bitly.apiKey)
