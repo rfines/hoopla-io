@@ -7,6 +7,7 @@ class EventController  extends SearchableController
   type: 'event'
   hooks: require('./hooks/eventHooks')
   promoRequest : require('../models/promotionRequest').PromotionRequest
+  fields: {schedules: 0}
   
   security: 
     get : securityConstraints.anyone

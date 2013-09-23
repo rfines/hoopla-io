@@ -59,7 +59,7 @@ class SearchableController extends RestfulController
     ll = req.params.ll.split(',')
     centerCoordinates = {latitude : parseFloat(ll[1]), longitude: parseFloat(ll[0])}  
     criteria = new SearchQuery().buildFromParams(req.params)
-    q = @model.find(criteria, {}, {lean:true})
+    q = @model.find(criteria, @fields, {lean:true})
     q.populate(@populate.join(' '))
     q.skip(req.params.skip) if req.params.skip
     q.limit(req.params.limit) if req.params.limit

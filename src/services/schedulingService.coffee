@@ -4,6 +4,8 @@ _ = require 'lodash'
 
 later.date.localTime();
 calculate= (item,cb) ->
+  if item._id.toString() is '523ca70c5b4d99afc3012ac3'
+    console.log 'found it'
   if item.schedules.length
     occurrences = []
     dayCount = 90
@@ -28,11 +30,13 @@ calculate= (item,cb) ->
         s = moment(m.toDate()).toDate()
         e = moment(m.toDate()).add('minutes', x.duration).toDate()
         return {start: s, end: e}
-    cb null, occurrences
+      out = {occurrences : occurrences,}
+    out.scheduleText = scheduleText(item)
+    cb null, out
   else
     o = _.map item.fixedOccurrences, (item) ->
       {start : item.start, end : item.end}
-    cb null, o
+    cb null, {occurrences: o, scheduleText: ''}
 
 forLater = (item, cb) ->
   output = {}
@@ -72,7 +76,7 @@ forLater = (item, cb) ->
     output.wm = item.weekOfMonth
   cb null, output
 
-scheduleText= (event, cb) ->
+scheduleText= (event) ->
   out = ""
   dayOrder =  ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   dayCountOrder = ['Last', 'First', 'Second', 'Third', 'Fourth']
@@ -89,9 +93,9 @@ scheduleText= (event, cb) ->
       else
         out = "Every #{days.join(', ')}"
       out = "#{out} until #{endDate.format('MM/DD/YYYY')}"
-    cb null, out
+    return out
   else
-    cb null, out
+    return out
 
 module.exports = 
   calculate : calculate

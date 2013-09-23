@@ -9,6 +9,7 @@ class BusinessController extends SearchableController
   searchService : require('../services/searchService')
   events : require('../models/event').Event
   promoTarget: require('../models/promotionTarget').PromotionTarget
+  fields: {}
 
   security: 
     get : securityConstraints.anyone

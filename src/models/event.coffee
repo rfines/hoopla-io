@@ -7,6 +7,13 @@ SocialMediaLinks = require('./socialMediaLink').SocialMediaLinkSchema
 Business= require('./business').BusinessSchema
 PromotionRequest = require('./promotionRequest').PromtionRequestSchema
 
+OccurrenceSchema = new Schema
+  start: Date
+  end: Date
+,
+  id: false
+  _id : false
+
 EventSchema = new Schema
   name: 
     type: String
@@ -18,12 +25,8 @@ EventSchema = new Schema
     trim: true
   host: {type:ObjectId, ref:'business'}
   business : {type:ObjectId, ref:'business', required:true}
-  occurrences:[{
-    start: Date
-    end: Date
-  }]
+  occurrences:[OccurrenceSchema]
   promotionRequests:[{type:ObjectId, ref:'promotionRequest'}]
- 
   tags: [String]
   cost: Number
   website:
