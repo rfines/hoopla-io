@@ -14,16 +14,17 @@ module.exports = exports =
     post : (options) =>
       exports.scheduleService.calculate options.target, (err, out) ->
         if not err
-          options.target.occurrences = out.occurrences
+          options.target.occurrences = out.occurrences if out.occurrences?
           options.target.scheduleText = out.scheduleText
           options.target.save()
           options.success() if options.success  
   update:
     pre : hookLibrary.unpopulate
     post : (options) =>
-      exports.scheduleService.calculate options.target, (err, occurrences) ->
+      exports.scheduleService.calculate options.target, (err, out) ->
         if not err
-          options.target.occurrences = occurrences
+          options.target.occurrences = out.occurrences if out.occurrences?
+          options.target.scheduleText = out.scheduleText
           options.target.save()
           options.success() if options.success
   search:

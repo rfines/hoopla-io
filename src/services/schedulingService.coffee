@@ -28,7 +28,7 @@ calculate= (item,cb) ->
         s = moment(m.toDate()).toDate()
         e = moment(m.toDate()).add('minutes', x.duration).toDate()
         return {start: s, end: e}
-      out = {occurrences : occurrences,}
+      out = {occurrences : occurrences}
     out.scheduleText = scheduleText(item)
     cb null, out
   else
