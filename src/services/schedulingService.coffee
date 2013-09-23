@@ -34,9 +34,6 @@ calculate= (item,cb) ->
       {start : item.start, end : item.end}
     cb null, o
 
-scheduleText: (item, cb) ->
-  cb null, 'test'
-
 forLater = (item, cb) ->
   output = {}
   if item.day?.length
@@ -75,6 +72,28 @@ forLater = (item, cb) ->
     output.wm = item.weekOfMonth
   cb null, output
 
+scheduleText= (event, cb) ->
+  out = ""
+  dayOrder =  ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  dayCountOrder = ['Last', 'First', 'Second', 'Third', 'Fourth']
+  if event.schedules?[0]
+    s = event.schedules[0]
+    endDate = moment(s.end)
+    if s.dayOfWeek?.length is 0 and s.dayOfWeekCount?.length is 0
+       out = 'Every Day'
+    else
+      days = _.map s.dayOfWeek, (i) ->
+        return dayOrder[i]
+      if s.dayOfWeekCount?.length > 0
+        out = "The #{dayCountOrder[s.dayOfWeekCount]} #{days.join(', ')} of the month"
+      else
+        out = "Every #{days.join(', ')}"
+      out = "#{out} until #{endDate.format('MM/DD/YYYY')}"
+    cb null, out
+  else
+    cb null, out
+
 module.exports = 
   calculate : calculate
+  scheduleText : scheduleText
   forLater : forLater
