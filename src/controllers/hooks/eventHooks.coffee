@@ -11,22 +11,10 @@ module.exports = exports =
   scheduleService : require('../../services/schedulingService')
   create:
     pre : hookLibrary.unpopulate
-    post : (options) =>
-      exports.scheduleService.calculate options.target, (err, out) ->
-        if not err
-          options.target.occurrences = out.occurrences if out.occurrences?
-          options.target.scheduleText = out.scheduleText
-          options.target.save()
-          options.success() if options.success  
+    post : hookLibrary.default
   update:
     pre : hookLibrary.unpopulate
-    post : (options) =>
-      exports.scheduleService.calculate options.target, (err, out) ->
-        if not err
-          options.target.occurrences = out.occurrences if out.occurrences?
-          options.target.scheduleText = out.scheduleText
-          options.target.save()
-          options.success() if options.success
+    post : hookLibrary.default
   search:
     pre : (options) ->
       if options.req.params?.tags

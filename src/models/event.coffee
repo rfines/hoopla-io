@@ -92,6 +92,16 @@ EventSchema = new Schema
   legacyEndDate: Date
 
 
+EventSchema.pre 'save', (next) ->
+  scheduleService = require('../services/schedulingService')
+  scheduleService.calculate @, (err, out) =>
+    if not err
+      @occurrences = out.occurrences if out.occurrences?
+      @scheduleText = out.scheduleText
+    next()
+  
+
+
 module.exports = 
   Event : mongoose.model('event', EventSchema, 'event')
 
