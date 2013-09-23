@@ -30,7 +30,9 @@ class BusinessController extends SearchableController
 
   getEvents : (req,res,next) =>
     if req.params.id and not req.query.ids
-      @events.find {"business": req.params.id}, {},{lean:true}, (err, result)->
+      q = @events.find {"business": req.params.id}, {},{lean:true}
+      q.populate('media')
+      q.exec (err, result)->
         if err
           res.send 400, err
           next()
