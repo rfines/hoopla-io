@@ -31,9 +31,13 @@ indexBusiness = (business, cb) ->
   elasticSearchClient.index(index, "business", doc, business._id.toString()
   ).on('data', (d) ->
     console.log d
-    cb()
+    setTimeout ->
+      cb null
+    , 500
   ).on('error', (err) ->
-    cb null
+    setTimeout ->
+      cb null
+    , 500
   ).exec()
 
 indexEvent = (event, cb) ->
@@ -44,9 +48,13 @@ indexEvent = (event, cb) ->
   elasticSearchClient.index(index, "event", doc, event._id.toString()  
   ).on('data', (d) ->
     console.log d
-    cb null
+    setTimeout ->
+      cb null
+    , 500
   ).on('error', (err) ->
-    cb null
+    setTimeout ->
+      cb null
+    , 500
   ).exec()  
 
 findBusinesses = (term, cb) ->

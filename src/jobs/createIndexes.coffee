@@ -23,6 +23,6 @@ module.exports.runOnce = (onComplete) ->
         Event.find {}, {}, {lean:true}, (err, events) ->
           async.eachSeries events, indexEvent, (err) ->
             console.log 'final callback for events'
-            cb null, null              
+            cb null, null
     }, (err, results) ->
       onComplete() if onComplete
