@@ -26,4 +26,3 @@ module.exports.runOnce = (onComplete) ->
             cb null, null              
     }, (err, results) ->
       onComplete() if onComplete
-    onComplete() if onComplete
