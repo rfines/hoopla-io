@@ -62,10 +62,16 @@ forLater = (item, cb) ->
       output.m= item.minute
     else
       output.m = [item.minute]
-  if item.dayOfWeek?.length
-    output.dw= item.dayOfWeek
-  else if item.dw?.length
-    output.dw = item.dw
+  if item.dayOfWeek
+    if _.isArray(item.dayOfWeek)
+      output.dw= item.dayOfWeek
+    else
+      output.dw = [item.dayOfWeek]  
+  else if item.dw
+    if _.isArray(item.dw)
+      output.dw= item.dw
+    else
+      output.dw = [item.dw]   
   if item.dayOfWeekCount?.length
     output.dayOfWeekCount= item.dayOfWeekCount
   if item.wm
