@@ -25,7 +25,6 @@ EventSchema = new Schema
     trim: true
   host: {type:ObjectId, ref:'business'}
   business : {type:ObjectId, ref:'business', required:true}
-  occurrences:[OccurrenceSchema]
   promotionRequests:[{type:ObjectId, ref:'promotionRequest'}]
   tags: [String]
   cost: Number
@@ -52,6 +51,12 @@ EventSchema = new Schema
   }    
   ticketUrl: String
   socialMediaLinks: [SocialMediaLinks]
+  fixedOccurrences: [
+    {
+      start: Date
+      end: Date
+    }
+  ]  
   schedules: [
     {
       hour: Number
@@ -63,13 +68,9 @@ EventSchema = new Schema
       end: Date
     }
   ]
+  occurrences:[OccurrenceSchema]
+  nextOccurrence: Date
   scheduleText: String
-  fixedOccurrences: [
-    {
-      start: Date
-      end: Date
-    }
-  ]  
   legacySchedule: {
     "dayNum": Number
     "period": Number
@@ -97,6 +98,7 @@ EventSchema.pre 'save', (next) ->
     if not err
       @occurrences = out.occurrences if out.occurrences?
       @scheduleText = out.scheduleText
+      @nextOccurrence = out.nextOccurrence
     next()
   
 

@@ -61,6 +61,7 @@ class SearchableController extends RestfulController
     criteria = new SearchQuery().buildFromParams(req.params)
     q = @model.find(criteria, @fields, {lean:true})
     q.populate(@populate.join(' '))
+    q.sort(@sort) if @sort
     q.skip(req.params.skip) if req.params.skip
     q.limit(req.params.limit) if req.params.limit
     q.exec (err, data) ->   

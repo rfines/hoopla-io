@@ -2,6 +2,7 @@ RestfulController = require('./restfulController')
 _ = require 'lodash'
 securityConstraints = require('./helpers/securityConstraints')
 SearchQuery = require('./helpers/SearchQuery')
+imageManipulation = require('./helpers/imageManipulation')
 
 class WidgetController extends RestfulController
   model : require('../models/widget').Widget
@@ -25,15 +26,20 @@ class WidgetController extends RestfulController
           criteria = {'business': {$in : data.businesses}}
         else
           sq = new SearchQuery().ofCoordinates(data.location.geo.coordinates[0], data.location.geo.coordinates[1]).within(data.radius)
+          sq.betweenDates(new Date())
           sq.withTags(data.tags) if data.tags and data.tags.legnth > 0
           criteria = sq.build()
         criteria['occurrences.start'] = {$gte : new Date()}
         q = @event.find criteria, fields, {lean:true}
         q.populate('business', 'name')
-        q.exec (err, data) ->
+        q.populate('media')
+        q.sort({'nextOccurrence':1})
+        q.exec (err, data) =>
           if err 
             res.send err.code || 500, err.message || "Internal Error Occurred"
           else
+            out = data
+            out = @rewriteImageUrl out
             res.send 200, data
           next()
       else
@@ -51,4 +57,10 @@ class WidgetController extends RestfulController
           res.send 200, widgets
           next()  
           
+
+  rewriteImageUrl : (originalList) =>
+    return _.map originalList, (item) ->
+      if item.media[0]?.url
+        item.media[0].url = imageManipulation.resize(100,100, item.media[0].url)
+      return item          
 module.exports = new WidgetController()

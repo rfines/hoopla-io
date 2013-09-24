@@ -17,12 +17,10 @@ module.exports.runOnce = (onComplete) ->
       events: (cb) ->
         Event.find {}, {}, {lean:true}, (err, events) ->
           async.eachSeries events, indexEvent, (err) ->
-            console.log 'final callback for events'
             cb null, null    
       businesses: (cb) ->
         Business.find {}, {}, {lean:true}, (err, businesses) ->
           async.eachSeries businesses, indexBusiness, (err) ->
-            console.log 'final callback for businesses'
             cb null, null
     }, (err, results) ->
       onComplete() if onComplete

@@ -30,11 +30,12 @@ calculate= (item,cb) ->
         return {start: s, end: e}
       out = {occurrences : occurrences}
     out.scheduleText = scheduleText(item)
+    out.nextOccurrence = _.first(occurrences).start
     cb null, out
   else
     o = _.map item.fixedOccurrences, (item) ->
       {start : item.start, end : item.end}
-    cb null, {occurrences: o, scheduleText: ''}
+    cb null, {occurrences: o, scheduleText: '', nextOccurrence : _.first(o).start}
 
 forLater = (item, cb) ->
   output = {}
