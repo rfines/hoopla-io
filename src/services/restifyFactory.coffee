@@ -51,6 +51,7 @@ build = ->
     ['post', '/business/:id/promotionTarget', businessController, {handler: 'addPromotionTarget'}]
     ['post', '/event/:id/promotionRequest', eventController, {handler:'addPromotionRequest'}]
     ['get', '/venues', businessController, {handler: 'allVenues'}]
+    ['get','/event/:id/invite.ics',eventController, {handler:'getICalFile'}]
   ]
 
   scaffold = (resource, controller) ->
