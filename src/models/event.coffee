@@ -57,7 +57,6 @@ EventSchema = new Schema
       hour: Number
       minute:Number
       duration:Number
-      days: [Number]
       dayOfWeekCount : [Number]
       dayOfWeek: [Number]
       start: Date
