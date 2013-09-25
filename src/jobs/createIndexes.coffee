@@ -8,9 +8,11 @@ module.exports.runOnce = (onComplete) ->
   indexBusiness = (item, cb) ->
       ss.indexBusiness item,(err) ->
         cb null
+      , true
   indexEvent = (item, cb) ->
     ss.indexEvent item, (err) ->
-      cb null  
+      cb null
+    , true
 
   ss.deleteIndex ->  
     Event.find {}, {}, {lean:true}, (err, events) ->
