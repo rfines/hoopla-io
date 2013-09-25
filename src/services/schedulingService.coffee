@@ -87,17 +87,19 @@ scheduleText= (event) ->
   dayCountOrder = ['Last', 'First', 'Second', 'Third', 'Fourth']
   if event.schedules?[0]
     s = event.schedules[0]
+    s.dayOfWeek = _.sortBy s.dayOfWeek, (i) ->
+      i    
     endDate = moment(s.end)
     if s.dayOfWeek?.length is 0 and s.dayOfWeekCount?.length is 0
        out = 'Every Day'
     else
       days = _.map s.dayOfWeek, (i) ->
-        return dayOrder[i]
+        return dayOrder[i-1]
       if s.dayOfWeekCount?.length > 0
         out = "The #{dayCountOrder[s.dayOfWeekCount]} #{days.join(', ')} of the month"
       else
         out = "Every #{days.join(', ')}"
-      out = "#{out} until #{endDate.format('MM/DD/YYYY')}"
+      out = "#{out} until #{endDate.format('MM/DD/YYYY')}"   
     return out
   else
     return out
