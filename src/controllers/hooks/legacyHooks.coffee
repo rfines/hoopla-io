@@ -112,21 +112,17 @@ module.exports = exports =
 
   transformDates:(params)=>
      if params.start
-        d={}
-        if moment(params.start).isValid() 
-          d = moment(params.start)
-        else
-          d = moment(params.start,["MM-DD-YYYY hh:mma","MM/DD/YYYY hh:mma","MMM DD, YYYY HH:mm:ssa","MM/DD/YYYY hh:mmA","MMM DD, YYYY HH:mm:ssA","YYYY-MM-DD","YYYY-MM-DDTHH","YYYY-MM-DD HH","YYYY-MM-DDTHH:mm","YYYY-MM-DD HH:mm","YYYY-MM-DDTHH:mm:ss","YYYY-MM-DD HH:mm:ss","YYYY-MM-DDTHH:mm:ss.SSS","YYYY-MM-DD HH:mm:ss.SSS","YYYY-MM-DDTHH:mm:ss Z","YYYY-MM-DD HH:mm:ss Z"])
-        params.start= d.toISOString()
+        params.start= exports.parseDate(params.start).toISOString()
       if params.end
-        e={}
-        if moment(params.end).isValid() 
-          e = moment(params.end)
-        else
-          e = moment(params.end,["MM-DD-YYYY hh:mma","MM/DD/YYYY hh:mma","MMM DD, YYYY HH:mm:ssa","MM/DD/YYYY hh:mmA","MMM DD, YYYY HH:mm:ssA","YYYY-MM-DD","YYYY-MM-DDTHH","YYYY-MM-DD HH","YYYY-MM-DDTHH:mm","YYYY-MM-DD HH:mm","YYYY-MM-DDTHH:mm:ss","YYYY-MM-DD HH:mm:ss","YYYY-MM-DDTHH:mm:ss.SSS","YYYY-MM-DD HH:mm:ss.SSS","YYYY-MM-DDTHH:mm:ss Z","YYYY-MM-DD HH:mm:ss Z"])
-        params.end= e.toISOString()
+        params.end= exports.parseDate(params.end).toISOString()
       return params
-
+  parseDate: (date)=>
+    d = {}
+    if moment(date).isValid() 
+      d = moment(date)
+    else
+      d = moment(date,["MM-DD-YYYY hh:mma","MM/DD/YYYY hh:mma","MMM DD, YYYY HH:mm:ssa","MM/DD/YYYY hh:mmA","MMM DD, YYYY HH:mm:ssA","YYYY-MM-DD","YYYY-MM-DDTHH","YYYY-MM-DD HH","YYYY-MM-DDTHH:mm","YYYY-MM-DD HH:mm","YYYY-MM-DDTHH:mm:ss","YYYY-MM-DD HH:mm:ss","YYYY-MM-DDTHH:mm:ss.SSS","YYYY-MM-DD HH:mm:ss.SSS","YYYY-MM-DDTHH:mm:ss Z","YYYY-MM-DD HH:mm:ss Z"])
+    return d
   search:
     pre : (options) =>
       exports.transformRequest options.req, options.res, (err, data) ->
