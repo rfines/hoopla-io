@@ -44,10 +44,10 @@ class PasswordResetController
                   res.send 200
                   next()
           else
-            res.send 403
+            res.send 401
             next()
       else
-        res.send 403
+        res.send 401
         next()
 
 module.exports =  new PasswordResetController()
