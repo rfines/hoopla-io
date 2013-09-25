@@ -30,7 +30,7 @@ calculate= (item,cb) ->
         return {start: s, end: e}
       out = {occurrences : occurrences}
     out.scheduleText = scheduleText(item)
-    out.nextOccurrence = _.first(occurrences).start
+    out.nextOccurrence = _.first(occurrences).start if occurrences?.length > 0
     cb null, out
   else
     o = _.map item.fixedOccurrences, (item) ->

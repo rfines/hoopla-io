@@ -100,7 +100,6 @@ EventSchema.pre 'save', (next) ->
       @scheduleText = out.scheduleText
       @nextOccurrence = out.nextOccurrence
     next()
-  
 
 
 module.exports = 

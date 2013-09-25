@@ -13,6 +13,10 @@ module.exports.runOnce = (onComplete) ->
       cb null  
 
   ss.deleteIndex ->  
+    Event.find {}, {}, {lean:true}, (err, events) ->
+      async.eachSeries events, indexEvent, (err) ->
+        onComplete() if onComplete
+    ###
     async.series {
       events: (cb) ->
         Event.find {}, {}, {lean:true}, (err, events) ->
@@ -24,3 +28,4 @@ module.exports.runOnce = (onComplete) ->
             cb null, null
     }, (err, results) ->
       onComplete() if onComplete
+    ###

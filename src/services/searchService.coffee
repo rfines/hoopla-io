@@ -32,15 +32,16 @@ indexBusiness = (business, cb) ->
   ).on('data', (d) ->
     console.log d
     setTimeout ->
-      cb null
+      cb null if cb
     , 500
   ).on('error', (err) ->
     setTimeout ->
-      cb null
+      cb null if cb
     , 500
   ).exec()
 
 indexEvent = (event, cb) ->
+  console.log 'i am indexing a business'
   doc =
     name : event.name
     description : event.description
@@ -49,11 +50,11 @@ indexEvent = (event, cb) ->
   ).on('data', (d) ->
     console.log d
     setTimeout ->
-      cb null
+      cb null if cb
     , 500
   ).on('error', (err) ->
     setTimeout ->
-      cb null
+      cb null if cb
     , 500
   ).exec()  
 
