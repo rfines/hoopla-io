@@ -7,6 +7,12 @@ module.exports = exports =
   postalCodeService : require('../../services/postalCodeService')
   transformRequest : (req,res, cb)->
     if req.params 
+      if req.params.start
+        d = moment(req.params.start,["MM-DD-YYYY hh:mma","YYYY-MM-DD","YYYY-MM-DDTHH","YYYY-MM-DD HH","YYYY-MM-DDTHH:mm","YYYY-MM-DD HH:mm","YYYY-MM-DDTHH:mm:ss","YYYY-MM-DD HH:mm:ss","YYYY-MM-DDTHH:mm:ss.SSS","YYYY-MM-DD HH:mm:ss.SSS","YYYY-MM-DDTHH:mm:ss Z","YYYY-MM-DD HH:mm:ss Z"])
+        req.params.start= d.toISOString()
+      if req.params.end
+        e = moment(req.params.start,["MM-DD-YYYY hh:mma","YYYY-MM-DD","YYYY-MM-DDTHH","YYYY-MM-DD HH","YYYY-MM-DDTHH:mm","YYYY-MM-DD HH:mm","YYYY-MM-DDTHH:mm:ss","YYYY-MM-DD HH:mm:ss","YYYY-MM-DDTHH:mm:ss.SSS","YYYY-MM-DD HH:mm:ss.SSS","YYYY-MM-DDTHH:mm:ss Z","YYYY-MM-DD HH:mm:ss Z"])
+        req.params.end= e.toISOString()
       zipcode = req.params.zipcode || 64105
       exports.postalCodeService.get zipcode, (err, doc) ->
         req.params.ll = "#{doc.geo.coordinates[0]},#{doc.geo.coordinates[1]}"
@@ -52,18 +58,18 @@ module.exports = exports =
         x.id = x.legacyId || x._id
         x.categories = ca.join ', '
         x.contactName = x.contactName
-        x.venueId = x.legacyBusinessId || x.legacyHostId || x.business.legacyId || x.business._id
-        x.venueName = x.business.name
+        x.venueId = x.legacyBusinessId || x.legacyHostId || x.business?.legacyId || x.business?._id
+        x.venueName = x.business?.name
         x.start = x.legacySchedules?[0]?.start || x.schedules?[0]?.start || x.fixedOccurrences?[0]?.start
         x.end =  x.legacyEndDate
         if imageH and imageW
           if x.media
             x.image = exports.transformImageUrl x.media[0]?.url, imageH, imageW
           if x.business?.media
-            x.venueImage = exports.transformImageUrl x.business.media[0] || x.host.media[0], imageH, imageW
+            x.venueImage = exports.transformImageUrl x.business?.media[0] || x.host?.media[0], imageH, imageW
         else
           x.image = x.media[0]?.url
-          x.venueImage = x.business.media?[0]?.url || ""
+          x.venueImage = x.business?.media?[0]?.url || ""
         x.startTime = new moment(x.start).format('hh:mm A')
         x.endTime = new moment(x.legacyEndDate).format('hh:mm A')
         x.phone = x.contactPhone

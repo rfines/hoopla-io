@@ -30,20 +30,31 @@ class SearchableController extends RestfulController
             datasources = [databaseResults]
             if req.params.keyword
               datasources.push searchIndexResults
-            async.parallel datasources, (err, results) =>
-              out = @mergeSearches(results)
-              out = @rewriteImageUrl req, out if req.params.height and req.params.width
-              res.body = out
-              @hooks.search.post 
-                req : req
-                res : res
-                success : =>
-                  res.send 200, res.body
+            if datasources?.length
+              async.parallel datasources, (err, results) =>
+                if err
+                  console.log err
+                  res.status err.code if err.code
+                  res.send err
                   next()
-                error : =>
-                  res.status = error.code
-                  res.send error.message
-                  next()
+                else
+                  out = @mergeSearches(results)
+                  out = @rewriteImageUrl req, out if req.params.height and req.params.width
+                  res.body = out
+                  @hooks.search.post 
+                    req : req
+                    res : res
+                    success : =>
+                      res.send 200, res.body
+                      next()
+                    error : =>
+                      res.status = error.code
+                      res.send error.message
+                      next()
+            else
+              res.satus = 400
+              res.send "No data found"
+              next()
 
 
   mergeSearches: (results) ->
@@ -71,8 +82,11 @@ class SearchableController extends RestfulController
           latitude: item.location.geo.coordinates[1]
         item.distance = geolib.getDistance centerCoordinates, businessCoordinates
         cb null
-      async.each data, calcDistance, (err) ->
-        cb err, data          
+      if data
+        async.each data, calcDistance, (err) ->
+          cb err, data          
+      else
+        cb {code:400, data:"No events were found"},null
 
   searchIndex : (req, cb) =>
     @searchService.find @type, req.params.keyword, (err, data) ->
