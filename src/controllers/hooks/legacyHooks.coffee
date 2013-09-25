@@ -7,12 +7,9 @@ module.exports = exports =
   postalCodeService : require('../../services/postalCodeService')
   transformRequest : (req,res, cb)->
     if req.params 
-      if req.params.start
-        d = moment(req.params.start,["MM-DD-YYYY hh:mma","YYYY-MM-DD","YYYY-MM-DDTHH","YYYY-MM-DD HH","YYYY-MM-DDTHH:mm","YYYY-MM-DD HH:mm","YYYY-MM-DDTHH:mm:ss","YYYY-MM-DD HH:mm:ss","YYYY-MM-DDTHH:mm:ss.SSS","YYYY-MM-DD HH:mm:ss.SSS","YYYY-MM-DDTHH:mm:ss Z","YYYY-MM-DD HH:mm:ss Z"])
-        req.params.start= d.toISOString()
-      if req.params.end
-        e = moment(req.params.start,["MM-DD-YYYY hh:mma","YYYY-MM-DD","YYYY-MM-DDTHH","YYYY-MM-DD HH","YYYY-MM-DDTHH:mm","YYYY-MM-DD HH:mm","YYYY-MM-DDTHH:mm:ss","YYYY-MM-DD HH:mm:ss","YYYY-MM-DDTHH:mm:ss.SSS","YYYY-MM-DD HH:mm:ss.SSS","YYYY-MM-DDTHH:mm:ss Z","YYYY-MM-DD HH:mm:ss Z"])
-        req.params.end= e.toISOString()
+      if req.params.start or req.params.end
+        req.params = exports.transformDates(req.params)
+
       zipcode = req.params.zipcode || 64105
       exports.postalCodeService.get zipcode, (err, doc) ->
         req.params.ll = "#{doc.geo.coordinates[0]},#{doc.geo.coordinates[1]}"
@@ -112,6 +109,23 @@ module.exports = exports =
       a = t.indexOf('upload')
       t[a+1] = "h_#{h},w_#{w}"
       return t.join('/')
+
+  transformDates:(params)=>
+     if params.start
+        d={}
+        if moment(params.start).isValid() 
+          d = moment(params.start)
+        else
+          d = moment(params.start,["MM-DD-YYYY hh:mma","MM/DD/YYYY hh:mma","MMM DD, YYYY HH:mm:ssa","MM/DD/YYYY hh:mmA","MMM DD, YYYY HH:mm:ssA","YYYY-MM-DD","YYYY-MM-DDTHH","YYYY-MM-DD HH","YYYY-MM-DDTHH:mm","YYYY-MM-DD HH:mm","YYYY-MM-DDTHH:mm:ss","YYYY-MM-DD HH:mm:ss","YYYY-MM-DDTHH:mm:ss.SSS","YYYY-MM-DD HH:mm:ss.SSS","YYYY-MM-DDTHH:mm:ss Z","YYYY-MM-DD HH:mm:ss Z"])
+        params.start= d.toISOString()
+      if params.end
+        e={}
+        if moment(params.end).isValid() 
+          e = moment(params.end)
+        else
+          e = moment(params.end,["MM-DD-YYYY hh:mma","MM/DD/YYYY hh:mma","MMM DD, YYYY HH:mm:ssa","MM/DD/YYYY hh:mmA","MMM DD, YYYY HH:mm:ssA","YYYY-MM-DD","YYYY-MM-DDTHH","YYYY-MM-DD HH","YYYY-MM-DDTHH:mm","YYYY-MM-DD HH:mm","YYYY-MM-DDTHH:mm:ss","YYYY-MM-DD HH:mm:ss","YYYY-MM-DDTHH:mm:ss.SSS","YYYY-MM-DD HH:mm:ss.SSS","YYYY-MM-DDTHH:mm:ss Z","YYYY-MM-DD HH:mm:ss Z"])
+        params.end= e.toISOString()
+      return params
 
   search:
     pre : (options) =>
