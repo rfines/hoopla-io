@@ -24,37 +24,47 @@ deleteIndex = (cb) ->
     elasticSearchClient.createIndex(index).exec cb
 
 
-indexBusiness = (business, cb) ->
+indexBusiness = (business, cb, throttle) ->
   doc = 
     name : business.name
     description : business.description
   elasticSearchClient.index(index, "business", doc, business._id.toString()
   ).on('data', (d) ->
-    console.log d
-    setTimeout ->
-      cb null
-    , 500
+    if throttle
+      console.log d
+      setTimeout ->
+        cb null if cb
+      , 800
+    else
+      cb null if cb
   ).on('error', (err) ->
     setTimeout ->
-      cb null
-    , 500
+      cb null if cb
+    , 800
   ).exec()
 
-indexEvent = (event, cb) ->
+indexEvent = (event, cb, throttle) ->
   doc =
     name : event.name
     description : event.description
     bands : event.bands  
   elasticSearchClient.index(index, "event", doc, event._id.toString()  
   ).on('data', (d) ->
-    console.log d
-    setTimeout ->
-      cb null
-    , 500
+    if throttle
+      console.log d
+      setTimeout ->
+        cb null if cb
+      , 800
+    else
+      cb null if cb
   ).on('error', (err) ->
-    setTimeout ->
-      cb null
-    , 500
+    if throttle
+      console.log d
+      setTimeout ->
+        cb null if cb
+      , 800
+    else
+      cb null if cb
   ).exec()  
 
 findBusinesses = (term, cb) ->

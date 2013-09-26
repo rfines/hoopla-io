@@ -39,6 +39,7 @@ var overkcApi = {
 
 db.user.save(overkcApi);
 
+/*
 var internalApi = {
   'email' : "info@localruckus.com",
   'name' : 'Internal Use',
@@ -48,6 +49,7 @@ var internalApi = {
 }
 
 db.user.save(internalApi);
+*/
 
 var pittApi = {
   'email' : "info@pittsburgh.ks",

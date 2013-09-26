@@ -6,15 +6,20 @@ expansions = {
 }
 hookLibrary = require('./hookLibrary')
 async = require 'async'
+searchService = require('../../services/searchService')
 
 module.exports = exports =
   scheduleService : require('../../services/schedulingService')
   create:
     pre : hookLibrary.unpopulate
-    post : hookLibrary.default
+    post : (options) ->
+      searchService.indexEvent options.target
+      options.success() if options.success
   update:
     pre : hookLibrary.unpopulate
-    post : hookLibrary.default
+    post : (options) ->
+      searchService.indexEvent options.target
+      options.success() if options.success
   search:
     pre : (options) ->
       if options.req.params?.tags

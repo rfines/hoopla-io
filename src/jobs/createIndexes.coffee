@@ -8,11 +8,17 @@ module.exports.runOnce = (onComplete) ->
   indexBusiness = (item, cb) ->
       ss.indexBusiness item,(err) ->
         cb null
+      , true
   indexEvent = (item, cb) ->
     ss.indexEvent item, (err) ->
-      cb null  
+      cb null
+    , true
 
   ss.deleteIndex ->  
+    Event.find {}, {}, {lean:true}, (err, events) ->
+      async.eachSeries events, indexEvent, (err) ->
+        onComplete() if onComplete
+    ###
     async.series {
       events: (cb) ->
         Event.find {}, {}, {lean:true}, (err, events) ->
@@ -24,3 +30,4 @@ module.exports.runOnce = (onComplete) ->
             cb null, null
     }, (err, results) ->
       onComplete() if onComplete
+    ###

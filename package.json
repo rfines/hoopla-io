@@ -5,7 +5,7 @@
     "node": "0.10.x"
   },
   "dependencies": {
-    "coffee-script": "*",
+    "coffee-script": "1.6.3",
     "restify": "2.6.x",
     "mongoose": "3.6.x",
     "config": "0.4.x",
@@ -16,12 +16,12 @@
     "async": "~0.2.9",
     "geolib": "~1.2.5",
     "elasticsearchclient": "~0.5.3",
-    "moment": "*",
-    "later": "*",
+    "moment": "~2.2.1",
+    "later": "~1.1.3",
     "request": "~2.25.0",
     "mandrill-api": "~1.0.28",
     "fbgraph": "~0.2.7",
-    "twit": "*",
+    "twit": "~1.1.9",
     "cloudinary": "~1.0.5",
     "bitly": "~1.2.4",
     "icalendar": "~0.6.5"
