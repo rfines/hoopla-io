@@ -1,7 +1,9 @@
 hookLibrary = require('./hookLibrary')
+mailchimpService = require '../../services/mailchimpService'
 
 module.exports = exports = 
   bcryptService : require('../../services/bcryptService')
+  mailchimpService : require '../../services/mailchimpService'
   collaboratorRequest : require('../../models/collaboratorRequest').CollaboratorRequest
   create:
     pre : (options) ->
@@ -11,6 +13,8 @@ module.exports = exports =
         options.success() if options.success
     post: (options) ->
       user = options.target
+      added = exports.mailchimpService.addToEmailList(user.email)
+      console.log added
       exports.collaboratorRequest.findOne {email: user.email}, {}, {}, (err, collab) ->
         if collab
           collab.completedDate = new Date()

@@ -14,6 +14,12 @@
     "apiKey":"R_44d5cd00ef3d3a578d2a4fea2fe9d7e5",
     "username":"localruckus"
   },
+  "email":{
+    "mailchimp":{
+      "apiKey":"5a9052a71dd678fda27d30b495123f1a-us7",
+      "listName":"Hoopla.Io users stage"
+    }
+  }
   "twitter":{
     "consumer_key":"qBBBqJXI1jO4tsUx2rOWtA",
     "consumer_secret":"YylIK7m4z7ZsnyqphCK3kwBn2S3MO8GecT2Ijfghg",

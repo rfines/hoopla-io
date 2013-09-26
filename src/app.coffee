@@ -9,7 +9,7 @@ cloudinaryService = require './services/cloudinaryService'
 mongoService.init()
 cloudinaryService.init()
 server = restifyFactory.build()
-
+mc = require('./services/mailchimpService').init()
 require('./services/cacheService')
 require('./services/searchService').init()
 

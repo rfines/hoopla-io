@@ -9,6 +9,10 @@
     "mandrill" : {
       "apiKey" : "1Vv5fCA7NHi63vYkKvaa7g",
       "username" : "app17015048@heroku.com"
+    }, 
+    "mailchimp":{
+      "apiKey":"5a9052a71dd678fda27d30b495123f1a-us7",
+      "listName":"Hoopla.Io users"
     }
   },
   "hooplaIoWeb" : {
