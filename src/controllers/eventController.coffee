@@ -36,7 +36,6 @@ class EventController  extends SearchableController
       target = new @promoRequest(req.body)
       target.save (err)=>
         if err
-          console.log err
           res.send 400, err
           next()
         else
@@ -54,22 +53,18 @@ class EventController  extends SearchableController
     if req.body and req.params.id
       @model.findById req.params.id,{},{lean:true},(err,doc)=>
         if err
-          console.log err
           res.send 401, err
           next()
         else
-          console.log req.params
           start = moment.unix(req.params.start)
           end = moment.unix(req.params.end)
           calendarService.getCalendar('ical',doc,start,end,(err,result)=>
             if err
-              console.log err
               res.send 400, err
               next()
             else
               res.setHeader("content-type","text/calendar;chaarset=UTF-8")
               res.setHeader("content-length" , result.length)
-              console.log res.headers()
               res.send 200,result.toString('binary')
               next()
           )

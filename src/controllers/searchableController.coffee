@@ -32,7 +32,6 @@ class SearchableController extends RestfulController
               datasources.push searchIndexResults
             async.parallel datasources, (err, results) =>
               if err
-                console.log err
                 res.status err.code if err.code
                 res.send err
                 next()

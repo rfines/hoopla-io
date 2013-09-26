@@ -28,8 +28,7 @@ module.exports = exports =
         found = false
         business.find {media: options.target._id}, {},{lean:true}, (err,doc)=>
           if err
-            console.log err
-            options.fail()
+            options.fail(err)
           else if doc.length > 0
             found = true
             options.fail()

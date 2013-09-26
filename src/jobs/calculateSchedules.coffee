@@ -7,7 +7,6 @@ module.exports.runOnce = (onComplete) ->
   process = (item,cb)=>
     item.save (err) =>
       cb null, null
-  console.log "calculating schedules"
   query = {$or:["schedules.end":{$gte: Date.now()}, {"fixedOccurrences.end":{$gte:Date.now()}}, {'schedules.end' : {$exists : false}}]}
   events.find query,{}, {}, (err, data) ->
     async.eachLimit data, 20, process, (err) ->

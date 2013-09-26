@@ -31,7 +31,6 @@ indexBusiness = (business, cb, throttle) ->
   elasticSearchClient.index(index, "business", doc, business._id.toString()
   ).on('data', (d) ->
     if throttle
-      console.log d
       setTimeout ->
         cb null if cb
       , 800
@@ -51,7 +50,6 @@ indexEvent = (event, cb, throttle) ->
   elasticSearchClient.index(index, "event", doc, event._id.toString()  
   ).on('data', (d) ->
     if throttle
-      console.log d
       setTimeout ->
         cb null if cb
       , 800
@@ -59,7 +57,6 @@ indexEvent = (event, cb, throttle) ->
       cb null if cb
   ).on('error', (err) ->
     if throttle
-      console.log d
       setTimeout ->
         cb null if cb
       , 800

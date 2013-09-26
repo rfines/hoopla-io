@@ -7,7 +7,6 @@ listId = ''
 init = ()=>
   mc = new mailchimp.Mailchimp(CONFIG.email.mailchimp.apiKey)
   mc.lists.list({filters:{list_name:CONFIG.email.mailchimp.listName}},(data)=>
-    console.log data.data[0]
     listId = data.data[0].id
 
   )
@@ -22,8 +21,6 @@ addToEmailList=(email)=>
     double_optin: false
     send_welcome: true
     , ((data)=>
-      console.log "success"
-      console.log data
       return true
     ),(error)=>
         if error.error

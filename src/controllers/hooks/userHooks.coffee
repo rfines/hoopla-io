@@ -14,7 +14,6 @@ module.exports = exports =
     post: (options) ->
       user = options.target
       added = exports.mailchimpService.addToEmailList(user.email)
-      console.log added
       exports.collaboratorRequest.findOne {email: user.email}, {}, {}, (err, collab) ->
         if collab
           collab.completedDate = new Date()
