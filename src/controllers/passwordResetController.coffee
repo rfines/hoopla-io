@@ -19,18 +19,27 @@ class PasswordResetController
     body = req.body
     pr = new @passwordReset()
     pr.email = body.email
-    pr.token = @tokenService.generateWithTimestamp(12)
     pr.requestDate = new Date()
-    pr.save (err, data) =>
-      emailOptions =
-        message: 
-          'to' : [{email:pr.email}]
-          'global_merge_vars' : [{name : 'PASSWORD_RESET_URL', content : "#{CONFIG.hooplaIoWeb.pwResetUrl}?token=#{pr.token}"}]
-        template_name : 'password-reset-request'
-        template_content : []
-      @emailService.send emailOptions, ->    
-        res.send 201
-        next()  
+    @user.findOne {email: body.email}, (err, doc) =>
+      if not doc
+        templateName = 'password-reset-request-bad-user'
+      else
+        templateName = 'password-reset-request-bad-user'
+      pr.token = @tokenService.generateWithTimestamp(12)
+      pr.save (err, data) =>
+        emailOptions =
+          message: 
+            'to' : [{email:pr.email}]
+            'global_merge_vars' : [
+              {name : 'PASSWORD_RESET_URL', content : "#{CONFIG.hooplaIoWeb.pwResetUrl}?token=#{pr.token}"}
+              {name : 'EMAIL', content : pr.email}
+              {name : 'REGISTER_URL', content : "#{CONFIG.hooplaIoWeb.registerUrl}"}
+            ]
+          template_name : templateName
+          template_content : []
+        @emailService.send emailOptions, ->    
+          res.send 201
+          next()  
 
   resetPassword : (req, res, next) =>
     body = req.body

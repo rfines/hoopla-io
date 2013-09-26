@@ -5,7 +5,7 @@
   },  
   "hooplaIoWeb" : {
     "pwResetUrl" : "http://stage.hoopla.io/password/reset",
-    "registerUrl": "http://stage.hoopla.io/demo/register"
+    "registerUrl": "http://stage.hoopla.io/register"
   }, 
   "jobs" : {
     "run" : false
