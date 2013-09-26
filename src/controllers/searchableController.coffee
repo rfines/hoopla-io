@@ -4,7 +4,7 @@ geolib = require('geolib')
 RestfulController = require('./restfulController')
 SearchQuery = require('./helpers/SearchQuery')
 imageManipulation = require('./helpers/imageManipulation')
-
+EventUtil = require('../utils/eventUtils')
 class SearchableController extends RestfulController
   searchService : require('../services/searchService')
   populate: ['media']
@@ -30,31 +30,27 @@ class SearchableController extends RestfulController
             datasources = [databaseResults]
             if req.params.keyword
               datasources.push searchIndexResults
-            if datasources?.length
-              async.parallel datasources, (err, results) =>
-                if err
-                  console.log err
-                  res.status err.code if err.code
-                  res.send err
-                  next()
-                else
-                  out = @mergeSearches(results)
-                  out = @rewriteImageUrl req, out if req.params.height and req.params.width
-                  res.body = out
-                  @hooks.search.post 
-                    req : req
-                    res : res
-                    success : =>
-                      res.send 200, res.body
-                      next()
-                    error : =>
-                      res.status = error.code
-                      res.send error.message
-                      next()
-            else
-              res.satus = 400
-              res.send "No data found"
-              next()
+            async.parallel datasources, (err, results) =>
+              if err
+                console.log err
+                res.status err.code if err.code
+                res.send err
+                next()
+              else
+                out = @mergeSearches(results)
+                out = @rewriteImageUrl req, out if req.params.height and req.params.width
+                res.body = out
+                @hooks.search.post 
+                  req : req
+                  res : res
+                  success : =>
+                    res.send 200, res.body
+                    next()
+                  error : =>
+                    res.status = error.code
+                    res.send error.message
+                    next()
+           
 
 
   mergeSearches: (results) ->
@@ -68,7 +64,9 @@ class SearchableController extends RestfulController
 
   searchDatabase : (req, cb) =>
     ll = req.params.ll.split(',')
-    centerCoordinates = {latitude : parseFloat(ll[1]), longitude: parseFloat(ll[0])}  
+    centerCoordinates = {latitude : parseFloat(ll[1]), longitude: parseFloat(ll[0])}
+    if req.params.start or req.params.end
+      EventUtil.transformDates(req.params)
     criteria = new SearchQuery().buildFromParams(req.params)
     q = @model.find(criteria, @fields, {lean:true})
     q.populate(@populate.join(' '))
@@ -82,11 +80,9 @@ class SearchableController extends RestfulController
           latitude: item.location.geo.coordinates[1]
         item.distance = geolib.getDistance centerCoordinates, businessCoordinates
         cb null
-      if data
-        async.each data, calcDistance, (err) ->
-          cb err, data          
-      else
-        cb {code:400, data:"No events were found"},null
+      async.each data, calcDistance, (err) ->
+        cb err, data          
+     
 
   searchIndex : (req, cb) =>
     @searchService.find @type, req.params.keyword, (err, data) ->

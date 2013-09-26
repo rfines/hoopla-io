@@ -2,14 +2,14 @@ TagMap= require('../../services/data/categoryMap')
 _ = require 'lodash'
 moment = require 'moment'
 hookLibrary = require('./hookLibrary')
-  
+EventUtil = require('../../utils/eventUtils')
+
 module.exports = exports =
   postalCodeService : require('../../services/postalCodeService')
   transformRequest : (req,res, cb)->
     if req.params 
       if req.params.start or req.params.end
-        req.params = exports.transformDates(req.params)
-
+        req.params = EventUtil.transformDates(req.params)
       zipcode = req.params.zipcode || 64105
       exports.postalCodeService.get zipcode, (err, doc) ->
         req.params.ll = "#{doc.geo.coordinates[0]},#{doc.geo.coordinates[1]}"
@@ -121,7 +121,7 @@ module.exports = exports =
     if moment(date).isValid() 
       d = moment(date)
     else
-      d = moment(date,["MM-DD-YYYY hh:mma","MM/DD/YYYY hh:mma","MMM DD, YYYY HH:mm:ssa","MM/DD/YYYY hh:mmA","MMM DD, YYYY HH:mm:ssA","YYYY-MM-DD","YYYY-MM-DDTHH","YYYY-MM-DD HH","YYYY-MM-DDTHH:mm","YYYY-MM-DD HH:mm","YYYY-MM-DDTHH:mm:ss","YYYY-MM-DD HH:mm:ss","YYYY-MM-DDTHH:mm:ss.SSS","YYYY-MM-DD HH:mm:ss.SSS","YYYY-MM-DDTHH:mm:ss Z","YYYY-MM-DD HH:mm:ss Z"])
+      d = moment(date,["MM-DD-YYYY hh:mma","MM/DD/YYYY hh:mma","MMM DD, YYYY HH:mm:ssa","MM/DD/YYYY hh:mmA","MMM DD, YYYY HH:mm:ssA","YYYY-MM-DD","YYYY-MM-DDTHH","YYYY-MM-DD HH","YYYY-MM-DDTHH:mm","YYYY-MM-DD HH:mm","YYYY-MM-DDTHH:mm:ss","YYYY-MM-DD HH:mm:ss","YYYY-MM-DDTHH:mm:ss.SSS","YYYY-MM-DD HH:mm:ss.SSS","YYYY-MM-DD HH:mm:ss.SSSZ","YYYY-MM-DDTHH:mm:ss.SSSZ","YYYY-MM-DDTHH:mm:ss Z","YYYY-MM-DD HH:mm:ss Z"])
     return d
   search:
     pre : (options) =>
