@@ -1,0 +1,10 @@
+#! /app/node_modules/.bin/coffee
+http = require("http")
+url = process.env.APPLICATION_URL || 'http://www.hoopla.io'
+
+http.get(url, (res) ->
+  console.log "Successfully pinged: #{url}"
+  process.exit 0
+).on "error", (e) ->
+  console.log "Error pinging: #{url}"
+  process.exit 1
