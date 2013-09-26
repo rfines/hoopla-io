@@ -89,7 +89,6 @@ EventSchema = new Schema
   legacyBusinessId: String  
   legacyHostId : String 
   legacyImage: String
-  legacyEndDate: Date
 
 
 EventSchema.pre 'save', (next) ->

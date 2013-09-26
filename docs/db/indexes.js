@@ -7,3 +7,5 @@ db.user.ensureIndex( { "email": 1 }, { unique: true } )
 db["event"].ensureIndex({"promotionRequests": 1}, {"background": true})
 db["business"].ensureIndex({"legacyId": 1}, {"background": true})
 db["user"].ensureIndex({"applications.apiSecret": 1, "applications.apiKey": 1}, {"background": true})
+db["media"].ensureIndex({"user": 1}, {"background": true});
+db["user"].ensureIndex({"authTokens.authToken": 1, "authTokens.apiKey": 1}, {"background": true});
