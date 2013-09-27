@@ -19,7 +19,7 @@ addToEmailList=(email)=>
       email:
         email
     double_optin: false
-    send_welcome: true
+    send_welcome: false
     , ((data)=>
       return true
     ),(error)=>
