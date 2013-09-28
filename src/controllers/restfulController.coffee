@@ -87,17 +87,22 @@ class RestfulController
           target:target
           req: req
           success: () =>
-            target.update req.body, (err, doc) =>
-              if err
-                res.send 400, err
-              else
-                @hooks.update.post
-                  target : target
-                  req : req
-                  res : res
-                  success: =>
-                    res.send 200, req.body
-                    next()               
+            target.set req.body
+            target.save (err,doc)=>    
+              @hooks.update.post
+                target : doc
+                req : req
+                res : res
+                success: =>
+                  saved = @model.findById req.params.id, {}, {lean:true}
+                  saved.populate(@populate.join(' ')) if @populate
+                  saved.exec (err, doc)=>
+                    if err
+                      res.send 400, err
+                      next()
+                    else
+                      res.send 200, doc
+                      next()               
       else
         return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")        
 

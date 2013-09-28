@@ -99,6 +99,15 @@ EventSchema.pre 'save', (next) ->
       @scheduleText = out.scheduleText
       @nextOccurrence = out.nextOccurrence
     next()
+EventSchema.pre 'update', (next) ->
+  scheduleService = require('../services/schedulingService')
+  scheduleService.calculate @, (err, out) =>
+    if not err
+      @occurrences = out.occurrences if out.occurrences?
+      @scheduleText = out.scheduleText
+      @nextOccurrence = out.nextOccurrence
+    next()
+
 
 
 module.exports = 
