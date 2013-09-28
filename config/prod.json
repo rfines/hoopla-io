@@ -1,7 +1,6 @@
 {
-  "port" : "8080",
   "openMaps" : {
-    "key" : "Fmjtd%7Cluub256and%2Cr0%3Do5-9u82u0"
+    "key" : "Fmjtd%7Cluub2h0yng%2C70%3Do5-9utgha"
   },  
   "hooplaIoWeb" : {
     "pwResetUrl" : "https://www.hoopla.io/password/reset",
@@ -27,5 +26,4 @@
     "authorize_url": "https://api.twitter.com/oauth/authorize",
     "access_token_url":"https://api.twitter.com/oauth/access_token"
   }
-
 }
