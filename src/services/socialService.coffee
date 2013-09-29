@@ -25,7 +25,7 @@ facebookPost = (promotionRequest, cb) ->
         link: promotionRequest.link
         picture: promotionRequest.media[0]?.url
       }
-      if page?.length > 0 && promotionRequest.pageAccessToken.length > 0
+      if page? and promotionRequest.pageAccessToken?
         graph.setAccessToken promotionRequest.pageAccessToken
         url="#{page}/feed/"
       else
@@ -36,6 +36,7 @@ facebookPost = (promotionRequest, cb) ->
 
 
 facebookEvent = (pr, cb) ->
+  console.log pr
   event = {
     name : pr.title
     start_time: moment(pr.startTime).toDate().toISOString()
@@ -46,15 +47,19 @@ facebookEvent = (pr, cb) ->
 
   }
   page = pr.pageId
-  if page?.length > 0 && pr.pageAccessToken?.length > 0
+  console.log page
+  console.log pr.pageAccessToken
+  if page? and pr.pageAccessToken?
+    console.log 'if block'
     graph.setAccessToken pr.pageAccessToken
     url="#{page}/events/"
   else
+    console.log 'else block'
     graph.setAccessToken pr.promotionTarget?.accessToken
     url="me/events/"
-  
   graph.post "#{url}", event, (err, res) ->
-      cb(err, res?.id)
+    console.log '3'
+    cb(err, res?.id)
 
 twitterPost = (pr, cb) ->
   tw = new twit({ 
@@ -64,7 +69,7 @@ twitterPost = (pr, cb) ->
     access_token_secret: pr.promotionTarget.accessTokenSecret
   })
 
-  if pr.media.length > 0
+  if pr.media?.length > 0
     bitlyShorten pr.media[0].url, (err, url)=>
       status = {status:pr.message+'\n'+ url }
       tw.post 'statuses/update', status, (error, reply)->
@@ -89,6 +94,7 @@ bitlyShorten=(url, cb)=>
       cb null, response.data.url
 
 module.exports.publish = (promotionRequest, cb) ->
+  console.log promotionRequest.pushType
   switch promotionRequest.pushType
     when 'FACEBOOK-EVENT' then facebookEvent(promotionRequest, cb)
     when 'FACEBOOK-POST' then facebookPost(promotionRequest, cb)
