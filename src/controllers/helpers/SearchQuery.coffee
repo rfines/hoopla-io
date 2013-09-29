@@ -38,8 +38,11 @@ class SearchQuery
       query.maxCost = 
         $lte: @maxCost
     if @start and @end
-      query['occurrences.start'] =
-        $gte: @start,$lte:@end
+      query['occurrences'] =
+        $elemMatch : 
+          start: 
+            $gte: @start
+            $lte:@end      
     else if @start
       query['occurrences.start'] = 
         $gte:@start
