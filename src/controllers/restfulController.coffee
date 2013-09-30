@@ -90,7 +90,7 @@ class RestfulController
             target.set req.body
             target.save (err,doc)=>    
               @hooks.update.post
-                target : doc
+                target : target.toObject()
                 req : req
                 res : res
                 success: =>
