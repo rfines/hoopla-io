@@ -33,8 +33,11 @@ calculate= (item,cb) ->
     out.nextOccurrence = _.first(occurrences).start if occurrences?.length > 0
     cb null, out
   else
-    o = _.map item.fixedOccurrences, (item) ->
-      {start : item.start, end : item.end}
+    minutesToAdd = item.tzOffset - moment().zone()
+    o = _.map item.fixedOccurrences, (fo) ->
+      s = moment(fo.start).subtract('minutes', minutesToAdd)
+      e = moment(fo.end).subtract('minutes', minutesToAdd)
+      return {start : s.toDate(), end : e.toDate()}
     cb null, {occurrences: o, scheduleText: '', nextOccurrence : _.first(o).start}
 
 forLater = (item, cb) ->
