@@ -6,7 +6,7 @@ mc={}
 listId = ''
 init = ()=>
   mc = new mailchimp.Mailchimp(CONFIG.email.mailchimp.apiKey)
-  mc.lists.list({filters:{list_name:CONFIG.email.mailchimp.listName}},(data)=>
+  mc.lists.list({filters:{list_id:CONFIG.email.mailchimp.listId}},(data)=>
     listId = data.data[0].id
 
   )

@@ -16,7 +16,8 @@
   "email":{
     "mailchimp":{
       "apiKey":"5a9052a71dd678fda27d30b495123f1a-us7",
-      "listName":"Hoopla.Io users"
+      "listName":"Hoopla.Io users",
+      "listId":"e97487e2d2"
     }
   },
   "twitter":{
