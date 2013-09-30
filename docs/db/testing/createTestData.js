@@ -9,3 +9,29 @@ var hooplaAdmin = {
   ]
 }
 db.user.save(hooplaAdmin);
+
+
+var visitKC = {
+  "_id" : ObjectId("524997f03df814cfaf00002b"),
+  "accentColor" : "06A1AF",
+  "businesses" : [ ],
+  "height" : 545,
+  "location" : {
+    "address" : "Kansas City, MO 64105, USA",
+    "geo" : {
+      "coordinates" : [
+        -94.5895294,
+        39.1045785
+      ],
+      "type" : "Point"
+    }
+  },
+  "name" : "VisitKC Widget",
+  "radius" : 16093,
+  "tags" : [ ],
+  "user" : hooplaAdmin._id,
+  "widgetStyle" : "dark",
+  "widgetType" : "event-by-location",
+  "width" : 220
+}
+db.widget.save(visitKC);
