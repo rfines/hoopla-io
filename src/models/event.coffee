@@ -89,6 +89,7 @@ EventSchema = new Schema
   legacyBusinessId: String  
   legacyHostId : String 
   legacyImage: String
+  tzOffset : Number
 
 
 EventSchema.pre 'save', (next) ->
@@ -107,8 +108,6 @@ EventSchema.pre 'update', (next) ->
       @scheduleText = out.scheduleText
       @nextOccurrence = out.nextOccurrence
     next()
-
-
 
 module.exports = 
   Event : mongoose.model('event', EventSchema, 'event')
