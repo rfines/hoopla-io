@@ -36,7 +36,6 @@ facebookPost = (promotionRequest, cb) ->
 
 
 facebookEvent = (pr, cb) ->
-  console.log pr
   event = {
     name : pr.title
     start_time: moment(pr.startTime).toDate().toISOString()
@@ -46,19 +45,14 @@ facebookEvent = (pr, cb) ->
     location: pr.location
 
   }
-  page = pr.pageId
-  console.log page
-  console.log pr.pageAccessToken
+  page = pr.pageId 
   if page? and pr.pageAccessToken?
-    console.log 'if block'
     graph.setAccessToken pr.pageAccessToken
     url="#{page}/events/"
   else
-    console.log 'else block'
     graph.setAccessToken pr.promotionTarget?.accessToken
     url="me/events/"
   graph.post "#{url}", event, (err, res) ->
-    console.log '3'
     cb(err, res?.id)
 
 twitterPost = (pr, cb) ->
@@ -94,7 +88,6 @@ bitlyShorten=(url, cb)=>
       cb null, response.data.url
 
 module.exports.publish = (promotionRequest, cb) ->
-  console.log promotionRequest.pushType
   switch promotionRequest.pushType
     when 'FACEBOOK-EVENT' then facebookEvent(promotionRequest, cb)
     when 'FACEBOOK-POST' then facebookPost(promotionRequest, cb)

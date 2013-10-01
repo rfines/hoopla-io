@@ -5,18 +5,24 @@ ss = require '../services/socialService'
 
 module.exports.runOnce = (onComplete) ->
   promote = (item, cb) ->
-    ss.publish item, (err,id) ->
-      if err
-        item.update {$set : {'status.code' : 'FAILED', 'status.lastError' : err}, $inc : {'status.retryCount' : 1}}, (err) ->
-          cb err
-      else        
-        item.update {$set : {'status.code' : 'COMPLETE','status.postId' :id.id, 'status.completedDate' : new Date()}}, (err) ->
-          cb(err)
+    ss.publish item, (erra,id) =>
+      retryCount = item.status?.retryCount?
+      retryCount++
+      if erra
+        item.update {$set : {'status.code' : 'FAILED', 'status.lastError' : erra}, $inc : {'status.retryCount' : retryCount}}, (erro) ->
+          cb erro
+      else
+        if _.isObject id
+          postId = id.id
+        else 
+          postId = id
+        item.update {$set : {'status.code' : 'COMPLETE','status.postId' :postId, 'status.completedDate' : new Date(),'status.retryCount' : retryCount}}, (error) ->
+          cb(error)
   q = promotionRequest.find { 'status.code' : {$ne : 'COMPLETE'},'promotionTime':{$lte :new Date()}, 'status.retryCount' : {$lt : 3}}
   q.populate('promotionTarget')
   q.populate('media')
-  q.exec (err, data) ->
-    async.eachLimit data, 10, promote, (err) ->
+  q.exec (errw, data) ->
+    async.eachLimit data, 2, promote, (errn) ->
       onComplete() if onComplete
 
 
