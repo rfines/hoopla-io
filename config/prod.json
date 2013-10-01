@@ -26,5 +26,10 @@
     "request_token_url":"https://api.twitter.com/oauth/request_token",
     "authorize_url": "https://api.twitter.com/oauth/authorize",
     "access_token_url":"https://api.twitter.com/oauth/access_token"
-  }
+  },
+  "cloudinary":{
+    "cloud_name":"hu3y2dnvf",
+    "api_key": "767888348685137",
+    "api_secret":"WYaQD-wZncCd4xuYE0ysepFbgeQ"
+  }  
 }
