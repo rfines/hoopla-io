@@ -4,7 +4,7 @@ CONFIG = require('config')
 elasticSearchClient = {}
 _ = require 'lodash'
 index = 'hoopla'
-
+Business = require('../models/business').Business
 init= () ->
   u = process.env.SEARCHBOX_URL || CONFIG.elasticSearch
   connectionString = url.parse(u)
@@ -43,10 +43,17 @@ indexBusiness = (business, cb, throttle) ->
   ).exec()
 
 indexEvent = (event, cb, throttle) ->
+  console.log event._id
+  businessName= ''
+  if event.business
+    Business.findById event.business, {name:1},{lean:true},(err,bus)=>
+      console.log err if err
+      businessName = bus?.name
   doc =
     name : event.name
     description : event.description
-    bands : event.bands  
+    bands : event.bands
+    businessName:businessName  
   elasticSearchClient.index(index, "event", doc, event._id.toString()  
   ).on('data', (d) ->
     if throttle
@@ -83,7 +90,7 @@ findEvents = (term, cb) ->
     size: 100
     query: 
       "fuzzy_like_this" :
-        "fields" : ["name", "description", 'bands']
+        "fields" : ["name", "description", 'bands','businessName']
         "like_text" : "#{term}"
         "min_similarity" : "0.7"
   elasticSearchClient.search(index, "event", qryObj).on("data", (data) ->
