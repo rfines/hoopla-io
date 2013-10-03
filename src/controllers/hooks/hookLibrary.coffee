@@ -11,5 +11,11 @@ module.exports.unpopulate =  (options)=>
   if options.req.body.promotionTargets?.length > 0
     _.each(options.req.body.promotionTargets, (element, index)->
       options.req.body.promotionTargets[index] = element._id.toString()
-    )    
+    )
+  if options.req.body.businessPrivileges?.length > 0
+    _.each(options.req.body.businessPrivileges, (element, index)->
+      console.log element._id
+      options.req.body.businessPrivileges[index].business = element.business._id.toString()
+      console.log options.req.body.businessPrivileges  
+    )  
   options.success() if options.success

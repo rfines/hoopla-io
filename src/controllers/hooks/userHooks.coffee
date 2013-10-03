@@ -1,5 +1,6 @@
 hookLibrary = require('./hookLibrary')
 mailchimpService = require '../../services/mailchimpService'
+_ = require 'lodash'
 
 module.exports = exports = 
   bcryptService : require('../../services/bcryptService')
@@ -36,7 +37,7 @@ module.exports = exports =
             options.success() if options.success
 
   update:
-    pre : hookLibrary.default
+    pre :hookLibrary.unpopulate
     post : hookLibrary.default    
   destroy:
     pre : hookLibrary.default

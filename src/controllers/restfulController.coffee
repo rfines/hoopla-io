@@ -79,7 +79,6 @@ class RestfulController
         return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")
   
   update: (req, res, next) =>
-    originalBody = JSON.parse(JSON.stringify(req.body))
     delete req.body._id
     @model.findById req.params.id, {}, {}, (err, target) =>
       if @security.update(req.authUser, target)
@@ -88,21 +87,26 @@ class RestfulController
           req: req
           success: () =>
             target.set req.body
-            target.save (err,doc)=>    
-              @hooks.update.post
-                target : target.toObject()
-                req : req
-                res : res
-                success: =>
-                  saved = @model.findById req.params.id, {}, {lean:true}
-                  saved.populate(@populate.join(' ')) if @populate
-                  saved.exec (err, doc)=>
-                    if err
-                      res.send 400, err
-                      next()
-                    else
-                      res.send 200, doc
-                      next()               
+            target.save (err,doc)=>
+              if err    
+                console.log err
+                res.send 400, err
+                next()
+              else
+                @hooks.update.post
+                  target : target.toObject()
+                  req : req
+                  res : res
+                  success: =>
+                    saved = @model.findById req.params.id, {}, {lean:true}
+                    saved.populate(@populate.join(' ')) if @populate
+                    saved.exec (err, doc)=>
+                      if err
+                        res.send 400, err
+                        next()
+                      else
+                        res.send 200, doc
+                        next()               
       else
         return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")        
 
