@@ -43,33 +43,32 @@ indexBusiness = (business, cb, throttle) ->
   ).exec()
 
 indexEvent = (event, cb, throttle) ->
-  console.log event._id
   businessName= ''
   if event.business
     Business.findById event.business, {name:1},{lean:true},(err,bus)=>
       console.log err if err
       businessName = bus?.name
-  doc =
-    name : event.name
-    description : event.description
-    bands : event.bands
-    businessName:businessName  
-  elasticSearchClient.index(index, "event", doc, event._id.toString()  
-  ).on('data', (d) ->
-    if throttle
-      setTimeout ->
-        cb null if cb
-      , 800
-    else
-      cb null if cb
-  ).on('error', (err) ->
-    if throttle
-      setTimeout ->
-        cb null if cb
-      , 800
-    else
-      cb null if cb
-  ).exec()  
+      doc =
+        name : event.name
+        description : event.description
+        bands : event.bands
+        businessName:businessName  
+      elasticSearchClient.index(index, "event", doc, event._id.toString()  
+      ).on('data', (d) ->
+        if throttle
+          setTimeout ->
+            cb null if cb
+          , 800
+        else
+          cb null if cb
+      ).on('error', (err) ->
+        if throttle
+          setTimeout ->
+            cb null if cb
+          , 800
+        else
+          cb null if cb
+      ).exec()  
 
 findBusinesses = (term, cb) ->
   qryObj = 
