@@ -9,7 +9,9 @@ ApiUsageSchema = new mongoose.Schema
     required: true
   status:
     type: String
-    required: true        
+    required: true
+  apiToken:
+    type:String        
 
 module.exports = 
   ApiUsage : mongoose.model('apiUsage', ApiUsageSchema, 'apiUsage')
