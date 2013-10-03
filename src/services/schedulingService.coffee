@@ -102,7 +102,10 @@ scheduleText= (event) ->
         out = "The #{dayCountOrder[s.dayOfWeekCount]} #{days.join(', ')} of the month"
       else
         out = "Every #{days.join(', ')}"
-      out = "#{out} until #{endDate.format('MM/DD/YYYY')}"   
+      if s.end
+        out = "#{out} until #{endDate.format('MM/DD/YYYY')}"   
+      else
+        out = "#{out}"
     return out
   else
     return out
