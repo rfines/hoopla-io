@@ -38,7 +38,12 @@ calculate= (item,cb) ->
       s = moment(fo.start).subtract('minutes', minutesToAdd)
       e = moment(fo.end).subtract('minutes', minutesToAdd)
       return {start : s.toDate(), end : e.toDate()}
-    cb null, {occurrences: o, scheduleText: '', nextOccurrence : _.first(o).start}
+    nextOccurrence = _.find o, (item) ->
+      moment(item.start).isAfter(moment().startOf('day'))
+    if not nextOccurrence
+      cb null, {occurrences: o, scheduleText: '', nextOccurrence : undefined}
+    else
+      cb null, {occurrences: o, scheduleText: '', nextOccurrence : nextOccurrence.start}
 
 forLater = (item, cb) ->
   output = {}
