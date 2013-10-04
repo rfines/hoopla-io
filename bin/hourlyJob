@@ -1,15 +1,17 @@
 #! /app/node_modules/.bin/coffee
+job = require '../src/jobs/addBusinessToAdmin'
+job.runOnce ->
+  url = process.env.APPLICATION_URL || 'http://www.hoopla.io'
 
-url = process.env.APPLICATION_URL || 'http://www.hoopla.io'
+  if url.indexOf('https') is 0
+    http = require("https")
+  else
+    http = require("http")
 
-if url.indexOf('https') is 0
-  http = require("https")
-else
-  http = require("http")
+  http.get(url, (res) ->
+    console.log "Successfully pinged: #{url}"
+    process.exit 0
+  ).on "error", (e) ->
+    console.log "Error pinging: #{url}"
+    process.exit 1
 
-http.get(url, (res) ->
-  console.log "Successfully pinged: #{url}"
-  process.exit 0
-).on "error", (e) ->
-  console.log "Error pinging: #{url}"
-  process.exit 1

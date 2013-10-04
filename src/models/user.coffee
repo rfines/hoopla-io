@@ -29,7 +29,7 @@ UserSchema = new Schema
     business: {type:ObjectId, ref:'business'}
     role: 
       type: String
-      enum: ['OWNER','COLLABORATOR']
+      enum: ['OWNER','COLLABORATOR', 'ADMIN_COLLABORATOR']
   ]
   applications : [
     {
