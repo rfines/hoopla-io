@@ -6,8 +6,8 @@ fiveMinutes = 300000
 
 module.exports.start = ->
   calculateSchedules.runOnce()
-  #promoteEvents.runOnce()
+  promoteEvents.runOnce()
   #createIndexes.runOnce()
-  #addBusinessToAdmin.runOnce()
+  addBusinessToAdmin.runOnce()
   #setInterval calculateSchedules.runOnce, fiveMinutes
   #setInterval promoteEvents.runOnce, fiveMinutes
