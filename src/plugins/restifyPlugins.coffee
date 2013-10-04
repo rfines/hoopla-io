@@ -37,3 +37,7 @@ module.exports.NearParamParser = (req, res, next) =>
           next()
   else
     next()
+
+module.exports.utf8 = (req, res, next) =>
+  res.charSet 'utf-8'
+  next()
