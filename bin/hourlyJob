@@ -1,13 +1,16 @@
 #! /app/node_modules/.bin/coffee
+mongoService = require '../src/services/mongoService'
+mongoService.init()
+
 job = require '../src/jobs/addBusinessesToAdmin'
+console.log 'run job once'
+console.log job
 job.runOnce ->
   url = process.env.APPLICATION_URL || 'http://www.hoopla.io'
-
   if url.indexOf('https') is 0
     http = require("https")
   else
     http = require("http")
-
   http.get(url, (res) ->
     console.log "Successfully pinged: #{url}"
     process.exit 0
