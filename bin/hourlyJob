@@ -1,5 +1,5 @@
 #! /app/node_modules/.bin/coffee
-job = require '../src/jobs/addBusinessToAdmin'
+job = require '../src/jobs/addBusinessesToAdmin'
 job.runOnce ->
   url = process.env.APPLICATION_URL || 'http://www.hoopla.io'
 
