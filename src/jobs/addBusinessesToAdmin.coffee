@@ -13,4 +13,3 @@ module.exports.runOnce = (onComplete) ->
         }
       adminUser.update {$set : {businessPrivileges : out}}, (err, out) =>
         onComplete() if onComplete
-

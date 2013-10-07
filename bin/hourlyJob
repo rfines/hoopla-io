@@ -3,8 +3,6 @@ mongoService = require '../src/services/mongoService'
 mongoService.init()
 
 job = require '../src/jobs/addBusinessesToAdmin'
-console.log 'run job once'
-console.log job
 job.runOnce ->
   url = process.env.APPLICATION_URL || 'http://www.hoopla.io'
   if url.indexOf('https') is 0
@@ -17,4 +15,3 @@ job.runOnce ->
   ).on "error", (e) ->
     console.log "Error pinging: #{url}"
     process.exit 1
-
