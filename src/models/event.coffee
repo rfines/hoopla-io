@@ -69,7 +69,8 @@ EventSchema = new Schema
     }
   ]
   occurrences:[OccurrenceSchema]
-  nextOccurrence: Date
+  nextOccurrence: {start: Date, end:Date}
+  prevOccurrence: {start: Date, end:Date}
   scheduleText: String
   legacySchedule: {
     "dayNum": Number
@@ -99,6 +100,7 @@ EventSchema.pre 'save', (next) ->
       @occurrences = out.occurrences if out.occurrences?
       @scheduleText = out.scheduleText
       @nextOccurrence = out.nextOccurrence
+      @prevOccurrence = out.prevOccurrence
     next()
 EventSchema.pre 'update', (next) ->
   scheduleService = require('../services/schedulingService')
@@ -107,6 +109,7 @@ EventSchema.pre 'update', (next) ->
       @occurrences = out.occurrences if out.occurrences?
       @scheduleText = out.scheduleText
       @nextOccurrence = out.nextOccurrence
+      @prevOccurrence = out.prevOccurrence      
     next()
 
 module.exports = 

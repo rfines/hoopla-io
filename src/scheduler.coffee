@@ -5,7 +5,7 @@ addBusinessToAdmin = require('./jobs/addBusinessesToAdmin')
 fiveMinutes = 300000
 
 module.exports.start = ->
-  #calculateSchedules.runOnce()
+  calculateSchedules.runOnce()
   #promoteEvents.runOnce()
   #createIndexes.runOnce()
   #addBusinessToAdmin.runOnce()

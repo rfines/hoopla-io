@@ -89,7 +89,6 @@ class RestfulController
             target.set req.body
             target.save (err,doc)=>
               if err    
-                console.log err
                 res.send 400, err
                 next()
               else
