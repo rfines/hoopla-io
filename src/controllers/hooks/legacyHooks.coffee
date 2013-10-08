@@ -57,7 +57,7 @@ module.exports = exports =
             when '2' then expanded = "ARTS"
             when '3' then expanded = "ENTERTAINMENT"
             when '5' then expanded ="FAMILY-AND-CHILDREN"
-            else expanded = ''
+            else expanded = undefined
           req.params.tags= expanded
           if req.params?.tags
             newTags = []
@@ -71,6 +71,8 @@ module.exports = exports =
             async.each req.params.tags.split(','), expand, ->
               req.params.tags = newTags.join(',')
               cb null, req
+          else
+             cb null, req
     else
       errors = {code: 400, message: "Invalid request"}
       cb errors, null
