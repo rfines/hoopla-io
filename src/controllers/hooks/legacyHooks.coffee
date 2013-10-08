@@ -101,10 +101,7 @@ module.exports = exports =
           x.contactName = x.contactName
           x.venueId = x.host?._id || x.business?._id
           x.venueName = x.host?.name||x.business?.name
-          x.startDate = moment(x.schedules?[0]?.start).format('M/d/YYYY') || moment(x.fixedOccurrences?[0]?.start).format('M/d/YYYY')
-          x.endDate =  moment(x.schedules?[0]?.end).format('M/d/YYYY') ||  moment(x.fixedOccurrences?[0]?.end).format('M/d/YYYY')
-          console.log moment(x.nextOccurrence).format('M/d/YYYY')
-          console.log x.nextOccurrence 
+          
           venImg = _.find mediaObs, (item)=>
             mediaImgId = x.host?.media?[0] || x.business?.media?[0]
             if not mediaImgId or not item?._id
@@ -118,21 +115,35 @@ module.exports = exports =
           else
             x.picture = x.media[0]?.url
             x.venueImage = venImg.url || venImg.url
-          x.startTime = moment(x.schedules?[0]?.start).format('hh:mm A') || moment(x.fixedOccurrences?[0]?.start).format('hh:mm A')
-          x.endTime = moment(x.schedules?[0]?.end).format('hh:mm A') ||  moment(x.fixedOccurrences?[0]?.end).format('hh:mm A')
+          x.startDate = moment(x.schedules?[0]?.start).utc().format('M/D/YYYY') || moment(x.fixedOccurrences?[0]?.start).utc().format('M/D/YYYY')
+          if x.schedules?[0]?.end
+            x.endDate =  moment(x.schedules?[0]?.end).utc().format('M/D/YYYY')
+          else if x.fixedOccurrences.length > 0
+            x.endDate =moment(x.fixedOccurrences[x.fixedOccurrences.length-1]?.end).utc().format('M/D/YYYY')
+          else
+            x.endDate = moment().add('years', 5).utc().format('M/D/YYYY') 
+          if x.nextOccurrence?.start and x.nextOccurrence?.end
+            x.startTime =moment(x.nextOccurrence?.start).utc().format('h:mm A')
+            x.endTime = moment(x.nextOccurrence?.end).utc().format('h:mm A')
+            x.nextOccurrence = moment(x.nextOccurrence?.start).utc().format('M/D/YYYY')
+          else
+            console.log x._id
+            x.startTime=moment(x.prevOccurrence?.start).utc().format('h:mm A')
+            x.endTime =  moment(x.prevOccurrence?.end).utc().format('h:mm A')
+            x.nextOccurrence = moment(x.prevOccurrence?.start).utc().format('M/D/YYYY')
           x.phone = x.contactPhone
           x.email = x.contactEmail
           x.address = x.location.address
           x.latitude = x.location.geo.coordinates[1]
           x.longitude = x.location.geo.coordinates[0]
           x.isRecurring = x.schedules?.length > 0 
-          x.nextOccurrence = moment(x.nextOccurrence?.start).format('M/d/YYYY')
           if x.eventType is 'FOOD'
             x.detailsUrl = "http://localruckus.com/food-and-drink/details/#{x.legacyId}/"
           else if x.eventType is 'MUSIC'
             x.detailsUrl = "http://localruckus.com/live-music/details/#{x.legacyId}/"
           else
             x.detailsUrl = "http://localruckus.com/arts-and-culture/details/#{x.legacyId}/"
+          delete x.prevOccurrence  
           delete x.location
           delete x.business
           delete x.createdAt
@@ -154,7 +165,10 @@ module.exports = exports =
           delete x.ticketUrl
           delete x.host
           delete x.scheduleText
+          delete x.promotionRequests
+          delete x.tzOffset
           result.data.push x
+
           eventCb null
         async.each eventData, transformSingleEvent, (err)->
           callback(null)
