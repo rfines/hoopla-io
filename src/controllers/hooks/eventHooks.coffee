@@ -23,6 +23,7 @@ module.exports = exports =
       options.success() if options.success
   search:
     pre : (options) ->
+      console.log options.req.params
       if options.req.params?.tags
         newTags = []
         expand = (t, cb) ->

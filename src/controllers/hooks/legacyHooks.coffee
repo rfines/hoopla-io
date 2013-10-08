@@ -1,8 +1,20 @@
+expansions = {
+  'ENTERTAINMENT':['ATTRACTIONS', 'AMUSEMENT', 'ARCADES', 'GALLERIES', 'BOWLING', 'BREWERIES', 'CASINOS', 'CHILDREN', 'COMEDY','FESTIVALS', 'FARMERS', 'ORCHARDS','FINEARTS','GOLF' , 'HISTORIC', 'LIBRARY', 'MOVIE', 'MUSEUMS', 'NIGHTLIFE', 'PARKS', 'PERFORMING','PERFORMINGARTS', 'PETS',"SPORTS", 'SHOPPING', 'STADIUM', 'THEATERES', 'UNIQUE', 'WINERIES', 'ZOOS','CLASSICROCK', 'FOLK', 'ALTERNATIVE', 'CLASSICAL', 'ELECTRONICA', 'INDIE', 'POP', 'ROCK', 'ACOUSTIC', 'JAZZ', 'RAP', 'BLUES', 'COUNTRY', 'METAL', 'REGGAE', 'PROGRESSIVE', 'PUNK', 'ROCKABILLY', 'HOLIDAY', "ALTERNATIVE", "BLUES", "AMERICANA", "CHILD", "CHRISTIAN", "DANCE", "EXPERIMENTAL", "RAP", "INDIE", "LATIN", "NEWAGE", "REGGAE", "SOUL", "ROCKABILLY","TRIBUTE","VARIOUS","WORLD", 'EXHIBITS', 'EXPOS', 'BARGAMES', 'DRINK', 'HISTORICAL', 'BUSINESS', 'CHARITY', 'TEENS', 'NEIGHBORHOOD', 'ENTREPRENEUR', 'FAITH', 'FAMILY', 'FAIRS', 'FILM', 'FOODS', 'WELLNESS', 'HOLIDAY', 'LGBT', 'LITERARY', 'CONCERTS', 'OTHER', 'PETS', 'POLITICAL','SCHOOL', 'SCIENCE', 'SHOPPING', 'FITNESS','VISUAL', 'PROFESSIONAL', "COMMUNITY"]
+  'ARTS' : ['CHARITY','COMEDY','FILM','FINEARTS','FOODS', 'FESTIVALS','HISTORICAL','LITERARY','PERFORMING','PERFORMINGARTS','MULTICULTURE']
+  'FAMILY-AND-CHILDREN' : ['TEENS','CHILDRENS','FAMILY', 'MULTICULTURE','LIBRARY']
+  'FOOD-AND-DRINK' : ['BEER','COCKTAILS','FOOD','WINE']
+  'MUSIC' : ['CLASSICROCK', 'FOLK', 'ALTERNATIVE', 'CLASSICAL', 'ELECTRONICA', 'INDIE', 'POP', 'ROCK', 'ACOUSTIC', 'JAZZ', 'RAP', 'BLUES', 'COUNTRY', 'METAL', 'REGGAE', 'PROGRESSIVE', 'PUNK', 'ROCKABILLY', 'HOLIDAY', "ALTERNATIVE", "BLUES", "AMERICANA", "CHILD", "CHRISTIAN", "DANCE", "EXPERIMENTAL", "RAP", "INDIE", "LATIN", "NEWAGE", "REGGAE", "SOUL", "ROCKABILLY","TRIBUTE","VARIOUS","WORLD"]
+}
+
 TagMap= require('../../services/data/categoryMap')
+Media = require('../../models/media').Media
+mongoose = require('mongoose')
+ObjectId = mongoose.Schema.ObjectId
 _ = require 'lodash'
 moment = require 'moment'
 hookLibrary = require('./hookLibrary')
 EventUtil = require('../../utils/eventUtils')
+async = require 'async'
 
 module.exports = exports =
   postalCodeService : require('../../services/postalCodeService')
@@ -33,13 +45,37 @@ module.exports = exports =
           for c in cats
             tags.push TagMap[c]
           req.params.tags = tags
-        cb null, req
+          cb null, req
+        else if req.params.eventType
+          eType = req.params.eventType
+          expanded = ''
+          switch eType
+            when '0' then expanded = "FOOD-AND-DRINK"
+            when '1' then expanded ="MUSIC"
+            when '2' then expanded = "ARTS"
+            when '3' then expanded = "ENTERTAINMENT"
+            when '5' then expanded ="FAMILY-AND-CHILDREN"
+            else expanded = ''
+          req.params.tags= expanded
+          if req.params?.tags
+            newTags = []
+            expand = (t, cb) ->
+              if expansions[t]
+                for x in expansions[t]
+                  newTags.push x      
+              else
+                newTags.push t    
+              cb null
+            async.each req.params.tags.split(','), expand, ->
+              req.params.tags = newTags.join(',')
+              cb null, req
     else
       errors = {code: 400, message: "Invalid request"}
       cb errors, null
     
   transformResponse:(data, imageH, imageW,cb) ->
     if data
+      mediaObs = []
       result = {success: 'true', data:[]}
       addr = {}
       inverted = _.invert TagMap
@@ -48,59 +84,87 @@ module.exports = exports =
         eventData.push data
       else
         eventData = data
-      for x in eventData
-        ca = []
-        for i in x.tags
-          ca.push inverted[i]
-        x.id = x.legacyId || x._id
-        x.categories = ca.join ', '
-        x.contactName = x.contactName
-        x.venueId = x.legacyBusinessId || x.legacyHostId || x.business?.legacyId || x.business?._id
-        x.venueName = x.business?.name
-        x.start = x.legacySchedules?[0]?.start || x.schedules?[0]?.start || x.fixedOccurrences?[0]?.start
-        x.end =  x.legacyEndDate
-        if imageH and imageW
-          if x.media
-            x.image = exports.transformImageUrl x.media[0]?.url, imageH, imageW
-          if x.business?.media
-            x.venueImage = exports.transformImageUrl x.business?.media[0] || x.host?.media[0], imageH, imageW
-        else
-          x.image = x.media[0]?.url
-          x.venueImage = x.business?.media?[0]?.url || ""
-        x.startTime = new moment(x.start).format('hh:mm A')
-        x.endTime = new moment(x.legacyEndDate).format('hh:mm A')
-        x.phone = x.contactPhone
-        x.email = x.contactEmail
-        x.address = x.location.address
-        x.latitude = x.location.geo.coordinates[1]
-        x.longitude = x.location.geo.coordinates[0]
-        if x.eventType is 'FOOD'
-          x.detailsUrl = "http://localruckus.com/food-and-drink/details/#{x.legacyId}/"
-        else if x.eventType is 'MUSIC'
-          x.detailsUrl = "http://localruckus.com/live-music/details/#{x.legacyId}/"
-        else
-          x.detailsUrl = "http://localruckus.com/arts-and-culture/details/#{x.legacyId}/"
-        delete x.location
-        delete x.business
-        delete x.createdAt
-        delete x.lastModifiedAt
-        delete x.media
-        delete x.schedules
-        delete x.fixedOccurrences
-        delete x.socialMediaLinks
-        delete x.tags
-        delete x.occurrences
-        delete x.legacySchedule
-        delete x.legacyId
-        delete x.contacts
-        delete x.eventType
-        delete x.__v
-        delete x._id
-        delete x.legacyEndDate
-        delete x.legacyImage
-        delete x.ticketUrl
-        result.data.push x
+      media = (callback)-> 
+        mediaIds = _.map eventData, (event) ->
+          return event.host?.media?[0] || event.business?.media?[0]
+        Media.find {_id : {$in : mediaIds}}, {}, {lean:true}, (err, docs) ->
+          mediaObs = docs
+          callback(null)  
+          
+      transform = (callback) ->
+        transformSingleEvent = (x, eventCb)=>
+          ca = []
+          for i in x.tags
+            ca.push inverted[i]
+          x.id = x.legacyId || x._id
+          x.categories = ca.join ', '
+          x.contactName = x.contactName
+          x.venueId = x.host?._id || x.business?._id
+          x.venueName = x.host?.name||x.business?.name
+          x.startDate = moment(x.schedules?[0]?.start).format('M/d/YYYY') || moment(x.fixedOccurrences?[0]?.start).format('M/d/YYYY')
+          x.endDate =  moment(x.schedules?[0]?.end).format('M/d/YYYY') ||  moment(x.fixedOccurrences?[0]?.end).format('M/d/YYYY')
+          console.log moment(x.nextOccurrence).format('M/d/YYYY')
+          console.log x.nextOccurrence 
+          venImg = _.find mediaObs, (item)=>
+            mediaImgId = x.host?.media?[0] || x.business?.media?[0]
+            if not mediaImgId or not item?._id
+              return false
+            else
+              return mediaImgId.equals(item._id)
+          if imageH and imageW
+            if x.media
+              x.picture = exports.transformImageUrl x.media[0]?.url, imageH, imageW
+            x.venueImage = exports.transformImageUrl  venImg.url|| venImg.url, imageH, imageW
+          else
+            x.picture = x.media[0]?.url
+            x.venueImage = venImg.url || venImg.url
+          x.startTime = moment(x.schedules?[0]?.start).format('hh:mm A') || moment(x.fixedOccurrences?[0]?.start).format('hh:mm A')
+          x.endTime = moment(x.schedules?[0]?.end).format('hh:mm A') ||  moment(x.fixedOccurrences?[0]?.end).format('hh:mm A')
+          x.phone = x.contactPhone
+          x.email = x.contactEmail
+          x.address = x.location.address
+          x.latitude = x.location.geo.coordinates[1]
+          x.longitude = x.location.geo.coordinates[0]
+          x.isRecurring = x.schedules?.length > 0 
+          x.nextOccurrence = moment(x.nextOccurrence?.start).format('M/d/YYYY')
+          if x.eventType is 'FOOD'
+            x.detailsUrl = "http://localruckus.com/food-and-drink/details/#{x.legacyId}/"
+          else if x.eventType is 'MUSIC'
+            x.detailsUrl = "http://localruckus.com/live-music/details/#{x.legacyId}/"
+          else
+            x.detailsUrl = "http://localruckus.com/arts-and-culture/details/#{x.legacyId}/"
+          delete x.location
+          delete x.business
+          delete x.createdAt
+          delete x.lastModifiedAt
+          delete x.media
+          delete x.schedules
+          delete x.fixedOccurrences
+          delete x.socialMediaLinks
+          delete x.tags
+          delete x.occurrences
+          delete x.legacySchedule
+          delete x.legacyId
+          delete x.contacts
+          delete x.eventType
+          delete x.__v
+          delete x._id
+          delete x.legacyEndDate
+          delete x.legacyImage
+          delete x.ticketUrl
+          delete x.host
+          delete x.scheduleText
+          result.data.push x
+          eventCb null
+        async.each eventData, transformSingleEvent, (err)->
+          callback(null)
+    end=()->
       cb null, result
+    async.series([
+      media,
+      transform,
+      end
+    ] )
 
   transformImageUrl: (url, h, w)=>
     if url
