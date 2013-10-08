@@ -131,7 +131,6 @@ module.exports = exports =
             x.endTime = moment(x.nextOccurrence?.end).utc().format('h:mm A')
             x.nextOccurrence = moment(x.nextOccurrence?.start).utc().format('M/D/YYYY')
           else
-            console.log x._id
             x.startTime=moment(x.prevOccurrence?.start).utc().format('h:mm A')
             x.endTime =  moment(x.prevOccurrence?.end).utc().format('h:mm A')
             x.nextOccurrence = moment(x.prevOccurrence?.start).utc().format('M/D/YYYY')
