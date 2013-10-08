@@ -22,6 +22,8 @@ module.exports = exports =
     if req.params 
       if req.params.start or req.params.end
         req.params = EventUtil.transformDates(req.params)
+      if req.params.radius
+        req.params.radius = (req.params.radius * 1609.344)
       zipcode = req.params.zipcode || 64105
       exports.postalCodeService.get zipcode, (err, doc) ->
         req.params.ll = "#{doc.geo.coordinates[0]},#{doc.geo.coordinates[1]}"
