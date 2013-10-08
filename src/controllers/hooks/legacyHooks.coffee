@@ -105,7 +105,7 @@ module.exports = exports =
           x.contactName = x.contactName
           x.venueId = x.host?._id || x.business?._id
           x.venueName = x.host?.name||x.business?.name
-          
+
           venImg = _.find mediaObs, (item)=>
             mediaImgId = x.host?.media?[0] || x.business?.media?[0]
             if not mediaImgId or not item?._id
@@ -146,6 +146,8 @@ module.exports = exports =
             x.detailsUrl = "http://localruckus.com/live-music/details/#{x.legacyId}/"
           else
             x.detailsUrl = "http://localruckus.com/arts-and-culture/details/#{x.legacyId}/"
+          if not x.website or not x.website?.length > 0
+            x.website =x.detailsUrl 
           delete x.prevOccurrence  
           delete x.location
           delete x.business
