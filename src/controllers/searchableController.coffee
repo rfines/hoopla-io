@@ -71,15 +71,18 @@ class SearchableController extends RestfulController
     q.sort(@sort) if @sort
     q.skip(req.params.skip) if req.params.skip
     q.limit(req.params.limit) if req.params.limit
-    q.exec (err, data) ->   
+    q.exec (err, data) ->  
       calcDistance = (item, cb) ->         
         businessCoordinates = 
           longitude: item.location.geo.coordinates[0]
           latitude: item.location.geo.coordinates[1]
         item.distance = geolib.getDistance centerCoordinates, businessCoordinates
         cb null
-      async.each data, calcDistance, (err) ->
-        cb err, data          
+      if data?.length > 0
+        async.each data, calcDistance, (err) ->
+          cb err, data          
+      else
+        cb err, []
      
 
   searchIndex : (req, cb) =>
