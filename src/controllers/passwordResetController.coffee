@@ -24,7 +24,7 @@ class PasswordResetController
       if not doc
         templateName = 'password-reset-request-bad-user'
       else
-        templateName = 'password-reset-request-bad-user'
+        templateName = 'password-reset-request'
       pr.token = @tokenService.generateWithTimestamp(12)
       pr.save (err, data) =>
         emailOptions =
