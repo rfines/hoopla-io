@@ -5,7 +5,8 @@ postalCodeService = require('../services/postalCodeService')
 geoCoder = require('../services/geocodingService')
 
 module.exports.AuthorizationParser = (req, res, next) =>
-  authorizationService.authorize req, ( =>
+  authorizationService.authorize req, ( (app)=>
+    req.authApp = app
     return next()
   ), (message) =>
     return next new restify.NotAuthorizedError(message)

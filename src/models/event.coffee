@@ -92,7 +92,6 @@ EventSchema = new Schema
   legacyImage: String
   tzOffset : Number
 
-
 EventSchema.pre 'save', (next) ->
   scheduleService = require('../services/schedulingService')
   scheduleService.calculate @, (err, out) =>

@@ -68,5 +68,9 @@ class EventController  extends SearchableController
               res.send 200,result.toString('binary')
               next()
           )
-
+  calculateGetFields:(app)=>
+    fields = {}
+    if app and app.privileges is 'STANDARD'
+      fields = {'promotionRequests':0, 'schedules':0, 'fixedOccurrences':0, 'legacySchedule':0, 'legacyHostId':0, 'legacyId':0, 'legacyImage':0, 'legacyBusinessId':0,}
+    return fields
 module.exports = new EventController()

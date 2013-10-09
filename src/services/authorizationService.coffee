@@ -8,7 +8,9 @@ authorize = (req, onAuthorized, onUnAuthorized) ->
     q = {'applications.apiKey' : authorization.basic.username, 'applications.apiSecret' : authorization.basic.password}
     User.findOne q, (err, data) ->
       if data
-        onAuthorized()
+        app = _.find data.applications, (item)=>
+          return item.apiKey is authorization.basic.username
+        onAuthorized(app)
       else
         onUnAuthorized 'Invalid api key or secret.'
   else if req.params.apiKey
@@ -18,7 +20,7 @@ authorize = (req, onAuthorized, onUnAuthorized) ->
         app = _.find data.applications,{'legacyKey':req.params.apiKey}
         if app
           req.authorization = {basic: {username:app.apiKey, password:app.apiSecret}}
-        onAuthorized()
+        onAuthorized(app)
       else
         onUnAuthorized 'Invalid api key.'
   else

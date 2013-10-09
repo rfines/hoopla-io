@@ -67,7 +67,8 @@ class SearchableController extends RestfulController
     if req.params.start or req.params.end
       EventUtil.transformDates(req.params)
     criteria = new SearchQuery().buildFromParams(req.params)
-    q = @model.find(criteria, @fields, {lean:true})
+    fields = @calculateGetFields(req.authApp)  
+    q = @model.find(criteria, fields, {lean:true})
     q.populate(@populate.join(' '))
     q.sort(@sort) if @sort
     q.skip(req.params.skip) if req.params.skip

@@ -1,4 +1,3 @@
-
 var sprintApi = {
   'email' : "Hemant.V.Tiwari@sprint.com",
   'name' : 'Hemant Tiwari',
@@ -6,9 +5,7 @@ var sprintApi = {
   'encryptionMethod' : 'BCRYPT',
   'applications' : [ { 'name' : 'Sprint Api','legacyKey':'CjV94IobahVjMt9', 'apiKey' : 'GgTK2l1KV6ApWi5pLEtM', 'apiSecret' : 'PM0T8wV1BpboudLillneCVPppuuSAbgSaK7HykKJ'}]
 }
-
 db.user.save(sprintApi);
-
 var crossroadsApi = {
   'email' : "info@crossroads.com",
   'name' : 'Crossroads',
@@ -16,9 +13,7 @@ var crossroadsApi = {
   'encryptionMethod' : 'BCRYPT',
   'applications' : [ { 'name' : 'Crossroads Api','legacyKey':'SpclFmVso48IfP5', 'apiKey' : 'fKsdRDgHSm9tvkl7wALE', 'apiSecret' : 'prWmZRV2NhJUl8hMqcxgFVQZBZwdVxyBu3TIIUhJ'}]
 }
-
 db.user.save(crossroadsApi);
-
 var foundationApi = {
   'email' : "info@foundation.com",
   'name' : 'Foundation CMS',
@@ -26,9 +21,7 @@ var foundationApi = {
   'encryptionMethod' : 'BCRYPT',
   'applications' : [ { 'name' : 'Foundation CMS','legacyKey':'37dob3sE7T34wqa', 'apiKey' : '7oweEKySiclCJTwvSbUS', 'apiSecret' : 'Z9i1Pm3NQn4v9tE3QJUHUfxQ7wqenzSU0dUhF3Gb'}]
 }
-
 db.user.save(foundationApi);
-
 var overkcApi = {
   'email' : "info@overkc.com",
   'name' : 'Over KC',
@@ -36,21 +29,7 @@ var overkcApi = {
   'encryptionMethod' : 'BCRYPT',
   'applications' : [ { 'name' : 'Over KC','legacyKey':'w1QdT7jt4jPXi8m', 'apiKey' : 'O6yDIDTM1R32QuIysg26', 'apiSecret' : 'thDE0852guiWr96TUgZ5pwryd7vME85Ty2tro2Ul'}]
 }
-
 db.user.save(overkcApi);
-
-/*
-var internalApi = {
-  'email' : "info@localruckus.com",
-  'name' : 'Internal Use',
-  'password' : "$2a$12$c5Y.GfbqMHu7NxMPIz4Dq.SELalYdjNE.7t8S/Js2yZZbbLMf.HZe", //Bcrypted version of h00plaAdmin**
-  'encryptionMethod' : 'BCRYPT',
-  'applications' : [ { 'name' : 'Internal Use','legacyKey':'azXxlamjRSuauQg', 'apiKey' : 'i9AUaTXT8HdaoONaW6rr', 'apiSecret' : 'eruvLx0Rr4Mz1FNi3mKWmHonlTaIWCGRctF1asd4'}]
-}
-
-db.user.save(internalApi);
-*/
-
 var pittApi = {
   'email' : "info@pittsburgh.ks",
   'name' : 'Pittsburg Ks',
@@ -58,5 +37,10 @@ var pittApi = {
   'encryptionMethod' : 'BCRYPT',
   'applications' : [ { 'name' : 'Pittsburg KS','legacyKey':'9CXVnIllv6RbSrK', 'apiKey' : 'iB3KkMy8CteQFyBrZiLh', 'apiSecret' : 'eys8Aky5oZZki9QzDOp2kXecgZVJB1bFAZgtkaoo'}]
 }
-
 db.user.save(pittApi);
+db.user.update({'email' : "Hemant.V.Tiwari@sprint.com"}, {$set:{'applications' : [ { 'name' : 'Sprint Api','legacyKey':'CjV94IobahVjMt9', 'apiKey' : 'GgTK2l1KV6ApWi5pLEtM', 'apiSecret' : 'PM0T8wV1BpboudLillneCVPppuuSAbgSaK7HykKJ', 'privileges':'STANDARD'}]}});
+db.user.update({'email' : "info@crossroads.com"}, {$set:{'applications': [ { 'name' : 'Crossroads Api','legacyKey':'SpclFmVso48IfP5', 'apiKey' : 'fKsdRDgHSm9tvkl7wALE', 'apiSecret' : 'prWmZRV2NhJUl8hMqcxgFVQZBZwdVxyBu3TIIUhJ', 'privileges':'STANDARD'}]}});
+db.user.update({'email' : "info@foundation.com"}, {$set:{'applications':[ { 'name' : 'Over KC','legacyKey':'w1QdT7jt4jPXi8m', 'apiKey' : 'O6yDIDTM1R32QuIysg26', 'apiSecret' : 'thDE0852guiWr96TUgZ5pwryd7vME85Ty2tro2Ul', 'privileges':'STANDARD'}]}});
+db.user.update({'email' : "info@overkc.com"}, {$set:{'applications':[ { 'name' : 'Over KC','legacyKey':'w1QdT7jt4jPXi8m', 'apiKey' : 'O6yDIDTM1R32QuIysg26', 'apiSecret' : 'thDE0852guiWr96TUgZ5pwryd7vME85Ty2tro2Ul', 'privileges':'STANDARD'}]}});
+db.user.update({'email' : "info@pittsburgh.ks"}, {$set:{'applications':[ { 'name' : 'Pittsburg KS','legacyKey':'9CXVnIllv6RbSrK', 'apiKey' : 'iB3KkMy8CteQFyBrZiLh', 'apiSecret' : 'eys8Aky5oZZki9QzDOp2kXecgZVJB1bFAZgtkaoo', 'privileges':"STANDARD"}]}});
+db.user.update({ 'email' : "hooplaAdmin@localruckus.com"}, {$set:{'applications':[ { 'name' : 'hoopla-io-web', 'apiKey' : 'METkwI15Bg0heuRNaru6', 'apiSecret' : '6n0pRhok4WR8yx8VudUD7XshboNCz51oFXJvZA2y', 'privileges':'PRIVILEGED'},{ 'name' : 'localruckus', 'apiKey' : 'XVoZHNOJ2kFdrApkq4wM', 'apiSecret' : 'dXzDtPBav3WGiXzBGhszOrMdEpLSVZChp7cdN2l7', 'privileges':'STANDARD'}]}});

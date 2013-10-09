@@ -9,7 +9,6 @@ class BusinessController extends SearchableController
   searchService : require('../services/searchService')
   events : require('../models/event').Event
   promoTarget: require('../models/promotionTarget').PromotionTarget
-  fields: {}
 
   security: 
     get : securityConstraints.anyone
@@ -29,8 +28,9 @@ class BusinessController extends SearchableController
     super(@name)
 
   getEvents : (req,res,next) =>
+    fields = @calculateGetFields(req.authApp)
     if req.params.id and not req.query.ids
-      q = @events.find {"business": req.params.id}, {},{lean:true}
+      q = @events.find {"business": req.params.id}, fields,{lean:true}
       q.populate('media')
       q.exec (err, result)->
         if err
@@ -43,7 +43,7 @@ class BusinessController extends SearchableController
       ids = req.query.additional_ids.split ','
       if _.indexOf(ids, req.params.id) is -1 and req.params.id
         ids.push req.params.id
-      @events.find {"business":{$in : ids}}, {}, {lean:true}, (err, result)->
+      @events.find {"business":{$in : ids}}, fields, {lean:true}, (err, result)->
         if err
           res.send 400, err
           next()
@@ -64,12 +64,18 @@ class BusinessController extends SearchableController
       res.send 500
       next()
 
-  allVenues : (req, res, next) =>  
-    fields = {name:1,location:1}
+  allVenues : (req, res, next) =>
+    fields = @calculateGetFields(req.authApp)  
+    fields.name = 1
+    fields.location=1
     q = @model.find {}, fields, {lean:true}
     q.populate(@populate.join(' '))
     q.exec (err, data) ->
       res.send data
       next()
-
+  calculateGetFields:(app)=>
+    fields = {}
+    if app and app.privileges is 'STANDARD'
+      fields = {'promotionTargets':0,'promotionRequests':0, 'legacyCreatedBy':0, 'legacyId':0}
+    return fields
 module.exports = new BusinessController()

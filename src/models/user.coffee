@@ -37,6 +37,9 @@ UserSchema = new Schema
       legacyKey : String
       apiKey : String
       apiSecret : String
+      privileges: 
+        type: String
+        enum: ['PRIVILEGED', 'STANDARD']
     }
   ]
   authTokens : [{apiKey:String, authToken:String}]
