@@ -75,7 +75,7 @@ class BusinessController extends SearchableController
       next()
   calculateGetFields:(app)=>
     fields = {}
-    if app and app.privileges is 'STANDARD'
+    if app and not app.privileges is 'PRIVILEGED'
       fields = {'promotionTargets':0,'promotionRequests':0, 'legacyCreatedBy':0, 'legacyId':0}
     return fields
 module.exports = new BusinessController()

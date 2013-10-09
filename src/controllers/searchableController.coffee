@@ -49,8 +49,6 @@ class SearchableController extends RestfulController
                     res.status = error.code
                     res.send error.message
                     next()
-           
-
 
   mergeSearches: (results) ->
     if results[1]
