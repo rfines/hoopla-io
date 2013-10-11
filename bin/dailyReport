@@ -1,0 +1,7 @@
+#! /app/node_modules/.bin/coffee
+mongoService = require '../src/services/mongoService'
+mongoService.init()
+
+job = require '../src/jobs/dailyReport'
+job.runOnce ->
+  process.exit 0
