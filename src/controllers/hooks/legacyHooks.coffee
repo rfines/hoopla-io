@@ -114,10 +114,10 @@ module.exports = exports =
               return mediaImgId.equals(item._id)
           if imageH and imageW
             if x.media
-              x.picture = exports.transformImageUrl x.media[0]?.url, imageH, imageW
+              x.image = exports.transformImageUrl x.media[0]?.url, imageH, imageW
             x.venueImage = exports.transformImageUrl  venImg.url|| venImg.url, imageH, imageW
           else
-            x.picture = x.media[0]?.url
+            x.image = x.media[0]?.url
             x.venueImage = venImg.url || venImg.url
           x.startDate = moment(x.schedules?[0]?.start).utc().format('M/D/YYYY') || moment(x.fixedOccurrences?[0]?.start).utc().format('M/D/YYYY')
           if x.schedules?[0]?.end

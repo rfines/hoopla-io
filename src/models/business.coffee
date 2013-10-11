@@ -5,7 +5,7 @@ Contact = require('./contact')
 Media = require('./media').MediaSchema
 SocialMediaLink = require('./socialMediaLink').SocialMediaLinkSchema
 require('./promotionTarget').PromotionTargetSchema
-
+Mixed = mongoose.Schema.Types.Mixed
 BusinessSchema = new Schema
   name: 
     type: String
@@ -13,7 +13,6 @@ BusinessSchema = new Schema
     trim: true
   description:
     type: String
-    required: true
     trim: true
   hours:
     type: String
@@ -39,6 +38,21 @@ BusinessSchema = new Schema
       coordinates: [Number]
     }    
   }
+  sources:[
+    {
+      'type':
+        type:String
+        required:true
+      sourceId: 
+        type:Number
+        required:true
+      data: 
+        type:Mixed
+      lastUpdated: 
+        type:Date
+        required:true
+    }
+  ]  
   socialMediaLinks:[SocialMediaLink]
   promotionTargets: [{type:ObjectId, ref : 'promotionTarget'}]
   legacyId: String

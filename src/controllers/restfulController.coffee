@@ -24,7 +24,6 @@ class RestfulController
     id = req.params.id
     checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$")
     fields = @calculateGetFields(req.authApp)
-    console.log fields
     if not checkForHexRegExp.test(id)
       q = @model.findOne {legacyId : req.params.id}, fields
       q.lean()

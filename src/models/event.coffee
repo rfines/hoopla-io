@@ -6,7 +6,7 @@ Contact = require('./contact').ContactSchema
 SocialMediaLinks = require('./socialMediaLink').SocialMediaLinkSchema
 Business= require('./business').BusinessSchema
 PromotionRequest = require('./promotionRequest').PromtionRequestSchema
-
+Mixed = mongoose.Schema.Types.Mixed
 OccurrenceSchema = new Schema
   start: Date
   end: Date
@@ -21,7 +21,6 @@ EventSchema = new Schema
     trim: true
   description:
     type: String
-    required: true
     trim: true
   host: {type:ObjectId, ref:'business'}
   business : {type:ObjectId, ref:'business', required:true}
@@ -55,6 +54,20 @@ EventSchema = new Schema
     {
       start: Date
       end: Date
+    }
+  ]
+  sources:[
+    {
+      'type':
+        type:String
+        required:true
+      sourceId: 
+        type:Number
+        required:true
+      data: Mixed
+      lastUpdated: 
+        type:Date
+        required:true
     }
   ]  
   schedules: [
