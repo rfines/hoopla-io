@@ -12,6 +12,4 @@ module.exports.start = ->
   #addBusinessToAdmin.runOnce()
   #setInterval calculateSchedules.runOnce, fiveMinutes
   #setInterval promoteEvents.runOnce, fiveMinutes
-
-
   #dailyReport.runOnce()
