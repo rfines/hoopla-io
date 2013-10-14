@@ -6,10 +6,10 @@ dailyReport = require('./jobs/dailyReport')
 fiveMinutes = 300000
 
 module.exports.start = ->
-  #calculateSchedules.runOnce()
-  #promoteEvents.runOnce()
-  #createIndexes.runOnce()
+  calculateSchedules.runOnce()
+  promoteEvents.runOnce()
+  createIndexes.runOnce()
   #addBusinessToAdmin.runOnce()
-  #setInterval calculateSchedules.runOnce, fiveMinutes
-  #setInterval promoteEvents.runOnce, fiveMinutes
+  setInterval calculateSchedules.runOnce, fiveMinutes
+  setInterval promoteEvents.runOnce, fiveMinutes
   #dailyReport.runOnce()

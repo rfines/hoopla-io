@@ -36,6 +36,8 @@ facebookPost = (promotionRequest, cb) ->
 
 
 facebookEvent = (pr, cb) ->
+  if pr.title.length > 74
+    pr.title = textCutter(70,pr.title)
   event = {
     name : pr.title
     start_time: moment(pr.startTime).toDate().toISOString()
@@ -62,22 +64,23 @@ twitterPost = (pr, cb) ->
     access_token:pr.promotionTarget.accessToken,
     access_token_secret: pr.promotionTarget.accessTokenSecret
   })
-
-  if pr.media?.length > 0
-    bitlyShorten pr.media[0].url, (err, url)=>
-      status = {status:pr.message+'\n'+ url }
+  detectUrl pr.message, (err, shortened)->
+    console.log shortened
+    if pr.media?.length > 0
+      bitlyShorten pr.media[0].url, (err, url)=>
+        status = {status:shortened+'\n'+ url }
+        tw.post 'statuses/update', status, (error, reply)->
+          if error
+            cb error, null
+          else
+            cb null, reply?.id
+    else
+      status = {status:shortened}
       tw.post 'statuses/update', status, (error, reply)->
         if error
           cb error, null
         else
           cb null, reply?.id
-  else
-    status = {status:pr.message}
-    tw.post 'statuses/update', status, (error, reply)->
-      if error
-        cb error, null
-      else
-        cb null, reply?.id
 
 bitlyShorten=(url, cb)=>
   bit = new bitly(CONFIG.bitly.username, CONFIG.bitly.apiKey)
@@ -86,6 +89,28 @@ bitlyShorten=(url, cb)=>
       cb err, ''
     else
       cb null, response.data.url
+bitlyShorten=(url)=>
+  bit = new bitly(CONFIG.bitly.username, CONFIG.bitly.apiKey)
+  bit.shorten url, (err,response) =>
+    if not response.status_code is 200
+      return ''
+    else
+      return response.data.url
+
+detectUrl = (text, cb)=>
+  exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
+  text.replace exp, (match)->
+    console.log match
+    bitlyShorten match, (err, shorter)=>
+      return shorter
+      console.log "Shortened url ="
+      console.log shortened
+      cb null, text
+
+textCutter = (i, text) ->
+  short = text.substr(0, i)
+  return short.replace(/\s+\S*$/, "")  if /^\S/.test(text.substr(i))
+  short
 
 module.exports.publish = (promotionRequest, cb) ->
   switch promotionRequest.pushType

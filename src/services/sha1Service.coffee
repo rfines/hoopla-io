@@ -2,8 +2,11 @@ crypto = require('crypto')
 
 check = (password, hashed, onPass, onFail) ->
   encrypt password, (match) =>
-    if hashed.toUpperCase() is match.toUpperCase()
-      onPass()
+    if hashed and match
+      if hashed.toUpperCase() is match.toUpperCase()
+        onPass()
+      else
+        onFail()
     else
       onFail()
 encrypt = (password, cb) ->
