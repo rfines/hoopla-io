@@ -24,11 +24,8 @@ calculate= (item,cb) ->
       endRange = new Date(x.end)
     else
       endRange = new Date(moment().add('days', dayCount))
-      
-    console.log "End Range: #{endRange}"
     if moment(x.start).isAfter(now)
       startRange = new Date(x.start)
-      console.log "Start Range: #{startRange}"
     else
       startRange = new Date(now)
     occurrences = later.schedule({schedules:[transformed]}).next(dayCount,startRange,endRange)
@@ -46,7 +43,6 @@ calculate= (item,cb) ->
     out.prevOccurrence = pastOccurrence if pastOccurrence
     out.scheduleText = scheduleText(item)
     out.nextOccurrence = _.first(occurrences) if occurrences?.length > 0
-    console.log out
     cb null, out
   else
     minutesToAdd = item.tzOffset - moment().zone()
