@@ -126,5 +126,3 @@ EventSchema.pre 'update', (next) ->
 
 module.exports = 
   Event : mongoose.model('event', EventSchema, 'event')
-
-

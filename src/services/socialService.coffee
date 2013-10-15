@@ -65,7 +65,6 @@ twitterPost = (pr, cb) ->
     access_token_secret: pr.promotionTarget.accessTokenSecret
   })
   detectUrl pr.message, (err, shortened)->
-    console.log shortened
     if pr.media?.length > 0
       bitlyShorten pr.media[0].url, (err, url)=>
         status = {status:shortened+'\n'+ url }
@@ -100,7 +99,6 @@ bitlyShorten=(url)=>
 detectUrl = (text, cb)=>
   exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
   text.replace exp, (match)->
-    console.log match
     bitlyShorten match, (err, shorter)=>
       return shorter
       console.log "Shortened url ="
