@@ -1,8 +1,8 @@
 mongoose = require 'mongoose'
 ss = require('../services/searchService')
 async = require 'async'
-Business = require('../models/business').Business
-Event = require('../models/event').Event
+Business = require('hoopla-io-core').Business
+Event = require('hoopla-io-core').Event
 
 module.exports.runOnce = (onComplete) ->
   indexBusiness = (item, cb) ->

@@ -1,5 +1,5 @@
 _ = require 'lodash'
-promotionRequest = require('../models/promotionRequest').PromotionRequest
+promotionRequest = require('hoopla-io-core').PromotionRequest
 async = require 'async'
 ss = require '../services/socialService'
 

@@ -1,6 +1,5 @@
 _ = require 'lodash'
-scheduleService = require('../services/schedulingService')
-events = require('../models/event').Event
+events = require('hoopla-io-core').Event
 async = require 'async'
 
 module.exports.runOnce = (onComplete) ->

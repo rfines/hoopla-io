@@ -6,12 +6,12 @@ ObjectId = mongoose.Schema.ObjectId
 
 
 class UserController extends RestfulController
-  model : require('../models/user').User
+  model : require('hoopla-io-core').User
   getFields : { }
   hooks : require('./hooks/userHooks.coffee')
   populate : ['businessPrivileges.business']
-  businessModel : require('../models/business').Business
-  eventModel : require('../models/event').Event
+  businessModel : require('hoopla-io-core').Business
+  eventModel : require('hoopla-io-core').Event
   bcryptService: require('../services/bcryptService')
   security: 
     get : (authenticatedUser, targetUser) ->

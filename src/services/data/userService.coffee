@@ -1,5 +1,5 @@
 class UserService
-  User : require('../../models/user').User
+  User : require('hoopla-io-core').User
 
   getByAppToken : (apiKey, token, cb) ->
     @User.findOne {'authTokens.apiKey' : apiKey, 'authTokens.authToken' : token}, {}, {}, (err, data) ->

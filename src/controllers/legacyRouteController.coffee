@@ -7,8 +7,8 @@ SearchQuery = require('./helpers/SearchQuery')
 SearchableController = require('./searchableController')
 
 class LegacyRouteController extends SearchableController
-  model : require('../models/event').Event
-  scheduleService : require('../services/schedulingService')
+  model : require('hoopla-io-core').Event
+  scheduleService : require('hoopla-io-core')
   type: 'event'
   populate:['media','business','host', "business.media", "host.media"]
   hooks: require('./hooks/legacyHooks')

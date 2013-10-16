@@ -5,10 +5,10 @@ securityConstraints = require('./helpers/securityConstraints')
 
 class BusinessController extends SearchableController
   type: 'business'
-  model : require('../models/business').Business
+  model : require('hoopla-io-core').Business
   searchService : require('../services/searchService')
-  events : require('../models/event').Event
-  promoTarget: require('../models/promotionTarget').PromotionTarget
+  events : require('hoopla-io-core').Event
+  promoTarget: require('hoopla-io-core').PromotionTarget
 
   security: 
     get : securityConstraints.anyone

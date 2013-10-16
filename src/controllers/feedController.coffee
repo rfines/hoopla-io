@@ -4,8 +4,8 @@ securityConstraints = require('./helpers/securityConstraints')
 SearchQuery = require('./helpers/SearchQuery')
 
 class FeedController extends RestfulController
-  model : require('../models/feed').Feed
-  event : require('../models/event').Event
+  model : require('hoopla-io-core').Feed
+  event : require('hoopla-io-core').Event
   getFields : {}
   hooks : require('./hooks/restfulHooks.coffee')
 

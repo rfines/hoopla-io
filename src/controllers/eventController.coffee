@@ -6,10 +6,10 @@ moment = require 'moment'
 fs = require 'fs'
 
 class EventController  extends SearchableController
-  model : require('../models/event').Event
+  model : require('hoopla-io-core').Event
   type: 'event'
   hooks: require('./hooks/eventHooks')
-  promoRequest : require('../models/promotionRequest').PromotionRequest
+  promoRequest : require('hoopla-io-core').PromotionRequest
   fields: {schedules: 0}
   sort: {'nextOccurrence':1}
   
@@ -71,6 +71,6 @@ class EventController  extends SearchableController
   calculateGetFields:(app)=>
     fields = {}
     if app and not app.privileges is 'PRIVILEGED'
-      fields = {'promotionRequests':0, 'schedules':0, 'fixedOccurrences':0, 'legacySchedule':0, 'legacyHostId':0, 'legacyId':0, 'legacyImage':0, 'legacyBusinessId':0,}
+      fields = {'promotionRequests':0, 'schedules':0, 'fixedOccurrences':0, 'legacySchedule':0, 'legacyHostId':0, 'legacyId':0, 'legacyImage':0, 'legacyBusinessId':0}
     return fields
 module.exports = new EventController()

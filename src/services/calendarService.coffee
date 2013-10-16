@@ -1,5 +1,5 @@
 icalendar = require 'icalendar'
-Event = require '../models/event'
+Event = require 'hoopla-io-core'
 CONFIG = require('config')
 eventUtils = require('../utils/eventUtils')
 moment = require 'moment'

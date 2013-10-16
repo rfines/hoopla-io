@@ -5,7 +5,7 @@ _ = require 'lodash'
 module.exports = exports = 
   bcryptService : require('../../services/bcryptService')
   mailchimpService : require '../../services/mailchimpService'
-  collaboratorRequest : require('../../models/collaboratorRequest').CollaboratorRequest
+  collaboratorRequest : require('hoopla-io-core').CollaboratorRequest
   create:
     pre : (options) ->
       exports.bcryptService.encrypt options.req.body.password, (encrypted) ->

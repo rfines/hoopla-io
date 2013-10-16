@@ -5,8 +5,8 @@ SearchQuery = require('./helpers/SearchQuery')
 imageManipulation = require('./helpers/imageManipulation')
 
 class WidgetController extends RestfulController
-  model : require('../models/widget').Widget
-  event : require('../models/event').Event
+  model : require('hoopla-io-core').Widget
+  event : require('hoopla-io-core').Event
   security: 
     get : securityConstraints.anyone
     create : securityConstraints.hasAuthUser

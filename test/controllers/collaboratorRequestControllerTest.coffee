@@ -13,7 +13,7 @@ describe "Operations for Collaboration Requests", ->
 
   beforeEach (done) ->
     controller = require('../../src/controllers/collaboratorRequestController')
-    controller.collaborator = require('../../src/models/collaboratorRequest').CollaboratorRequest
+    controller.collaborator = require('hoopla-io-core').CollaboratorRequest
     mockUser ={
       businessPrivileges: [],
       email:'user1@localruckus.com',

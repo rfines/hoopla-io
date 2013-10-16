@@ -6,7 +6,7 @@ ObjectId = mongoose.Schema.ObjectId
 
 
 class EventTagController extends RestfulController
-  model : require('../models/eventTag').EventTag
+  model : require('hoopla-io-core').EventTag
   getFields : { }
   hooks : require('./hooks/restfulHooks.coffee')
 

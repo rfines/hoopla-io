@@ -1,9 +1,9 @@
 mongoose = require 'mongoose'
 ss = require('../services/searchService')
 async = require 'async'
-Business = require('../models/business').Business
-Event = require('../models/event').Event
-scheduler = require('../services/schedulingService')
+Business = require('hoopla-io-core').Business
+Event = require('hoopla-io-core').Event
+scheduler = require('hoopla-io-core').Scheduler
 
 class DevController
   

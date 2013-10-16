@@ -7,10 +7,8 @@ expansions = {
 }
 hookLibrary = require('./hookLibrary')
 async = require 'async'
-searchService = require('../../services/searchService')
 
 module.exports = exports =
-  scheduleService : require('../../services/schedulingService')
   create:
     pre : hookLibrary.unpopulate
     post : (options) ->

@@ -7,7 +7,7 @@ expansions = {
 }
 
 TagMap= require('../../services/data/categoryMap')
-Media = require('../../models/media').Media
+Media = require('hoopla-io-core').Media
 mongoose = require('mongoose')
 ObjectId = mongoose.Schema.ObjectId
 _ = require 'lodash'

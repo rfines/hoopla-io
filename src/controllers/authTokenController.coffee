@@ -3,7 +3,7 @@ restify = require 'restify'
 _ = require 'lodash'
 
 class AuthTokenController
-  model : require('../models/user').User
+  model : require('hoopla-io-core').User
   bcryptService : require('../services/bcryptService')
   sha1Service : require '../services/sha1Service'
   tokenService : require '../services/tokenService'

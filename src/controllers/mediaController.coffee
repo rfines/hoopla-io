@@ -4,7 +4,7 @@ securityConstraints = require('./helpers/securityConstraints')
 cloudinaryService = require('../services/cloudinaryService')
 restify = require 'restify'
 class MediaController extends RestfulController
-  model : require('../models/media').Media
+  model : require('hoopla-io-core').Media
 
   security: 
     get : securityConstraints.anyone

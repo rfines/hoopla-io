@@ -2,16 +2,16 @@ CONFIG = require('config')
 mongoose = require 'mongoose'
 ss = require('../services/searchService')
 async = require 'async'
-Business = require('../models/business').Business
-Event = require('../models/event').Event
+Business = require('hoopla-io-core').Business
+Event = require('hoopla-io-core').Event
 
 class PasswordResetController
 
-  passwordReset : require('../models/passwordReset').PasswordReset
+  passwordReset : require('hoopla-io-core').PasswordReset
   emailService : require('../services/emailService')
   tokenService : require '../services/tokenService'
   bcryptService : require('../services/bcryptService')
-  user : require('../models/user').User
+  user : require('hoopla-io-core').User
 
   constructor : (@name) ->
 

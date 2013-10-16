@@ -2,7 +2,7 @@ RestfulController = require('./restfulController')
 securityConstraints = require('./helpers/securityConstraints')
 
 class PromotionRequestController extends RestfulController
-  model : require('../models/promotionRequest').PromotionRequest
+  model : require('hoopla-io-core').PromotionRequest
   getFields : {}
   hooks : require('./hooks/restfulHooks.coffee')
 

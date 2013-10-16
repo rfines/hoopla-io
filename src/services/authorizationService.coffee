@@ -1,5 +1,5 @@
 mongoose = require 'mongoose'
-User = require('../models/user').User
+User = require('hoopla-io-core').User
 _ = require 'lodash'
 
 authorize = (req, onAuthorized, onUnAuthorized) ->

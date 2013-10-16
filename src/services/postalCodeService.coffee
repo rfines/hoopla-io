@@ -1,4 +1,4 @@
-PostalCode = require('../models/postalCode').PostalCode
+PostalCode = require('hoopla-io-core').PostalCode
 cache = require('../services/cacheService')
 _ = require 'lodash'
 

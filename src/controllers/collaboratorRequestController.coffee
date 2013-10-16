@@ -4,9 +4,9 @@ restify = require 'restify'
 
 class CollaboratorRequestController
   emailService : require('../services/emailService')
-  user : require('../models/user').User
-  collaborator : require('../models/collaboratorRequest').CollaboratorRequest
-  business = require('../models/business').Business
+  user : require('hoopla-io-core').User
+  collaborator : require('hoopla-io-core').CollaboratorRequest
+  business = require('hoopla-io-core').Business
 
   constructor : (@name) ->
 

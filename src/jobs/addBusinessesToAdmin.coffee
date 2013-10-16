@@ -1,6 +1,6 @@
 _ = require 'lodash'
-business = require('../models/business').Business
-user = require('../models/user').User
+business = require('hoopla-io-core').Business
+user = require('hoopla-io-core').User
 
 module.exports.runOnce = (onComplete) ->
   user.findOne {'email': 'info@localruckus.com'}, {}, {}, (err, adminUser)=>

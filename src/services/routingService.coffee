@@ -1,5 +1,5 @@
 restify = require 'restify'
-ApiUsage = require('../models/apiUsage').ApiUsage
+ApiUsage = require('hoopla-io-core').ApiUsage
 
 methodRewrite = 
   del : 'destroy'

@@ -1,7 +1,7 @@
 _ = require('lodash')
-User = require('../models/user').User
-Business = require('../models/business').Business
-Event = require('../models/event').Event
+User = require('hoopla-io-core').User
+Business = require('hoopla-io-core').Business
+Event = require('hoopla-io-core').Event
 async = require('async')
 moment = require('moment')
 twoDaysAgo = moment.utc().startOf('month')
