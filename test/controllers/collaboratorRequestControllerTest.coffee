@@ -65,7 +65,7 @@ describe "Operations for Collaboration Requests", ->
     controller.addCollaborator req, res, (err, message) ->
       err.statusCode.should.be.equal 400
       done()
-
+      
   it 'should send an email to a user that is not found', (done) ->
     mailSpy = sinon.spy(emailService, 'send')
     mockModel = {
@@ -76,10 +76,9 @@ describe "Operations for Collaboration Requests", ->
     options = 
       message: 
         'to' : [{email:'user1@localruckus.com'}]
-        'global_merge_vars' : [{name : 'REGISTER_URL', content : "http://localhost:3000/demo/register"},{name:'BUSINESS_NAME', content:"Zona Rosa"}]
+        'global_merge_vars' : [{name : 'REGISTER_URL', content : "http://localhost:3000/register"},{name:'BUSINESS_NAME', content:"Zona Rosa"}]
       template_name : 'add-business-collaborator'
       template_content : []
     controller.addCollaborator req, res, (err, message) ->
       mailSpy.calledWith(options).should.be.true
       done()
-      

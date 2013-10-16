@@ -72,7 +72,9 @@ module.exports = exports =
               req.params.tags = newTags.join(',')
               cb null, req
           else
-             cb null, req
+            cb null, req
+        else
+          cb null, req
     else
       errors = {code: 400, message: "Invalid request"}
       cb errors, null

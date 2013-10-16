@@ -34,7 +34,7 @@ describe "Operations for Search Query Builder", ->
     start = new Date("8/5/2013 15:00:00")
     end = new Date("8/8/2013 18:00:00")
     q = new SearchQuery().within(25).ofLongitude(-93.5).ofLatitude(40.01).withCost("20.00").betweenDates(start,end).build()
-    q.should.eql {'location.geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ -93.5, 40.01 ]},$maxDistance : 25}},'maxCost' :{$lte: '20.00'}, 'occurrences.start':{$gte:start, $lte:end}}
+    q.should.eql {'location.geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ -93.5, 40.01 ]},$maxDistance : 25}},'maxCost' :{$lte: '20.00'}, 'occurrences':{$elemMatch : {start: {$gte:start, $lte:end}}}}
     done()
 
 
@@ -84,6 +84,6 @@ describe "Operations for Search Query Builder", ->
     start = new Date("8/5/2013 15:00:00")
     end = new Date("8/8/2013 18:00:00")
     q = new SearchQuery().buildFromParams {ll: '1.01,1.01', radius: 10.1, start: start, end: end}
-    q.should.eql {'location.geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ 1.01, 1.01 ]}, $maxDistance : 10.1}}, 'occurrences.start':{$gte : start, $lte :end}}
+    q.should.eql {'location.geo':{$near:{ $geometry :{ type : "Point" ,coordinates : [ 1.01, 1.01 ]}, $maxDistance : 10.1}}, 'occurrences':{$elemMatch : {start: {$gte:start, $lte:end}}}}
     done()              
 

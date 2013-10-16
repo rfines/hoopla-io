@@ -24,13 +24,14 @@ describe "Calendar Service Tests", ->
   testCal = calEvent.toString()
   expected = {success:true, file:testCal}
 
+
   it "should create a valid ical file", (done)=>
     calendarService.getCalendar 'ical', event, moment(start),moment(end), (err, response)=>
       console.log "response received"
+      console.log response
       if err
         console.log err
         done()
       else
-        response.success.should.equal(expected.success)
+        response.length.should.be.above(20)
         done()
-    

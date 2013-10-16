@@ -13,6 +13,11 @@ describe "Legacy Routes", ->
   
   beforeEach (done) ->
     hooks = require('../../../src/controllers/hooks/legacyHooks')
+    hooks.postalCodeService.get = (query, cb) ->
+      cb null, {
+        geo :
+          coordinates : [1.123,1.123]
+      }    
     done()
 
   it 'should transform the zipcode parameter to an LL parameter', (done)->
@@ -23,8 +28,8 @@ describe "Legacy Routes", ->
       if err
         console.log err
       else
-        result.should.eql {"params":{'apiKey' : 'CjV94IobahVjMt9', 'll': '-94.595033,39.102704'}}
-        done()
+        result.should.eql {"params":{'apiKey' : 'CjV94IobahVjMt9', 'll': '1.123,1.123'}}
+    done()
 
   it 'should transform the cost parameter to a usable float value', (done)->
     req.params = {}
@@ -35,7 +40,7 @@ describe "Legacy Routes", ->
       if err
         console.log err
       else
-        result.should.eql {"params":{ 'll': '-94.595033,39.102704','apiKey' : 'CjV94IobahVjMt9', 'cost': 20.00}}
+        result.should.eql {"params":{ 'll': '1.123,1.123','apiKey' : 'CjV94IobahVjMt9', 'cost': 20.00}}
         done()
 
   it 'should transform the categories parameter to a usable set of tags', (done)->
@@ -47,7 +52,6 @@ describe "Legacy Routes", ->
       if err
         console.log err
       else
-        result.should.eql {"params":{ 'll': '-94.595033,39.102704','apiKey' : 'CjV94IobahVjMt9', 'tags': ['BEER']}}
+        result.should.eql {"params":{ 'll': '1.123,1.123','apiKey' : 'CjV94IobahVjMt9', 'tags': ['BEER']}}
         done()
-
  

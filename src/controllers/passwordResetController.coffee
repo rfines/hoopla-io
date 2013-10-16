@@ -20,7 +20,7 @@ class PasswordResetController
     pr = new @passwordReset()
     pr.email = body.email
     pr.requestDate = new Date()
-    @user.findOne {email: body.email}, (err, doc) =>
+    @user.findOne {email: body.email}, {}, {lean:true}, (err, doc) =>
       if not doc
         templateName = 'password-reset-request-bad-user'
       else

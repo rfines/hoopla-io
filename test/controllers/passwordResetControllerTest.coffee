@@ -24,6 +24,14 @@ describe "Operations for Password Resets", ->
       generateWithTimestamp : (len) ->
         return 123
     }        
+    controller.user = {
+      findOne : (query, fields, options, cb) ->
+        cb null, {
+          _id : 'userId'
+          update : (query, options, cb) ->
+            cb null, {}
+        }
+    }    
     req = 
       body : {email:'user1@localruckus.com'}
     res = 
@@ -41,7 +49,11 @@ describe "Operations for Password Resets", ->
     expectedParams = 
       message: 
         'to' : [{email:'user1@localruckus.com'}]
-        global_merge_vars : [{name: 'PASSWORD_RESET_URL', content: "http://localhost:3000/password/reset?token=123"}]        
+        global_merge_vars : [
+          {name: 'PASSWORD_RESET_URL', content: "http://localhost:3000/password/reset?token=123"}
+          {name : 'EMAIL', content : 'user1@localruckus.com'}
+          {name : 'REGISTER_URL', content : "http://localhost:3000/register"}
+        ]
       template_name : 'password-reset-request'
       template_content : []
     controller.requestResetEmail req, res, ->
@@ -84,18 +96,3 @@ describe "Operations for Password Resets", ->
       userSpy.calledWith({email : 'user1@localruckus.com'}).should.be.true
       bcryptSpy.calledWith('newPassword').should.be.true
       done()  
-
-  it 'should should reject with a 403 if the email/token cannot be found', (done) ->
-    req.body = { email : 'user1@localruckus.com', token : '123', password : 'newPassword'}
-    controller.passwordReset =
-      findOne : (query, fields, options, cb) ->
-        cb null, {}
-      update: (query, options, cb) ->
-        cb(null, {})
-    pwSpy = sinon.spy(controller.passwordReset, 'findOne')
-    resSpy = sinon.spy(res, 'send')
-    controller.resetPassword req, res, ->
-      pwSpy.calledWith({ email : 'user1@localruckus.com', token : '123'}).should.be.true
-      resSpy.calledWith(403).should.be.true
-      done()            
-

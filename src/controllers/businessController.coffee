@@ -43,7 +43,9 @@ class BusinessController extends SearchableController
       ids = req.query.additional_ids.split ','
       if _.indexOf(ids, req.params.id) is -1 and req.params.id
         ids.push req.params.id
-      @events.find {"business":{$in : ids}}, fields, {lean:true}, (err, result)->
+      q = @events.find {"business":{$in : ids}}, fields, {lean:true}
+      q.populate('media')
+      q.exec (err, result) ->
         if err
           res.send 400, err
           next()

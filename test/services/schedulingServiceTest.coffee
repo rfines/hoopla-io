@@ -1,3 +1,4 @@
+###
 ScheduleService = require('../../src/services/schedulingService')
 later = require 'later'
 moment = require 'moment'
@@ -95,3 +96,4 @@ describe "Scheduling using Later library", ->
       moment(results[0].start).hour().should.eql 15
       moment(results[0].start).day().should.eql 2
       done()
+###

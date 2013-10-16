@@ -13,12 +13,17 @@ describe "Operations for Business Routes", ->
   beforeEach (done) ->
     controller = require('../../src/controllers/businessController')
     document = {}
-    modelSpy = 
-      find : (query, fields, options, cb) ->
-        cb null, document
+    eventsSpy = 
+      find : (query, fields, options) ->
+        return {
+          populate: (s) ->
+            return undefined
+          exec: (cb) ->
+            console.log 'in exec'
+            cb null, document
+        }
 
-
-    controller.events = modelSpy      
+    controller.events = eventsSpy
     req =
       body : {}
     res = 
