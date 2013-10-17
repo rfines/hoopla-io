@@ -71,6 +71,6 @@ class EventController  extends SearchableController
   calculateGetFields:(app)=>
     fields = {}
     if app and not app.privileges is 'PRIVILEGED'
-      fields = {'promotionRequests':0, 'schedules':0, 'fixedOccurrences':0, 'legacySchedule':0, 'legacyHostId':0, 'legacyId':0, 'legacyImage':0, 'legacyBusinessId':0}
+      fields = {'promotionRequests':0, 'schedules':0, 'fixedOccurrences':0, 'legacySchedule':0, 'legacyHostId':0, 'legacyId':0, 'legacyImage':0, 'legacyBusinessId':0, sources: 0}
     return fields
 module.exports = new EventController()

@@ -75,9 +75,10 @@ class BusinessController extends SearchableController
     q.exec (err, data) ->
       res.send data
       next()
+      
   calculateGetFields:(app)=>
     fields = {}
     if app and not app.privileges is 'PRIVILEGED'
-      fields = {'promotionTargets':0,'promotionRequests':0, 'legacyCreatedBy':0, 'legacyId':0}
+      fields = {'promotionTargets':0,'promotionRequests':0, 'legacyCreatedBy':0, 'legacyId':0, sources: 0}
     return fields
 module.exports = new BusinessController()

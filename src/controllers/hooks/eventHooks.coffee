@@ -10,12 +10,18 @@ async = require 'async'
 
 module.exports = exports =
   create:
-    pre : hookLibrary.unpopulate
+    pre : (options) ->
+      if not options.req.body.sources?
+        options.req.body.sources = [{type:'hoopla'}]
+      hookLibrary.unpopulate(options)
     post : (options) ->
       searchService.indexEvent options.target
       options.success() if options.success
   update:
-    pre : hookLibrary.unpopulate
+    pre : (options) ->
+      if not options.req.body.sources?
+        options.req.body.sources = [{type:'hoopla'}]
+      hookLibrary.unpopulate(options)
     post : (options) ->
       searchService.indexEvent options.target
       options.success() if options.success
