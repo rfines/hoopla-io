@@ -64,21 +64,20 @@ twitterPost = (pr, cb) ->
     access_token:pr.promotionTarget.accessToken,
     access_token_secret: pr.promotionTarget.accessTokenSecret
   })
-  detectUrl pr.message, (err, shortened)->
-    if pr.media?.length > 0
-      bitlyShorten pr.media[0].url, (err, url)=>
-        status = {status:shortened+'\n'+ url }
-        tw.post 'statuses/update', status, (error, reply)->
-          if error
-            cb error, null
-          else
-            cb null, reply?.id
-    else
-      status = {status:shortened}
+  if pr.media?.length > 0
+    bitlyShorten pr.media[0].url, (err, url)=>
+      status = {status:pr.message+'\n'+ url }
       tw.post 'statuses/update', status, (error, reply)->
         if error
           cb error, null
         else
+          cb null, reply?.id
+  else
+    status = {status:pr.message}
+    tw.post 'statuses/update', status, (error, reply)->
+      if error
+        cb error, null
+      else
           cb null, reply?.id
 
 bitlyShorten=(url, cb)=>
@@ -88,13 +87,6 @@ bitlyShorten=(url, cb)=>
       cb err, ''
     else
       cb null, response.data.url
-bitlyShorten=(url)=>
-  bit = new bitly(CONFIG.bitly.username, CONFIG.bitly.apiKey)
-  bit.shorten url, (err,response) =>
-    if not response.status_code is 200
-      return ''
-    else
-      return response.data.url
 
 detectUrl = (text, cb)=>
   exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig

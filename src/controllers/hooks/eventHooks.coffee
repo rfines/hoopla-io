@@ -5,6 +5,7 @@ expansions = {
   'FOOD-AND-DRINK' : ['BEER','COCKTAILS','FOOD','WINE']
   'MUSIC' : ['CLASSICROCK', 'FOLK', 'ALTERNATIVE', 'CLASSICAL', 'ELECTRONICA', 'INDIE', 'POP', 'ROCK', 'ACOUSTIC', 'JAZZ', 'RAP', 'BLUES', 'COUNTRY', 'METAL', 'REGGAE', 'PROGRESSIVE', 'PUNK', 'ROCKABILLY', 'HOLIDAY', "ALTERNATIVE", "BLUES", "AMERICANA", "CHILD", "CHRISTIAN", "DANCE", "EXPERIMENTAL", "RAP", "INDIE", "LATIN", "NEWAGE", "REGGAE", "SOUL", "ROCKABILLY","TRIBUTE","VARIOUS","WORLD"]
 }
+searchService = require('../../services/searchService')
 hookLibrary = require('./hookLibrary')
 async = require 'async'
 
