@@ -93,7 +93,6 @@ findEvents = (term, cb) ->
         "like_text" : "#{term}"
         "min_similarity" : "0.7"
   elasticSearchClient.search(index, "event", qryObj).on("data", (data) ->
-    console.log data
     cb null, JSON.parse(data).hits.hits
   ).on("error", (error) ->
     cb error

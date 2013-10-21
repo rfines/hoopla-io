@@ -22,6 +22,8 @@ module.exports = exports =
     pre : (options) ->
       if not options.req.body.sources?
         options.req.body.sources = [{type:'hoopla'}]
+      if not options.req.body.host
+        options.req.body.host = undefined
       hookLibrary.unpopulate(options)
     post : (options) ->
       searchService.indexEvent options.target

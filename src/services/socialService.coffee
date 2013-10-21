@@ -93,8 +93,6 @@ detectUrl = (text, cb)=>
   text.replace exp, (match)->
     bitlyShorten match, (err, shorter)=>
       return shorter
-      console.log "Shortened url ="
-      console.log shortened
       cb null, text
 
 textCutter = (i, text) ->
