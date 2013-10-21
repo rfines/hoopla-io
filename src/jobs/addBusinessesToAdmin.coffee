@@ -5,7 +5,7 @@ user = require('hoopla-io-core').User
 module.exports.runOnce = (onComplete) ->
   user.findOne {'email': 'info@localruckus.com'}, {}, {}, (err, adminUser)=>
     currentPrivs = adminUser.get('businessPrivileges')
-    business.find {}, {_id:1}, {lean:true}, (err, allBusinesses) =>
+    business.find {'sources.type':'hoopla'}, {_id:1}, {lean:true}, (err, allBusinesses) =>
       out = _.map allBusinesses, (b) ->
         return {
           role: 'ADMIN_COLLABORATOR'
