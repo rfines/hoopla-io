@@ -21,3 +21,4 @@ db.business.update({'name' : 'Gem Theater'},{$set:{'name' : 'Gem Theatre-MO'}});
 
 /* Location Fixes */
 db.business.update({'name' : 'Sporting Park'}, {$set : {'location.geo.coordinates' : [-94.8242,39.1232]}})
+db.business.update({'name' : 'Granada'}, {$set : {'location.geo.coordinates' : [-95.2359,38.9648]}})
