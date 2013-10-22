@@ -15,7 +15,7 @@ class AuthTokenController
     if not (body?.email and body?.password)
       next new restify.NotAuthorizedError("Username or password is invalid")
     else
-      @model.findOne {email: body.email}, (err, doc) =>
+      @model.findOne {email: body.email.toLowerCase()}, (err, doc) =>
         if not doc
           next new restify.NotAuthorizedError("Username or password is invalid")
         else
