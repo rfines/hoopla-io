@@ -119,7 +119,7 @@ class RestfulController
           if @security.create(req.authUser, target)
             target.validate (err) =>
               if err
-                res.send 400, err.errors
+                res.send 400, err
                 next()
               else
                 target.save (err, doc) =>

@@ -7,7 +7,7 @@ module.exports = exports =
   create:
     pre : (options) ->
       if not options.req.body.sources?
-        options.req.body.sources = [{type:'hoopla'}]
+        options.req.body.sources = [{type:'hoopla', lastUpdated: new Date()}]
       hookLibrary.unpopulate(options)
     post : (options) ->  
       options.req.authUser.businessPrivileges = options.req.authUser.businessPrivileges || []
