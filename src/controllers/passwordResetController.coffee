@@ -20,7 +20,7 @@ class PasswordResetController
     pr = new @passwordReset()
     pr.email = body.email
     pr.requestDate = new Date()
-    @user.findOne {email: body.email}, {}, {lean:true}, (err, doc) =>
+    @user.findOne {email: body.email.toLowerCase()}, {}, {lean:true}, (err, doc) =>
       if not doc
         templateName = 'password-reset-request-bad-user'
       else
@@ -43,7 +43,7 @@ class PasswordResetController
 
   resetPassword : (req, res, next) =>
     body = req.body
-    @passwordReset.findOne {email: body.email, token : body.token}, {_id:1}, {}, (err, reset) =>
+    @passwordReset.findOne {email: body.email.toLowerCase(), token : body.token}, {_id:1}, {}, (err, reset) =>
       if not err and reset?._id
         @user.findOne {email : body.email}, {}, {}, (err, u) =>
           if not err and u?._id
