@@ -1,3 +1,6 @@
+/*Run ONCE ONLY*/
+db.business.update({"sources":{$exists:false}},{$set:{'sources':[{type:'hoopla', "lastUpdated":Date.now}]}},{multi:true});
+
 /* Name normalization */
 db.business.update({'name' : 'Kansas City Music Hall'},{$set:{'name' : 'Music Hall Kansas City'}});
 db.business.update({'name' : 'Granada Theater'},{$set:{'name' : 'Granada'}});
@@ -20,5 +23,5 @@ db.business.update({'name' : 'The Kill Devil Club'},{$set:{'name' : 'Kill Devil 
 db.business.update({'name' : 'Gem Theater'},{$set:{'name' : 'Gem Theatre-MO'}});
 
 /* Location Fixes */
-db.business.update({'name' : 'Sporting Park'}, {$set : {'location.geo.coordinates' : [-94.8242,39.1232]}})
-db.business.update({'name' : 'Granada'}, {$set : {'location.geo.coordinates' : [-95.2359,38.9648]}})
+db.business.update({'name' : 'Sporting Park'}, {$set : {'location.geo.coordinates' : [-94.8242,39.1232]}});
+db.business.update({'name' : 'Granada'}, {$set : {'location.geo.coordinates' : [-95.2359,38.9648]}});
