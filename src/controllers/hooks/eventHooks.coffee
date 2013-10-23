@@ -13,7 +13,7 @@ module.exports = exports =
   create:
     pre : (options) ->
       if not options.req.body.sources?
-        options.req.body.sources = [{type:'hoopla'}]
+        options.req.body.sources = [{sourceType:'hoopla', lastUpdated: new Date()}]
       hookLibrary.unpopulate(options)
     post : (options) ->
       searchService.indexEvent options.target
@@ -21,7 +21,7 @@ module.exports = exports =
   update:
     pre : (options) ->
       if not options.req.body.sources?
-        options.req.body.sources = [{type:'hoopla'}]
+        options.req.body.sources = [{sourceType:'hoopla', lastUpdated: new Date()}]
       if not options.req.body.host
         options.req.body.host = undefined
       hookLibrary.unpopulate(options)
