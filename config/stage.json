@@ -4,8 +4,8 @@
     "key" : "Fmjtd%7Cluub256and%2Cr0%3Do5-9u82u0"
   },  
   "hooplaIoWeb" : {
-    "pwResetUrl" : "http://stage.hoopla.io/password/reset",
-    "registerUrl": "http://stage.hoopla.io/register"
+    "pwResetUrl" : "http://dashboard-stage.hoopla.io/password/reset",
+    "registerUrl": "http://dashboard-stage.hoopla.io/register"
   }, 
   "jobs" : {
     "run" : false

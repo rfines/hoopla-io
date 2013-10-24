@@ -3,8 +3,8 @@
     "key" : "Fmjtd%7Cluub2h0yng%2C70%3Do5-9utgha"
   },  
   "hooplaIoWeb" : {
-    "pwResetUrl" : "https://www.hoopla.io/password/reset",
-    "registerUrl": "https://www.hoopla.io/register"
+    "pwResetUrl" : "https://dashboard.hoopla.io/password/reset",
+    "registerUrl": "https://dashboard.hoopla.io/register"
   }, 
   "jobs" : {
     "run" : false
