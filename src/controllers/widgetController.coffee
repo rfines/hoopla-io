@@ -60,7 +60,7 @@ class WidgetController extends RestfulController
 
   rewriteImageUrl : (originalList) =>
     return _.map originalList, (item) ->
-      if item.media[0]?.url
+      if item.media?[0]?.url
         item.media[0].url = imageManipulation.resize(100,100, item.media[0].url)
       return item          
 module.exports = new WidgetController()
