@@ -1,5 +1,6 @@
 /*Run ONCE ONLY*/
-db.business.update({"sources":{$exists:false}},{$set:{'sources':[{type:'hoopla', "lastUpdated":Date.now}]}},{multi:true});
+db.business.update({},{$set:{'sources':[{'sourceType':'hoopla', "lastUpdated":new Date()}]}},{multi:true});
+db.event.update({},{$set:{'sources':[{'sourceType':'hoopla', "lastUpdated":new Date()}]}},{multi:true});
 
 /* Name normalization */
 db.business.update({'name' : 'Kansas City Music Hall'},{$set:{'name' : 'Music Hall Kansas City'}});
