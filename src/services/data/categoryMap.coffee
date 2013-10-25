@@ -132,8 +132,9 @@ module.exports = {
   "Bar Games":"BARGAMES",
   "Exhibits & Expos":"EXPOS",
   "Food & Drink":"DRINK",
-  "Historical":"HISTORICAL"
-  "Unique Experience":"EXPERIENCE"
+  "Historical":"HISTORICAL",
+  "Unique Experience":"EXPERIENCE",
+  "Technology":"TECHNOLOGY"
 }
 
 
