@@ -38,7 +38,7 @@ var pittApi = {
   'applications' : [ { 'name' : 'Pittsburg KS','legacyKey':'9CXVnIllv6RbSrK', 'apiKey' : 'iB3KkMy8CteQFyBrZiLh', 'apiSecret' : 'eys8Aky5oZZki9QzDOp2kXecgZVJB1bFAZgtkaoo'}]
 }
 db.user.save(pittApi);
-db.user.update({'email' : "Hemant.V.Tiwari@sprint.com"}, {$set:{'applications' : [ { 'name' : 'Sprint Api','legacyKey':'CjV94IobahVjMt9', 'apiKey' : 'GgTK2l1KV6ApWi5pLEtM', 'apiSecret' : 'PM0T8wV1BpboudLillneCVPppuuSAbgSaK7HykKJ', 'privileges':'STANDARD'}]}});
+db.user.update({'email' : "hemant.v.tiwari@sprint.com"}, {$set:{'applications' : [ { 'name' : 'Sprint Api','legacyKey':'CjV94IobahVjMt9', 'apiKey' : 'GgTK2l1KV6ApWi5pLEtM', 'apiSecret' : 'PM0T8wV1BpboudLillneCVPppuuSAbgSaK7HykKJ', 'privileges':'STANDARD'}]}});
 db.user.update({'email' : "info@crossroads.com"}, {$set:{'applications': [ { 'name' : 'Crossroads Api','legacyKey':'SpclFmVso48IfP5', 'apiKey' : 'fKsdRDgHSm9tvkl7wALE', 'apiSecret' : 'prWmZRV2NhJUl8hMqcxgFVQZBZwdVxyBu3TIIUhJ', 'privileges':'STANDARD'}]}});
 db.user.update({'email' : "info@foundation.com"}, {$set:{'applications':[ { 'name' : 'Over KC','legacyKey':'w1QdT7jt4jPXi8m', 'apiKey' : 'O6yDIDTM1R32QuIysg26', 'apiSecret' : 'thDE0852guiWr96TUgZ5pwryd7vME85Ty2tro2Ul', 'privileges':'STANDARD'}]}});
 db.user.update({'email' : "info@overkc.com"}, {$set:{'applications':[ { 'name' : 'Over KC','legacyKey':'w1QdT7jt4jPXi8m', 'apiKey' : 'O6yDIDTM1R32QuIysg26', 'apiSecret' : 'thDE0852guiWr96TUgZ5pwryd7vME85Ty2tro2Ul', 'privileges':'STANDARD'}]}});
