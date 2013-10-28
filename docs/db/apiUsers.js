@@ -1,7 +1,7 @@
 var sprintApi = {
-  'email' : "Hemant.V.Tiwari@sprint.com",
+  'email' : "hemant.v.tiwari@sprint.com",
   'name' : 'Hemant Tiwari',
-  'password' : '$2a$12$HLljh7g47r5Lc.FXRZrOtOZXSG02zBKV/jGj8QWVIdB7hRBtlZdDq', //Bcrypted version of h00plaAdmin**
+  'password' : '$2a$12$GBlls7hyXo4APvF9POYUy.9kzB2.YdonSMVriSOSvHVdE2K0vDLAW', //Bcrypted version of 'sprintAdmin'
   'encryptionMethod' : 'BCRYPT',
   'applications' : [ { 'name' : 'Sprint Api','legacyKey':'CjV94IobahVjMt9', 'apiKey' : 'GgTK2l1KV6ApWi5pLEtM', 'apiSecret' : 'PM0T8wV1BpboudLillneCVPppuuSAbgSaK7HykKJ'}]
 }
