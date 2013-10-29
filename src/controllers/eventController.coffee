@@ -12,7 +12,7 @@ class EventController  extends SearchableController
   promoRequest : require('hoopla-io-core').PromotionRequest
   fields: {schedules: 0}
   sort: {'nextOccurrence':1}
-  
+  populate:['media']
   security: 
     get : securityConstraints.anyone
     destroy : (authenticatedUser, event) ->

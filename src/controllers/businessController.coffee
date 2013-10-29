@@ -9,7 +9,7 @@ class BusinessController extends SearchableController
   searchService : require('../services/searchService')
   events : require('hoopla-io-core').Event
   promoTarget: require('hoopla-io-core').PromotionTarget
-
+  populate:['media']
   security: 
     get : securityConstraints.anyone
     create : securityConstraints.hasAuthUser
@@ -31,7 +31,7 @@ class BusinessController extends SearchableController
     fields = @calculateGetFields(req.authApp)
     if req.params.id and not req.query.ids
       q = @events.find {"business": req.params.id}, fields,{lean:true}
-      q.populate('media')
+      q.populate(@populate.join(' '))
       q.exec (err, result)->
         if err
           res.send 400, err
@@ -44,7 +44,7 @@ class BusinessController extends SearchableController
       if _.indexOf(ids, req.params.id) is -1 and req.params.id
         ids.push req.params.id
       q = @events.find {"business":{$in : ids}}, fields, {lean:true}
-      q.populate('media')
+      q.populate(@populate.join(' '))
       q.exec (err, result) ->
         if err
           res.send 400, err
