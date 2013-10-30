@@ -93,6 +93,8 @@ module.exports = exports =
       media = (callback)-> 
         mediaIds = _.map eventData, (event) ->
           return event.host?.media?[0] || event.business?.media?[0]
+        mediaIds = _.filter mediaIds, (item) ->
+          return item?
         Media.find {_id : {$in : mediaIds}}, {}, {lean:true}, (err, docs) ->
           mediaObs = docs
           callback(null)  
@@ -116,6 +118,7 @@ module.exports = exports =
               return false
             else
               return mediaImgId.equals(item._id)
+
           if imageH and imageW
             if x.media
               x.image = exports.transformImageUrl x.media[0]?.url, imageH, imageW
