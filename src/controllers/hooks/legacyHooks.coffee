@@ -108,7 +108,8 @@ module.exports = exports =
           x.contactName = x.contactName
           x.venueId = x.host?._id || x.business?._id
           x.venueName = x.host?.name||x.business?.name
-
+          if not x.cost
+            x.cost = 0
           venImg = _.find mediaObs, (item)=>
             mediaImgId = x.host?.media?[0] || x.business?.media?[0]
             if not mediaImgId or not item?._id
@@ -143,14 +144,11 @@ module.exports = exports =
           x.latitude = x.location.geo.coordinates[1]
           x.longitude = x.location.geo.coordinates[0]
           x.isRecurring = x.schedules?.length > 0 
-          if x.eventType is 'FOOD'
-            x.detailsUrl = "http://localruckus.com/food-and-drink/details/#{x.legacyId}/"
-          else if x.eventType is 'MUSIC'
-            x.detailsUrl = "http://localruckus.com/live-music/details/#{x.legacyId}/"
-          else
-            x.detailsUrl = "http://localruckus.com/arts-and-culture/details/#{x.legacyId}/"
+          x.detailsUrl = "http://localruckus.com/event/#{x._id}/"
           if not x.website or not x.website?.length > 0
-            x.website =x.detailsUrl 
+            x.website =x.detailsUrl
+            
+          delete x.sources 
           delete x.prevOccurrence  
           delete x.location
           delete x.business
