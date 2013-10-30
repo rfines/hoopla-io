@@ -103,6 +103,7 @@ module.exports = exports =
           for i in x.tags
             ca.push inverted[i]
           x.id = x.legacyId || x._id
+          x.description = x.description || ''
           x.categories = ca.join ', '
           x.contactName = x.contactName
           x.venueId = x.host?._id || x.business?._id
