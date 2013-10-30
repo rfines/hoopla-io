@@ -100,7 +100,7 @@ module.exports = exports =
       transform = (callback) ->
         transformSingleEvent = (x, eventCb)=>
           ca = []
-          for i in x.tags
+          for i in _.uniq x.tags
             ca.push inverted[i]
           x.id = x.legacyId || x._id
           x.description = x.description || ''
@@ -121,7 +121,7 @@ module.exports = exports =
               x.image = exports.transformImageUrl x.media[0]?.url, imageH, imageW
             x.venueImage = exports.transformImageUrl  venImg.url|| venImg.url, imageH, imageW
           else
-            x.image = x.media[0]?.url || "http://localruckus.com/client/images/widget-image-placeholder.gif"
+            x.image = x.media?[0]?.url || "http://localruckus.com/client/images/widget-image-placeholder.gif"
             x.venueImage = venImg?.url || "http://localruckus.com/client/images/widget-image-placeholder.gif"
           x.startDate = moment(x.schedules?[0]?.start).utc().format('M/D/YYYY') || moment(x.fixedOccurrences?[0]?.start).utc().format('M/D/YYYY')
           if x.schedules?[0]?.end
