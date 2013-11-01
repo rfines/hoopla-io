@@ -25,6 +25,7 @@ class SearchQuery
   build : ->
     query = {}
     d = parseFloat(@distance)
+    d = Math.min(d, 160934)
     query['location.geo'] = 
       $near:
           $geometry : 
