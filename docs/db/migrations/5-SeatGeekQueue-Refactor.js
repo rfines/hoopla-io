@@ -1,0 +1,8 @@
+db.aggregationJob.remove()
+db.aggregationJob.save({name: 'SEATGEEK-STL', provider: 'seatgeek', postalCode: '63112'})
+db.aggregationJob.save({name: 'SEATGEEK-DENVER', provider: 'seatgeek', postalCode: '80203'})
+db.aggregationJob.save({name: 'SEATGEEK-KC', provider: 'seatgeek', postalCode: '64105'})
+db.aggregationJob.save({name: 'SEATGEEK-DALLAS', provider: 'seatgeek', postalCode: '75202'})
+db.aggregationJob.save({name: 'SEATGEEK-DESMOINES', provider: 'seatgeek', postalCode: '50309'})
+db.aggregationJob.save({name: 'SEATGEEK-OMAHA', provider: 'seatgeek', postalCode: '68132'})
+db.aggregationJob.save({name: 'SEATGEEK-TOP', provider: 'seatgeek', postalCode: '66604'})
