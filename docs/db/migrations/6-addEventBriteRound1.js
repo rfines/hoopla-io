@@ -1,1 +1,1 @@
-db.aggregationJob.save({name: 'EVENTBRITE-KC', provider: 'eventbrite', postalCode: '64105', nextRun: new Date()})
+db.aggregationJob.save({name: 'EVENTBRITE-KC', provider: 'eventbrite', postalCode: '64105'})
