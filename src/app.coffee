@@ -17,6 +17,4 @@ require('./services/searchService').init()
 require('./scheduler').start() if CONFIG.jobs.run
 #require('./cleanImages').run()
 
-
-console.log require('./services/tokenService').generateKey()
-console.log require('./services/tokenService').generateSecret()
+console.log CONFIG.monitoring.newrelic.licenseKey
