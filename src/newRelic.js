@@ -1,18 +1,6 @@
-/**
- * New Relic agent configuration.
- *
- * See lib/config.defaults.js in the agent distribution for a more complete
- * description of configuration variables and their potential values.
- */
+c = require('config');
 exports.config = {
-  c = require('config');
-  /**
-   * Array of application names.
-   */
   app_name : ['hoopla-io-api'],
-  /**
-   * Your New Relic license key.
-   */
   license_key : c.monitoring.newrelic.licenseKey,
   logging : {
     /**
