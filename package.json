@@ -27,7 +27,8 @@
     "cloudinary": "~1.0.5",
     "bitly": "~1.2.4",
     "icalendar": "~0.6.5",
-    "mailchimp-api": "~2.0.3"
+    "mailchimp-api": "~2.0.3",
+    "newrelic": "~1.1.0"
   },
   "optionalDependencies": {
     "hiredis": "~0.1.15"

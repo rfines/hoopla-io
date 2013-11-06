@@ -1,3 +1,4 @@
+require('newrelic')
 process.on 'uncaughtException', (err) ->
   console.log 'caught unhandled exception:'
   console.log err.stack || err
@@ -15,3 +16,7 @@ require('./services/searchService').init()
 
 require('./scheduler').start() if CONFIG.jobs.run
 #require('./cleanImages').run()
+
+
+console.log require('./services/tokenService').generateKey()
+console.log require('./services/tokenService').generateSecret()
