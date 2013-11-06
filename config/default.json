@@ -37,6 +37,7 @@
     "api_secret":"F7IF2obNLguBajXvvm5Klci1qII"
   },
   "monitoring": {
+    "enabled" : false,
     "newrelic" : {
       "licenseKey" : "21b526b901469a2767eb002d3e70cb36bb695ba0"
     }

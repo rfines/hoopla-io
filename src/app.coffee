@@ -1,8 +1,10 @@
-require('newrelic')
+
 process.on 'uncaughtException', (err) ->
   console.log 'caught unhandled exception:'
   console.log err.stack || err
 CONFIG = require('config')
+if CONFIG.monitoring.enabled
+  require('newrelic')
 mongoService = require './services/mongoService'
 restifyFactory = require './services/restifyFactory'
 cloudinaryService = require './services/cloudinaryService'

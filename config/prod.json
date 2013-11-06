@@ -31,5 +31,11 @@
     "cloud_name":"hu3y2dnvf",
     "api_key": "767888348685137",
     "api_secret":"WYaQD-wZncCd4xuYE0ysepFbgeQ"
-  }  
+  },
+  "monitoring": {
+    "enabled" : true,
+    "newrelic" : {
+      "licenseKey" : "ba3eb4661df03158f0b2598080072cf2f17aa20f"
+    }
+  }   
 }

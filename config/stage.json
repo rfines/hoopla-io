@@ -27,5 +27,11 @@
      "request_token_url":"https://api.twitter.com/oauth/request_token",
     "authorize_url": "https://api.twitter.com/oauth/authorize",
     "access_token_url":"https://api.twitter.com/oauth/access_token"
-  }
+  },
+  "monitoring": {
+    "enabled" : true,
+    "newrelic" : {
+      "licenseKey" : "21b526b901469a2767eb002d3e70cb36bb695ba0"
+    }
+  }  
 }
