@@ -63,4 +63,18 @@ class DevController
       res.send {encryptedPassword : encrypted, key: key, secret: secret}
       next()
 
+  stats: (req, res, next) =>
+    Event.count {}, (err, eventCount) ->
+      if err
+        res.send 500
+        next()
+      else
+        Business.count {}, (err, busCount) ->
+          if err
+            res.send 500
+            next()
+          else
+            res.send {businesses: busCount, events: eventCount}
+            next()
+
 module.exports =  new DevController()

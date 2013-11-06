@@ -24,6 +24,7 @@ build = ->
   server.use restify.gzipResponse()
   server.use restify.bodyParser({ mapParams: false })
   server.use restify.queryParser()
+  server.get '/dev/stats', devController.stats # Ping route to check uptime
   server.use restifyPlugins.AuthorizationParser
   server.use restifyPlugins.AuthTokenParser
   server.use restifyPlugins.NearParamParser
