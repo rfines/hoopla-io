@@ -37,7 +37,7 @@ class SearchableController extends RestfulController
                 next()
               else
                 out = @mergeSearches(results)
-                out = @rewriteImageUrl req, out if req.params.height and req.params.width
+                out = @rewriteImageUrl req, out
                 res.body = out
                 @hooks.search.post 
                   req : req
@@ -106,7 +106,9 @@ class SearchableController extends RestfulController
   rewriteImageUrl : (req, originalList) =>
     return _.map originalList, (item) ->
       if item.media[0]?.url
-        item.media[0].url = imageManipulation.resize(req.params.width, req.params.height, item.media[0].url)
+        h = req.params.height if req?.params?.height
+        w = req.params.width if req?.params?.width
+        item.media[0].url = imageManipulation.resize(w, h, item.media[0].url)
       return item
 
 module.exports = SearchableController
