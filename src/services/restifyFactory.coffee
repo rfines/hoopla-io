@@ -15,6 +15,7 @@ promotionTargetController = require '../controllers/promotionTargetController'
 promotionRequestController = require '../controllers/promotionRequestController'
 mediaController = require '../controllers/mediaController'
 eventTagController = require '../controllers/eventTagController'
+curationController = require '../controllers/curationController'
 
 build = ->
   server = restify.createServer(name: "hoopla-io-api")
@@ -54,6 +55,7 @@ build = ->
     ['post', '/event/:id/promotionRequest', eventController, {handler:'addPromotionRequest'}]
     ['get', '/venues', businessController, {handler: 'allVenues'}]
     ['get','/event/:id/invite.ics',eventController, {handler:'getICalFile'}]
+    ['get', '/curate/event', curationController, {handler: 'getEventBatch'}]
   ]
 
   scaffold = (resource, controller) ->
