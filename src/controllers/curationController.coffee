@@ -23,15 +23,9 @@ class CurationController
           cb()
       (cb) ->
         score = (event, cb) ->
-          ###
           b = _.find businessEventCount, (item) ->
-            #console.log 'biz ' + item._id
-            #console.log 'event ' + event.business
-            console.log item._id
-            return item._id is event.business.toString()
-          console.log 'match ' + b
-          ###
-          event.riskScore = curationRisk.forEvent(event, undefined)
+            return item?._id?.toString() == event?.business.toString()
+          event.riskScore = curationRisk.forEvent(event, b)
           cb()
         async.each events, score, ->
           cb()
