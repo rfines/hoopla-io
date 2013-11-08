@@ -15,6 +15,8 @@ module.exports = exports =
     pre : (options) ->
       if not options.req.body.sources?
         options.req.body.sources = [{sourceType:'hoopla', lastUpdated: new Date()}]
+        options.req.body.createDate = new Date()
+        options.req.body.createUser = options.req.authUser
       hookLibrary.unpopulate(options)
     post : (options) ->
       searchService.indexEvent options.target

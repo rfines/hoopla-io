@@ -2,11 +2,14 @@ restify = require("restify")
 securityConstraints = require('./helpers/securityConstraints')
 Event = require('hoopla-io-core').Event
 async = require 'async'
+curationRisk = require './helpers/curationRisk'
+_ = require 'lodash'
 
 class CurationController
 
   getEventBatch : (req, res, next) => 
-    rawEvents = undefined 
+    events = undefined 
+    businessEventCount = undefined
     async.series [
       (cb) ->
         Event.aggregate { $group: { _id: "$business",count:{$sum: 1}}}, (err, data) ->
@@ -16,16 +19,29 @@ class CurationController
         query = {}
         q = Event.find {}, {}, {lean:true,limit: 100}
         q.exec (err, data) ->
-          rawEvents = data
+          events = data
           cb()
       (cb) ->
         score = (event, cb) ->
-          event.riskScore = Math.floor(Math.random()*101)
+          ###
+          b = _.find businessEventCount, (item) ->
+            #console.log 'biz ' + item._id
+            #console.log 'event ' + event.business
+            console.log item._id
+            return item._id is event.business.toString()
+          console.log 'match ' + b
+          ###
+          event.riskScore = curationRisk.forEvent(event, undefined)
           cb()
-        async.each rawEvents, score, ->
-          console.log 'sending'
-          res.send rawEvents
-          next()
+        async.each events, score, ->
+          cb()
+      (cb) ->
+        events = _.sortBy events, (item) ->
+          return -item.riskScore
+        cb()
+      (cb) ->
+        res.send events
+        next()
     ]
 
 module.exports = new CurationController()
