@@ -37,10 +37,19 @@ var pittApi = {
   'encryptionMethod' : 'BCRYPT',
   'applications' : [ { 'name' : 'Pittsburg KS','legacyKey':'9CXVnIllv6RbSrK', 'apiKey' : 'iB3KkMy8CteQFyBrZiLh', 'apiSecret' : 'eys8Aky5oZZki9QzDOp2kXecgZVJB1bFAZgtkaoo'}]
 }
+db.user.save(overkcApi);
+var pittApi = {
+  'email' : "admin@hoopla.io",
+  'name' : 'Curation Interface',
+  'password' : "$2a$12$WgPsqg/zG8Q4PXWxRGJ4luq7qcHITsNB40DyDM0ihaDxivhzWtJV6", //Bcrypted version of h00plaAdmin**
+  'encryptionMethod' : 'BCRYPT',
+  'applications' : [ { 'name' : 'Curation Platform', 'apiKey' : 'iB3KkMy8CteQFyBrZiLh', 'apiSecret' : 'eys8Aky5oZZki9QzDOp2kXecgZVJB1bFAZgtkaoo'}]
+}
 db.user.save(pittApi);
 db.user.update({'email' : "hemant.v.tiwari@sprint.com"}, {$set:{'applications' : [ { 'name' : 'Sprint Api','legacyKey':'CjV94IobahVjMt9', 'apiKey' : 'GgTK2l1KV6ApWi5pLEtM', 'apiSecret' : 'PM0T8wV1BpboudLillneCVPppuuSAbgSaK7HykKJ', 'privileges':'STANDARD'}]}});
 db.user.update({'email' : "info@crossroads.com"}, {$set:{'applications': [ { 'name' : 'Crossroads Api','legacyKey':'SpclFmVso48IfP5', 'apiKey' : 'fKsdRDgHSm9tvkl7wALE', 'apiSecret' : 'prWmZRV2NhJUl8hMqcxgFVQZBZwdVxyBu3TIIUhJ', 'privileges':'STANDARD'}]}});
 db.user.update({'email' : "info@foundation.com"}, {$set:{'applications':[ { 'name' : 'Over KC','legacyKey':'w1QdT7jt4jPXi8m', 'apiKey' : 'O6yDIDTM1R32QuIysg26', 'apiSecret' : 'thDE0852guiWr96TUgZ5pwryd7vME85Ty2tro2Ul', 'privileges':'STANDARD'}]}});
 db.user.update({'email' : "info@overkc.com"}, {$set:{'applications':[ { 'name' : 'Over KC','legacyKey':'w1QdT7jt4jPXi8m', 'apiKey' : 'O6yDIDTM1R32QuIysg26', 'apiSecret' : 'thDE0852guiWr96TUgZ5pwryd7vME85Ty2tro2Ul', 'privileges':'STANDARD'}]}});
 db.user.update({'email' : "info@pittsburgh.ks"}, {$set:{'applications':[ { 'name' : 'Pittsburg KS','legacyKey':'9CXVnIllv6RbSrK', 'apiKey' : 'iB3KkMy8CteQFyBrZiLh', 'apiSecret' : 'eys8Aky5oZZki9QzDOp2kXecgZVJB1bFAZgtkaoo', 'privileges':"STANDARD"}]}});
-db.user.update({ 'email' : "hooplaAdmin@localruckus.com"}, {$set:{'applications':[ { 'name' : 'hoopla-io-web', 'apiKey' : 'METkwI15Bg0heuRNaru6', 'apiSecret' : '6n0pRhok4WR8yx8VudUD7XshboNCz51oFXJvZA2y', 'privileges':'PRIVILEGED'},{ 'name' : 'localruckus', 'apiKey' : 'XVoZHNOJ2kFdrApkq4wM', 'apiSecret' : 'dXzDtPBav3WGiXzBGhszOrMdEpLSVZChp7cdN2l7', 'privileges':'STANDARD'}]}});
+db.user.update({ 'email' : "hooplaAdmin@localruckus.com"}, {$set:{'applications':[ { 'name' : 'hoopla-io-curation', 'apiKey' : 'IlbOPvcJV4rDaWonBEsJ', 'apiSecret' : 'eEWztl1vDGaElxTNzlqJu8kVaI3R1Le2NN7tRNC2','privileges':'PRIVILEGED'},{ 'name' : 'hoopla-io-web', 'apiKey' : 'METkwI15Bg0heuRNaru6', 'apiSecret' : '6n0pRhok4WR8yx8VudUD7XshboNCz51oFXJvZA2y', 'privileges':'PRIVILEGED'},{ 'name' : 'localruckus', 'apiKey' : 'XVoZHNOJ2kFdrApkq4wM', 'apiSecret' : 'dXzDtPBav3WGiXzBGhszOrMdEpLSVZChp7cdN2l7', 'privileges':'STANDARD'}]}});
+db.user.update({'email':"trey.rhedrick@gmail.com"},{$set:{'applications':[{'name':'TreyApp', 'apiKey':'xTAb2m27Hoik5bt8POnt', 'apiSecret':'hnZK4ODMIBPm9TUI8VBDapVGTFTCwmZzL3x0OieS', 'privileges':'STANDARD'}]}});

@@ -5,7 +5,8 @@ var hooplaAdmin = {
   'encryptionMethod' : 'BCRYPT',
   'applications' : [ 
     { 'name' : 'hoopla-io-web', 'apiKey' : 'METkwI15Bg0heuRNaru6', 'apiSecret' : '6n0pRhok4WR8yx8VudUD7XshboNCz51oFXJvZA2y'},
-    { 'name' : 'localruckus', 'apiKey' : 'XVoZHNOJ2kFdrApkq4wM', 'apiSecret' : 'dXzDtPBav3WGiXzBGhszOrMdEpLSVZChp7cdN2l7'}
+    { 'name' : 'localruckus', 'apiKey' : 'XVoZHNOJ2kFdrApkq4wM', 'apiSecret' : 'dXzDtPBav3WGiXzBGhszOrMdEpLSVZChp7cdN2l7'},
+    { 'name' : 'hoopla-io-curation', 'apiKey' : 'IlbOPvcJV4rDaWonBEsJ', 'apiSecret' : 'eEWztl1vDGaElxTNzlqJu8kVaI3R1Le2NN7tRNC2'}
   ]
 }
 db.user.save(hooplaAdmin);
