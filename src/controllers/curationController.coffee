@@ -18,7 +18,8 @@ class CurationController
           cb()
       (cb) ->
         query = {}
-        q = Event.find {curatorApproved : {$exists: false}}, {fixedOccurrences:0, schedules:0, occurrences:0, nextOccurrence:0, legacySchedule:0, location:0}, {lean:true,limit: 100}
+        console.log {'occurrences.start' : {$gte : new Date()}, curatorApproved : {$exists: false}}
+        q = Event.find {'occurrences.start' : {$gte : new Date()}, curatorApproved : {$exists: false}}, {fixedOccurrences:0, schedules:0, occurrences:0, nextOccurrence:0, legacySchedule:0, location:0}, {lean:true,limit: 100}
         q.populate('business', 'name')
         q.populate('createUser', 'email')
         q.sort('-createDate')
