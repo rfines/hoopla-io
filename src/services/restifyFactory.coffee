@@ -56,6 +56,8 @@ build = ->
     ['get', '/venues', businessController, {handler: 'allVenues'}]
     ['get','/event/:id/invite.ics',eventController, {handler:'getICalFile'}]
     ['get', '/curate/event', curationController, {handler: 'getEventBatch'}]
+    ['post', '/curate/event/:id/reject', curationController, {handler:'rejectEvent'}]
+    ['post', '/curate/event/:id/approve', curationController, {handler:'acceptEvent'}]
   ]
 
   scaffold = (resource, controller) ->
