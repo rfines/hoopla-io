@@ -45,8 +45,8 @@ class CurationController
         next()
     ]
   rejectEvent:(req, res, next)=>
-    if req.params._id
-      Event.find {_id:req.params._id}, {},{lean:true}, (err,doc)=>
+    if req.params.id
+      Event.find {_id:req.params.id}, {},{lean:true}, (err,doc)=>
         if err
           console.log err
           res.send 401, err
@@ -60,7 +60,7 @@ class CurationController
                 res.send 401, err
                 next()
               else
-                Event.remove {_id:req.params._id}, true, (err)=>
+                Event.remove {_id:req.params.id}, true, (err)=>
                   if err
                     console.log err
                     res.send 401, err
@@ -75,8 +75,9 @@ class CurationController
       res.send 401, {message:"No _id in request"}
       next()
   acceptEvent:(req,res,next)=>
-    if req.params._id
-      Event.findByIdAndUpdate req.params._id, {$set:{'curatorApproved':true}}, (err, doc)=>
+    console.log req.params
+    if req.params.id.length >0
+      Event.findByIdAndUpdate req.params.id, {$set:{'curatorApproved':true}}, (err, doc)=>
         if err
           console.log err
           res.send 401, err
@@ -84,4 +85,7 @@ class CurationController
         else
           res.send 200
           next()
+    else
+      res.send 401, "No id found"
+      next()
 module.exports = new CurationController()
