@@ -26,7 +26,9 @@ class CurationController
         score = (event, cb) ->
           b = _.find businessEventCount, (item) ->
             return item?._id?.toString() == event?.business.toString()
-          event.riskScore = curationRisk.forEvent(event, b)
+          risk = curationRisk.forEvent(event, b)
+          event.riskScore = risk.score
+          event.riskReasons = _.uniq(risk.reasons)
           cb()
         async.each events, score, ->
           cb()
