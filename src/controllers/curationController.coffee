@@ -17,7 +17,7 @@ class CurationController
           cb()
       (cb) ->
         query = {}
-        q = Event.find {}, {}, {lean:true,limit: 100}
+        q = Event.find {curatorApproved : {$exists: false}}, {}, {lean:true,limit: 100}
         q.exec (err, data) ->
           events = data
           cb()
