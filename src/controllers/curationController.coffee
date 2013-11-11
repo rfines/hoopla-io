@@ -18,6 +18,7 @@ class CurationController
       (cb) ->
         query = {}
         q = Event.find {curatorApproved : {$exists: false}}, {}, {lean:true,limit: 100}
+        q.sort('-createDate')
         q.exec (err, data) ->
           events = data
           cb()
