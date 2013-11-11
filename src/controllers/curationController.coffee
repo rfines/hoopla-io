@@ -18,7 +18,9 @@ class CurationController
           cb()
       (cb) ->
         query = {}
-        q = Event.find {curatorApproved : {$exists: false}}, {}, {lean:true,limit: 100}
+        q = Event.find {curatorApproved : {$exists: false}}, {fixedOccurrences:0, schedules:0, occurrences:0, nextOccurrence:0, legacySchedule:0, location:0}, {lean:true,limit: 100}
+        q.populate('business', 'name')
+        q.populate('createUser', 'email')
         q.sort('-createDate')
         q.exec (err, data) ->
           events = data
@@ -26,7 +28,7 @@ class CurationController
       (cb) ->
         score = (event, cb) ->
           b = _.find businessEventCount, (item) ->
-            return item?._id?.toString() == event?.business.toString()
+            return item?._id?.toString() == event?.business._id.toString()
           risk = curationRisk.forEvent(event, b)
           event.riskScore = risk.score
           event.riskReasons = _.uniq(risk.reasons)
