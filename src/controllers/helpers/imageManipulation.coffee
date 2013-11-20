@@ -7,6 +7,7 @@ module.exports.resize = (width, height, url, cropType) ->
   p.push "w_#{width}" if width
   if cropType and cropType is 'circle'
     p.push 'c_thumb'
+    p.push 'g_face'
     p.push "r_max"
   else
     p.push 'c_fill'
