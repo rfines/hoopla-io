@@ -105,10 +105,11 @@ class SearchableController extends RestfulController
 
   rewriteImageUrl : (req, originalList) =>
     return _.map originalList, (item) ->
-      if item.media[0]?.url
+      if item.media and item.media[0]?.url
         h = req.params.height if req?.params?.height
         w = req.params.width if req?.params?.width
-        item.media[0].url = imageManipulation.resize(w, h, item.media[0].url)
+        c = req.params.imageType if req?.params?.imageType
+        item.media[0].url = imageManipulation.resize(w, h, item.media[0].url,c)
       return item
 
 module.exports = SearchableController
