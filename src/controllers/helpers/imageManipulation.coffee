@@ -12,7 +12,10 @@ module.exports.resize = (width, height, url, cropType) ->
   else
     p.push 'c_fill'
   t[a+1] = p.join(',')
-  t.join('/')
+  final = t.join('/')
+  if cropType and cropType is 'circle'
+    final = final.replace('.jpg', '.png')
+  final
 
 module.exports.getId = (url) ->
   t = url.split('/')
