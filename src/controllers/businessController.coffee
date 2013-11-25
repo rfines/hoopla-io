@@ -30,23 +30,13 @@ class BusinessController extends SearchableController
   getEvents : (req,res,next) =>
     fields = @calculateGetFields(req.authApp)
     if req.params.id and not req.query.ids
-      q = @events.find {"business": req.params.id}, fields,{lean:true}
+      query = 
+        business: req.params.id
+      if req.params.start
+        query.start = {"$gte":req.params.start}
+      q = @events.find query, fields,{lean:true}
       q.populate(@populate.join(' '))
       q.exec (err, result)=>
-        if err
-          res.send 400, err
-          next()
-        else
-          result = @rewriteImageUrl req, result
-          res.send 200, result
-          next()
-    else if req.query.additional_ids
-      ids = req.query.additional_ids.split ','
-      if _.indexOf(ids, req.params.id) is -1 and req.params.id
-        ids.push req.params.id
-      q = @events.find {"business":{$in : ids}}, fields, {lean:true}
-      q.populate(@populate.join(' '))
-      q.exec (err, result) =>
         if err
           res.send 400, err
           next()
