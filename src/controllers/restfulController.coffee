@@ -32,9 +32,16 @@ class RestfulController
         if @security.get(req.authUser, target)
           if not err and not target
             res.send 404
-          else  
-            res.send 200, target
-          next()
+          else
+            if @hooks.get.post
+              options=
+                req:req
+              @hooks.get.post options,target, (t)=> 
+                res.send 200, t
+                next()
+            else
+              res.send 200, target
+              next()
         else
           return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")
     else
@@ -45,9 +52,16 @@ class RestfulController
         if @security.get(req.authUser, target)
           if not err and not target
             res.send 404
-          else  
-            res.send 200, target
-          next()
+          else
+            if @hooks.get.post
+              options = 
+                req:req
+              @hooks.get.post options,target, (t)=>  
+                res.send 200, t
+                next()
+            else
+              res.send 200, target
+              next()
         else
           return next new restify.NotAuthorizedError("You are not permitted to perform this operation.")
 
