@@ -51,7 +51,7 @@ class BusinessController extends SearchableController
           res.send 400, err
           next()
         else
-        result = @rewriteImageUrl req, result
+          result = @rewriteImageUrl req, result
           res.send 200, result
           next()
     else
