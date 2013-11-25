@@ -1,7 +1,7 @@
 _ = require 'lodash'
 SearchableController = require('./searchableController')
 securityConstraints = require('./helpers/securityConstraints')
-
+imageManipulation = require('./helpers/imageManipulation')
 
 class BusinessController extends SearchableController
   type: 'business'
@@ -37,6 +37,7 @@ class BusinessController extends SearchableController
           res.send 400, err
           next()
         else
+          result = @rewriteImageUrl req, result
           res.send 200, result
           next()
     else if req.query.additional_ids
@@ -50,6 +51,7 @@ class BusinessController extends SearchableController
           res.send 400, err
           next()
         else
+        result = @rewriteImageUrl req, result
           res.send 200, result
           next()
     else
@@ -81,4 +83,14 @@ class BusinessController extends SearchableController
     if app and not app.privileges is 'PRIVILEGED'
       fields = {'promotionTargets':0,'promotionRequests':0, 'legacyCreatedBy':0, 'legacyId':0, sources: 0}
     return fields
+
+  rewriteImageUrl : (req, originalList) =>
+    return _.map originalList, (item) ->
+      if item.media and item.media[0]?.url
+        h = req.params.height if req?.params?.height
+        w = req.params.width if req?.params?.width
+        c = req.params.imageType if req?.params?.imageType
+        item.media[0].url = imageManipulation.resize(w, h, item.media[0].url,c)
+      return item
+
 module.exports = new BusinessController()
