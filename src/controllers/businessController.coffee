@@ -32,7 +32,7 @@ class BusinessController extends SearchableController
     if req.params.id and not req.query.ids
       q = @events.find {"business": req.params.id}, fields,{lean:true}
       q.populate(@populate.join(' '))
-      q.exec (err, result)->
+      q.exec (err, result)=>
         if err
           res.send 400, err
           next()
@@ -46,7 +46,7 @@ class BusinessController extends SearchableController
         ids.push req.params.id
       q = @events.find {"business":{$in : ids}}, fields, {lean:true}
       q.populate(@populate.join(' '))
-      q.exec (err, result) ->
+      q.exec (err, result) =>
         if err
           res.send 400, err
           next()
