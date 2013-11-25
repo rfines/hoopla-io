@@ -33,7 +33,10 @@ class BusinessController extends SearchableController
       query = 
         business: req.params.id
       if req.params.start
-        query.start = {"$gte":req.params.start}
+        query['occurrences'] =
+        $elemMatch : 
+          start: 
+            $gte: req.params.start
       q = @events.find query, fields,{lean:true}
       q.populate(@populate.join(' '))
       q.exec (err, result)=>
