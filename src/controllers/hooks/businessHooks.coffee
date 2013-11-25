@@ -1,6 +1,7 @@
 async = require 'async'
 _ = require 'lodash'
 hookLibrary = require('./hookLibrary')
+imageManipulation = require('../helpers/imageManipulation')
 
 module.exports = exports = 
   UserService : require('../../services/data/userService')
@@ -34,3 +35,14 @@ module.exports = exports =
       exports.UserService.getByBusinessPrivileges options.resource._id, (err, users) ->
         async.each users, removePriv, (err) ->
           options.success() if options.success
+  get :
+    pre:hookLibrary.default
+    post:(options, target, callback)=>
+      h = options.req.params.height if options.req.params.height
+      w = options.req.params.width if options.req.params.width
+      c = options.req.params.imageType if options.req.params.imageType
+      if target.media?.length >0 
+        target.media[0].url = imageManipulation.resize(w, h, target.media[0].url,c)
+        callback(target)
+      else
+        callback(target)
