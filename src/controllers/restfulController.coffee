@@ -33,7 +33,7 @@ class RestfulController
           if not err and not target
             res.send 404
           else
-            if @hooks.get.post
+            if @hooks.get?.post
               options=
                 req:req
               @hooks.get.post options,target, (t)=> 
@@ -53,7 +53,7 @@ class RestfulController
           if not err and not target
             res.send 404
           else
-            if @hooks.get.post
+            if @hooks.get?.post
               options = 
                 req:req
               @hooks.get.post options,target, (t)=>  
