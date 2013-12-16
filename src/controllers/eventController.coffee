@@ -34,6 +34,7 @@ class EventController  extends SearchableController
   addPromotionRequest : (req, res, next)=>
     if req.body
       target = new @promoRequest(req.body)
+      target.event = req.params.id
       target.save (err)=>
         if err
           res.send 400, err
@@ -63,7 +64,7 @@ class EventController  extends SearchableController
               res.send 400, err
               next()
             else
-              res.setHeader("content-type","text/calendar;chaarset=UTF-8")
+              res.setHeader("content-type","text/calendar;charset=UTF-8")
               res.setHeader("content-length" , result.length)
               res.send 200,result.toString('binary')
               next()
@@ -73,4 +74,16 @@ class EventController  extends SearchableController
     if app and not app.privileges is 'PRIVILEGED'
       fields = {'promotionRequests':0, 'schedules':0, 'fixedOccurrences':0, 'legacySchedule':0, 'legacyHostId':0, 'legacyId':0, 'legacyImage':0, 'legacyBusinessId':0, sources: 0}
     return fields
+    
+  getPromotionRequests:(req,res,cb)=>
+    if req.params and req.params.id
+      @promoRequest.find {event:req.params.id}, {},{},(err,docs)=>
+        if err
+          res.send 401, err
+          next()
+        else
+          res.send 200, docs
+    else
+      res.send 500
+
 module.exports = new EventController()

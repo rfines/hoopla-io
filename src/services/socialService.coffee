@@ -16,23 +16,26 @@ facebookPost = (promotionRequest, cb) ->
     if err
       cb err, null
     else
-      nextOcc = eventUtils.nextOccurrence(doc)
-      wallPost = {
-        message: content
-        caption: "Date: #{nextOcc.format('MMM DD, YYYY')}\nTime: #{moment(nextOcc).format("h:mm A")}"
-        name: promotionRequest.title
-        description: "#{doc.location.address}"
-        link: promotionRequest.link
-        picture: promotionRequest.media[0]?.url
-      }
-      if page? and promotionRequest.pageAccessToken?
-        graph.setAccessToken promotionRequest.pageAccessToken
-        url="#{page}/feed/"
+      if doc.nextOccurrence
+        nextOcc = doc.nextOccurrence
+        wallPost = {
+          message: content
+          caption: "Date: #{moment(nextOcc.start).format('MMM DD, YYYY')}\nTime: #{moment(nextOcc.start).format("h:mm A")}"
+          name: promotionRequest.title
+          description: "#{doc.location.address}"
+          link: promotionRequest.link
+          picture: promotionRequest.media[0]?.url
+        }
+        if page? and promotionRequest.pageAccessToken?
+          graph.setAccessToken promotionRequest.pageAccessToken
+          url="#{page}/feed/"
+        else
+          graph.setAccessToken promotionRequest.promotionTarget?.accessToken
+          url="me/feed/"
+        graph.post "#{url}", wallPost, (err, res) ->
+          cb(err,res?.id)
       else
-        graph.setAccessToken promotionRequest.promotionTarget?.accessToken
-        url="me/feed/"
-      graph.post "#{url}", wallPost, (err, res) ->
-        cb(err,res?.id)
+        cb {success:false, message:"Incorrect dates"}, null
 
 
 facebookEvent = (pr, cb) ->
