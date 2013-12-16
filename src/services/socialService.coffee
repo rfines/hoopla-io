@@ -16,7 +16,7 @@ facebookPost = (promotionRequest, cb) ->
     if err
       cb err, null
     else
-      if doc.nextOccurrence
+      if doc and doc.nextOccurrence
         nextOcc = doc.nextOccurrence
         wallPost = {
           message: content
@@ -35,7 +35,7 @@ facebookPost = (promotionRequest, cb) ->
         graph.post "#{url}", wallPost, (err, res) ->
           cb(err,res?.id)
       else
-        cb {success:false, message:"Incorrect dates"}, null
+        cb {success:false, message:"No Event to promote"}, null
 
 
 facebookEvent = (pr, cb) ->
