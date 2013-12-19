@@ -1,5 +1,5 @@
 CONFIG = require('config')
-graph = require('fbgraph')
+graph = require('facebook')
 moment = require 'moment'
 twit = require('twit')
 _ = require('lodash')
@@ -20,7 +20,7 @@ facebookPost = (promotionRequest, cb) ->
         nextOcc = doc.nextOccurrence
         wallPost = {
           message: content
-          caption: "Date: #{moment(nextOcc.start).format('MMM DD, YYYY')}\nTime: #{moment(nextOcc.start).format("h:mm A")}"
+          caption: "Date: #{moment(nextOcc.start).utc().format('MMM DD, YYYY')}\nTime: #{moment(nextOcc.start).format("h:mm A")}"
           name: promotionRequest.title
           description: "#{doc.location.address}"
           link: promotionRequest.link
@@ -43,12 +43,13 @@ facebookEvent = (pr, cb) ->
     pr.title = textCutter(70,pr.title)
   event = {
     name : pr.title
-    start_time: moment(pr.startTime).toDate().toISOString()
-    description : pr.message
+    start_time: moment(pr.startTime).utc().toDate().toISOString()
+    description : pr.caption
     ticket_uri: pr.ticket_uri
     picture: pr.media[0]?.url
     location: pr.location
-
+    edit: pr.edit if pr.edit
+    location_id:pr.pageId if pr.pageId
   }
   page = pr.pageId 
   if page? and pr.pageAccessToken?
@@ -57,8 +58,9 @@ facebookEvent = (pr, cb) ->
   else
     graph.setAccessToken pr.promotionTarget?.accessToken
     url="me/events/"
-  graph.post "#{url}", event, (err, res) ->
-    cb(err, res?.id)
+  graph.postEvent "#{url}", event, (err, res) ->
+    console.log(err)
+    cb(err, res.id)
 
 twitterPost = (pr, cb) ->
   tw = new twit({ 

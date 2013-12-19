@@ -50,6 +50,19 @@ class EventController  extends SearchableController
     else
       res.send 500
       next()
+  updatePromotionRequest : (req, res, next)=>
+    if req.body and req.params.reqId
+      req.body.edit = true
+      @promoRequest.findByIdAndUpdate req.params.reqId,req.body,(err,doc)=>
+        if err
+          res.send 400, err
+          next()
+        else
+          res.send 200, doc
+          next()
+    else
+      res.send 500
+      next()
   getICalFile :(req, res, next)=>
     if req.body and req.params.id
       @model.findById req.params.id,{},{lean:true},(err,doc)=>
@@ -77,12 +90,17 @@ class EventController  extends SearchableController
     
   getPromotionRequests:(req,res,cb)=>
     if req.params and req.params.id
-      @promoRequest.find {event:req.params.id}, {},{},(err,docs)=>
+      console.log req.params.id
+      pop = ['promotionRequests']
+      q = @model.findOne {_id:req.params.id}, {}
+      q.lean()
+      q.populate(pop.join(' '))
+      q.exec (err,doc)=>
         if err
           res.send 401, err
           next()
         else
-          res.send 200, docs
+          res.send 200, doc.promotionRequests
     else
       res.send 500
 
