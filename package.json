@@ -9,7 +9,7 @@
   "dependencies": {
     "hoopla-io-core": "git+https://localruckus:ruckus2012@bitbucket.org/localruckus/hoopla-io-core.git",
     "coffee-script": "1.6.3",
-    "restify": "2.6.x",
+    "restify": "2.5.1",
     "mongoose": "3.6.x",
     "config": "0.4.x",
     "bcrypt": "0.7.x",

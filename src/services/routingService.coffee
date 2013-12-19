@@ -21,7 +21,7 @@ init = (server, routes) ->
       u = new ApiUsage()
       u.method = route.methods[0] if route.methods and route.methods.length > 0
       u.status = response.statusCode if response.statusCode
-      u.url = route.spec.path if route.spec.path
+      u.url = route.spec.path if route?.spec?.path
       u.apiToken = authorization.basic.username if authorization?.basic?.username
       u.save()
 
