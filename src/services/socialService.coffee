@@ -49,7 +49,6 @@ facebookEvent = (pr, cb) ->
     picture: pr.media[0]?.url
     location: pr.location
     edit: pr.edit if pr.edit
-    location_id:pr.pageId if pr.pageId
   }
   page = pr.pageId 
   if page? and pr.pageAccessToken?
@@ -59,8 +58,43 @@ facebookEvent = (pr, cb) ->
     graph.setAccessToken pr.promotionTarget?.accessToken
     url="me/events/"
   graph.postEvent "#{url}", event, (err, res) ->
-    console.log(err)
     cb(err, res.id)
+
+module.exports.readFacebookPostInsights = (pr,cb)=>
+  if pr.status?.postId
+    page = pr.pageId
+    if page? and pr.pageAccessToken?
+      graph.setAccessToken pr.pageAccessToken
+    else
+      graph.setAccessToken pr.promotionTarget?.accessToken
+    url = "#{pr.status.postId}/insights"
+    graph.readInsights url,(err,response)=>
+        cb err, response
+  else
+    cb {success:false, message:"Insights are only available for items already posted"}, null
+
+module.exports.batchFacebookRequests = (ev, cb)=>
+  if ev.promotionRequests and ev.promotionRequests.length >0
+    batch = []
+    ids = []
+    pr = {}
+    console.log ev.promotionRequests.length
+    iterator = (element, index, list)=>
+      if element.status.postId and element.pushType.indexOf 'FACEBOOK-POST'
+        pr = element
+        ids.push element.status.postId
+        batch.push encodeURIComponent(JSON.stringify({"method":"GET", "relative_url":"#{element.status.postId}/insights"}))
+
+    _.each ev.promotionRequests, iterator
+    if batch.length>0
+      if pr.pageAccessToken and pr.pageId
+        graph.setAccessToken pr.pageAccessToken
+      else
+        graph.setAccessToken pr.promotionTarget?.accessToken
+      graph.batch {batch:batch}, (err, insights)=>
+        console.log err
+        console.log insights
+        cb err, insights
 
 twitterPost = (pr, cb) ->
   tw = new twit({ 

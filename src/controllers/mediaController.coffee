@@ -27,7 +27,6 @@ class MediaController extends RestfulController
           success: ()=>
             cloudinaryService.uploadImage req.body, (error,result) =>
               if error
-                console.log error
                 res.status = 400
                 res.send({ success: false, error: error }, { 'Content-type': 'application/json' }, 400)
                 next()
@@ -35,7 +34,6 @@ class MediaController extends RestfulController
                 med.url = result.url
                 med.save (err, media) ->
                   if (err)
-                    console.log err 
                     res.status = 400
                     res.send({ success: false, error: err }, { 'Content-type': 'application/json' }, 400)
                     next()

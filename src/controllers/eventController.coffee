@@ -4,6 +4,7 @@ securityConstraints = require('./helpers/securityConstraints')
 calendarService = require('../services/calendarService')
 moment = require 'moment'
 fs = require 'fs'
+ss = require('../services/socialService')
 
 class EventController  extends SearchableController
   model : require('hoopla-io-core').Event
@@ -90,7 +91,6 @@ class EventController  extends SearchableController
     
   getPromotionRequests:(req,res,cb)=>
     if req.params and req.params.id
-      console.log req.params.id
       pop = ['promotionRequests']
       q = @model.findOne {_id:req.params.id}, {}
       q.lean()
@@ -103,5 +103,25 @@ class EventController  extends SearchableController
           res.send 200, doc.promotionRequests
     else
       res.send 500
+  getAnalytics:(req,res,cb)=>
+    if req.params and req.params.id
+      pop = ["promotionRequests"]
+      q = @model.findOne {_id:req.params.id}, {}
+      q.lean()
+      q.populate(pop.join(','))
+      q.exec (err, doc)=>
+        if err
+          console.log err
+          re.send err, 400
+        else
+          if doc.promotionRequests and doc.promotionRequests.length >0
+            preqs= doc.promotionsRequests
+            ss.batchFacebookRequests doc, (err, insights)=>
+              if err
+                console.log err
+                res.send err, 400
+              else
+                console.log insights
+                res.send insights, 200
 
 module.exports = new EventController()
