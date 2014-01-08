@@ -1,5 +1,5 @@
 CONFIG = require('config')
-graph = require('facebook')
+graph = require('facebook-complete')
 moment = require 'moment'
 twit = require('twit')
 _ = require('lodash')
