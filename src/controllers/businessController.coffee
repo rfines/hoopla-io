@@ -9,7 +9,7 @@ class BusinessController extends SearchableController
   searchService : require('../services/searchService')
   events : require('hoopla-io-core').Event
   promoTarget: require('hoopla-io-core').PromotionTarget
-  populate:['media']
+  populate:['media','promotionTargets']
   security: 
     get : securityConstraints.anyone
     create : securityConstraints.hasAuthUser

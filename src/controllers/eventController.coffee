@@ -5,12 +5,14 @@ calendarService = require('../services/calendarService')
 moment = require 'moment'
 fs = require 'fs'
 ss = require('../services/socialService')
+async = require('async')
 
 class EventController  extends SearchableController
   model : require('hoopla-io-core').Event
   type: 'event'
   hooks: require('./hooks/eventHooks')
   promoRequest : require('hoopla-io-core').PromotionRequest
+  promoTarget : require('hoopla-io-core').PromotionTarget
   fields: {schedules: 0}
   sort: {'nextOccurrence':1}
   populate:['media']
@@ -91,7 +93,7 @@ class EventController  extends SearchableController
     
   getPromotionRequests:(req,res,cb)=>
     if req.params and req.params.id
-      pop = ['promotionRequests']
+      pop = ['media']
       q = @model.findOne {_id:req.params.id}, {}
       q.lean()
       q.populate(pop.join(' '))
@@ -100,7 +102,18 @@ class EventController  extends SearchableController
           res.send 401, err
           next()
         else
-          res.send 200, doc.promotionRequests
+          if doc.promotionRequests?.length > 0
+            pop.push 'promotionTarget'
+            z = @promoRequest.find {'_id':{$in:doc.promotionRequests}}, {}
+            z.lean()
+            z.populate(pop.join(' '))
+            z.exec (error,docs)=>
+              if error
+                res.send 401, error
+              else
+                res.send 200, docs
+          else
+            res.send 200, doc.promotionRequests
     else
       res.send 500
   getAnalytics:(req,res,cb)=>
