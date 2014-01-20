@@ -12,32 +12,27 @@ bitly = require 'bitly'
 facebookPost = (promotionRequest, cb) ->
   content = promotionRequest.message  
   page = promotionRequest.pageId
-  event = Events.findOne {'promotionRequests':promotionRequest._id}, {},{lean:true}, (err,doc)=>
-    if err
-      cb err, null
-    else
-      if doc and doc.nextOccurrence
-        nextOcc = doc.nextOccurrence
-        wallPost = {
-          message: content
-          caption: "Date: #{moment(nextOcc.start).utc().format('MMM DD, YYYY')}\nTime: #{moment(nextOcc.start).format("h:mm A")}"
-          name: promotionRequest.title
-          description: "#{doc.location.address}"
-          link: promotionRequest.link
-          picture: promotionRequest.media[0]?.url
-        }
-        if page? and promotionRequest.pageAccessToken?
-          graph.setAccessToken promotionRequest.pageAccessToken
-          url="#{page}/feed/"
-        else
-          graph.setAccessToken promotionRequest.promotionTarget?.accessToken
-          url="me/feed/"
-        graph.post "#{url}", wallPost, (err, res) ->
+  des = ""
+  if promotionRequest.description
+    des = promotionRequest.description
+  else
+    des = promotionRequest.caption
+  wallPost = {
+    message: content
+    caption: promotionRequest.caption
+    name: promotionRequest.title
+    description: des
+    link: promotionRequest.link
+    picture: promotionRequest.media[0]?.url
+  }
+  if page? and promotionRequest.pageAccessToken?
+    graph.setAccessToken promotionRequest.pageAccessToken
+    url="#{page}/feed/"
+  else
+    graph.setAccessToken promotionRequest.promotionTarget?.accessToken
+    url="me/feed/"
+  graph.post "#{url}", wallPost, (err, res) ->
           cb(err,res?.id)
-      else
-        cb {success:false, message:"No Event to promote"}, null
-
-
 facebookEvent = (pr, cb) ->
   if pr.title.length > 74
     pr.title = textCutter(70,pr.title)
@@ -103,8 +98,8 @@ twitterPost = (pr, cb) ->
     access_token:pr.promotionTarget.accessToken,
     access_token_secret: pr.promotionTarget.accessTokenSecret
   })
-  if pr.media?.length > 0
-    bitlyShorten pr.media[0].url, (err, url)=>
+  if pr.link
+    bitlyShorten pr.link, (err, url)=>
       status = {status:pr.message+'\n'+ url }
       tw.post 'statuses/update', status, (error, reply)->
         if error

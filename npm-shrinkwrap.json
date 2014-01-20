@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "dependencies": {
     "hoopla-io-core": {
-      "version": "0.1.11",
+      "version": "0.1.12",
       "from": "hoopla-io-core@git+https://localruckus:ruckus2012@bitbucket.org/localruckus/hoopla-io-core.git",
       "resolved": "git+https://localruckus:ruckus2012@bitbucket.org/localruckus/hoopla-io-core.git#3fa885e56623f6942b449f730cf53fc1a11a16d0"
     },

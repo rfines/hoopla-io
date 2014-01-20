@@ -48,7 +48,7 @@ class EventController  extends SearchableController
               res.send 400, er
               next()
             else
-              res.send 200, doc
+              res.send 200, target
               next()
     else
       res.send 500
