@@ -27,15 +27,20 @@ facebookPost = (promotionRequest, cb) ->
   }
   if page? and promotionRequest.pageAccessToken?
     graph.setAccessToken promotionRequest.pageAccessToken
+    wallPost.accessToken = promotionRequest.pageAccessToken
     url="#{page}/feed/"
   else
     graph.setAccessToken promotionRequest.promotionTarget?.accessToken
+    wallPost.accessToken = promotionRequest.promotionTarget?.accessToken
     url="me/feed/"
   graph.post "#{url}", wallPost, (err, res) ->
           cb(err,res?.id)
+
 facebookEvent = (pr, cb) ->
   if pr.title.length > 74
     pr.title = textCutter(70,pr.title)
+  console.log "***********PROMOTION REQUEST**************"
+  console.log pr
   event = {
     name : pr.title
     start_time: moment(pr.startTime).utc().toDate().toISOString()
@@ -48,9 +53,11 @@ facebookEvent = (pr, cb) ->
   page = pr.pageId 
   if page? and pr.pageAccessToken?
     graph.setAccessToken pr.pageAccessToken
+    event.accessToken = pr.accessToken
     url="#{page}/events/"
   else
     graph.setAccessToken pr.promotionTarget?.accessToken
+    event.accessToken = pr.promotionTarget?.accessToken
     url="me/events/"
   graph.postEvent "#{url}", event, (err, res) ->
     cb(err, res.id)

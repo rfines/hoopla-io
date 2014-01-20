@@ -6,6 +6,7 @@ class PromotionRequestController extends RestfulController
   model : require('hoopla-io-core').PromotionRequest
   getFields : {}
   hooks : require('./hooks/restfulHooks.coffee')
+  populate:['media', 'promotionTarget']
 
   security: 
     get : securityConstraints.anyone
