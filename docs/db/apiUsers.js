@@ -162,3 +162,4 @@ db.user.update({"email":"pittsburgks@localruckus.com"},{$push:{'businessPrivileg
 db.user.update({"email":"pittsburgks@localruckus.com"},{$push:{'businessPrivileges':{$each:[{'role':'OWNER', "business":ObjectId("5249ba439c23c5a0f400aa54") },{'role':'OWNER', "business":ObjectId("5249ba439c23c5a0f400ab0c") },{'role':'OWNER', "business":ObjectId("5249ba439c23c5a0f400ab66") },{'role':'OWNER', "business":ObjectId("5249ba439c23c5a0f400aabe") },{'role':'OWNER', "business":ObjectId("5249ba439c23c5a0f400ab91") }]}}});
 
 db.event.update({"_id":ObjectId("526f22646502a402000007bf")}, {"business":ObjectId("528fa6b2f55ac402000004d4")});
+db.user.update({"email":"shelbyhobbs@gus.pittstate.edu"},{$push:{'businessPrivileges':ObjectId("52a8e87e682fbc02000028c5")}});

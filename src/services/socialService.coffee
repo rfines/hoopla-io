@@ -50,11 +50,11 @@ facebookEvent = (pr, cb) ->
     location: pr.location
     edit: pr.edit if pr.edit
   }
-  page = pr.pageId 
-  if page? and pr.pageAccessToken?
+  if pr.pageId and pr.pageAccessToken?
+    console.log "POSTING TO PAGE #{pr.pageId}"
     graph.setAccessToken pr.pageAccessToken
     event.accessToken = pr.accessToken
-    url="#{page}/events/"
+    url="#{pr.pageId}/events/"
   else
     graph.setAccessToken pr.promotionTarget?.accessToken
     event.accessToken = pr.promotionTarget?.accessToken
