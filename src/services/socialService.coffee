@@ -13,6 +13,8 @@ facebookPost = (promotionRequest, cb) ->
   content = promotionRequest.message  
   page = promotionRequest.pageId
   des = ""
+  console.log "***********PROMOTION REQUEST**************"
+  console.log promotionRequest
   if promotionRequest.description
     des = promotionRequest.description
   else
@@ -50,7 +52,7 @@ facebookEvent = (pr, cb) ->
     location: pr.location
     edit: pr.edit if pr.edit
   }
-  if pr.pageId and pr.pageAccessToken?
+  if pr.pageId?.length > 0  and pr.pageAccessToken?
     console.log "POSTING TO PAGE #{pr.pageId}"
     graph.setAccessToken pr.pageAccessToken
     event.accessToken = pr.accessToken

@@ -22,6 +22,7 @@ module.exports.runOnce = (onComplete) ->
   q.populate('promotionTarget')
   q.populate('media')
   q.exec (errw, data) ->
+    console.log data
     async.eachLimit data, 2, promote, (errn) ->
       onComplete() if onComplete
 

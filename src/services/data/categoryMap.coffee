@@ -85,7 +85,7 @@ module.exports = {
   "Film":"FILM",
   "Foods":"FOODS",
   "Health & Wellness":"WELLNESS",
-  "Holiday & Seasonal":"HOLIDAY",
+  "Holiday & Seasonal":"HOLIDAYSEASONAL",
   "LGBT":"LGBT",
   "Literary":"LITERARY",
   "Live Music & Concerts":"CONCERTS",
