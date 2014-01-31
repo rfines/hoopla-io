@@ -163,3 +163,4 @@ db.user.update({"email":"pittsburgks@localruckus.com"},{$push:{'businessPrivileg
 
 db.event.update({"_id":ObjectId("526f22646502a402000007bf")}, {"business":ObjectId("528fa6b2f55ac402000004d4")});
 db.user.update({"email":"shelbyhobbs@gus.pittstate.edu"},{$push:{'businessPrivileges':{'role':'OWNER', "business":ObjectId("52a8e87e682fbc02000028c5") }}});
+db.user.update({"email":"apeterson@pplonline.org"},{$push:{'businessPrivileges':{'role':'OWNER', "business":ObjectId("5249ba439c23c5a0f400aa55") }}});
