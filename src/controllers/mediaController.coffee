@@ -33,7 +33,7 @@ class MediaController extends RestfulController
               else
                 med.url = result.url
                 med.save (err, media) ->
-                  if (err) 
+                  if (err)
                     res.status = 400
                     res.send({ success: false, error: err }, { 'Content-type': 'application/json' }, 400)
                     next()

@@ -58,6 +58,9 @@ build = ->
     ['get', '/curate/event', curationController, {handler: 'getEventBatch'}]
     ['post', '/curate/event/:id/reject', curationController, {handler:'rejectEvent'}]
     ['post', '/curate/event/:id/approve', curationController, {handler:'acceptEvent'}]
+    ['get', '/event/:id/promotionRequests', eventController, {handler:'getPromotionRequests'}]
+    ['put', '/event/:id/promotionRequests/:reqId', eventController, {handler:'updatePromotionRequest'}]
+    ['get', '/event/:id/promotionRequests/analytics', eventController, {handler:'getAnalytics'}]
   ]
 
   scaffold = (resource, controller) ->

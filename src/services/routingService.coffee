@@ -19,9 +19,18 @@ init = (server, routes) ->
     if route and response
       authorization = request.authorization
       u = new ApiUsage()
-      u.method = route.methods[0] if route.methods and route.methods.length > 0
-      u.status = response.statusCode if response.statusCode
-      u.url = route.spec.path if route.spec.path
+      if route.methods and route.methods.length > 0
+        u.method = route.methods[0]
+      else
+        u.method="None specified" 
+      if response.statusCode
+        u.status = response.statusCode 
+      else
+        u.status="200"
+      if route?.spec?.path
+        u.url = route.spec.path
+      else
+        u.url = "None found"
       u.apiToken = authorization.basic.username if authorization?.basic?.username
       u.save()
 
