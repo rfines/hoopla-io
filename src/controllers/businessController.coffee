@@ -10,6 +10,8 @@ class BusinessController extends SearchableController
   events : require('hoopla-io-core').Event
   promoTarget: require('hoopla-io-core').PromotionTarget
   populate:['media','promotionTargets']
+  User : require('hoopla-io-core').User
+
   security: 
     get : securityConstraints.anyone
     create : securityConstraints.hasAuthUser
@@ -26,7 +28,16 @@ class BusinessController extends SearchableController
 
   constructor : (@name) ->
     super(@name)
-
+  getBusinesses:(req,res,next)=>
+    q = @model.find {}, {},{lean:true}
+    q.populate(@populate.join(' '))
+    q.exec (err, result)=>
+      if err
+        res.send 401, err
+        next()
+      else
+        res.send 200, result
+        next()
   getEvents : (req,res,next) =>
     fields = @calculateGetFields(req.authApp)
     if req.params.id and not req.query.ids
@@ -59,6 +70,92 @@ class BusinessController extends SearchableController
           next()
     else
       res.send 500
+      next()
+  getUser:(req,res,next)=>
+    if req.params?.id
+      @User.find {"businessPrivileges":{$elemMatch:{"business":req.params.id, "role":"OWNER"}}}, {},{},(err, docs)=>
+        if err
+          res.send 401, err
+          next()
+        else
+          res.send 200, docs
+          next()
+    else
+      res.send 400
+      next()
+  transferOwnership:(req,res,next)=>
+    if req.body?.newOwner and req.params?.id
+      @model.findById req.params.id, {},{},(err,doc)=>
+        if err
+          res.send 401,err
+          next()
+        else
+          
+          @User.findOne {"email":req.body.newOwner},{},{},(error, targetOwner)=>
+            if error
+              res.send 400, error
+              next()
+            else
+              if not targetOwner
+                f = {success:false, message:"Unable to find a user.", email:req.body.newOwner}
+                res.send 200, f
+                next()
+              else if not req.body.oldOwner
+                if !_.isArray(targetOwner.businessPrivileges)
+                  targetOwner.set
+                    businessPrivileges: [{'role':'OWNER', "business":doc._id}]
+                else
+                  targetOwner.businessPrivileges.push({'role':'OWNER', "business":doc._id})
+                targetOwner.save (e_r,di)=>
+                  if e_r
+                    console.log e_r  
+                    res.send 400, e_r
+                    next()
+                  else
+                    f = {success:true, message:"Successfully transferred business to #{di.email}.", owner:di}
+                    res.send 200,f
+                    next()
+              else
+                @User.findOne {"email":req.body.oldOwner}, {},{},(e, oldOwner)=>
+                  if e
+                    res.send 401, e
+                    next()
+                  else
+                    console.log "Transferring from an owner to a new owner."
+                    bp={}
+                    i = -1
+                    if oldOwner.businessPrivileges.length > 1
+                      _.each oldOwner.businessPrivileges, (item, index, list)=>
+                        if item.business.toString() == doc._id.toString() and item.role.toString() == "OWNER"
+                          console.log item
+                          bp = item
+                          i = index
+                    else if oldOwner.businessPrivileges?.length == 1
+                      i =0
+                    if i >=0
+                      newPrivileges = oldOwner.businessPrivileges.splice(i, 1)
+                      oldOwner.save (errors, dud) =>
+                        if errors
+                          res.send 401,errors
+                          next()
+                        else
+                          if !_.isArray(targetOwner.businessPrivileges)
+                            targetOwner.set
+                              businessPrivileges: [{'role':'OWNER', "business":doc._id}]
+                          else
+                            targetOwner.businessPrivileges.push({'role':'OWNER', "business":doc._id})
+                          targetOwner.save (e_r,did)=>
+                            if e_r
+                              console.log e_r  
+                              res.send 400, e_r
+                              next()
+                            else
+                              f = {success:true, message:"Successfully transferred business to #{did.email}.", owner:did}
+                              res.send 200,f
+                              next()
+    else
+      f={success:false}
+      res.send 401, f
       next()
 
   allVenues : (req, res, next) =>
