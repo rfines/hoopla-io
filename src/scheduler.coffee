@@ -11,7 +11,7 @@ module.exports.start = ->
   promoteEvents.runOnce()
   #createIndexes.runOnce()
   #addBusinessToAdmin.runOnce()
-  fixOwners.runOnce()
+  #fixOwners.runOnce()
   setInterval calculateSchedules.runOnce, fiveMinutes
   setInterval promoteEvents.runOnce, fiveMinutes
   #dailyReport.runOnce()

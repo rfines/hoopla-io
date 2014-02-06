@@ -10,22 +10,18 @@ module.exports.runOnce = (onComplete) ->
         console.log e
         cb e, null
       else if d
-        async.each d.businessPrivileges, fixPrivileges, (err)=>
-          if err
-            console.log err
-            cb "error", null
-          else
-            d.save (error, doc)=>
-              if error
-                console.log error
-                cb error, null
-              else
-                cb null, doc
+        
       else
         cb null, ""
-  fixPrivileges = (item, cb)=>
-    item.role="ADMIN_COLLABORATOR"
-    cb null, "success"
+  fixPrivileges = (list, cb)=>
+    _.each list, (item, index, list)=>
+      
+        d.save (error, doc)=>
+          if error
+            console.log error
+            cb error, null
+          else
+            cb null, doc
 
   async.each emails, handler, (err)=>
     if err

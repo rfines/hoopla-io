@@ -11,7 +11,7 @@ class BusinessController extends SearchableController
   promoTarget: require('hoopla-io-core').PromotionTarget
   populate:['media','promotionTargets']
   User : require('hoopla-io-core').User
-
+  admins:["info@localruckus.com", "pittsburgks@localruckus.com", "manhattanks@localruckus.com"]
   security: 
     get : securityConstraints.anyone
     create : securityConstraints.hasAuthUser
@@ -71,8 +71,11 @@ class BusinessController extends SearchableController
     else
       res.send 500
       next()
+
   getUser:(req,res,next)=>
+    console.log "Getting user"
     if req.params?.id
+      console.log req.params.id
       @User.find {"businessPrivileges":{$elemMatch:{"business":req.params.id, "role":"OWNER"}}}, {},{},(err, docs)=>
         if err
           res.send 401, err
@@ -96,16 +99,19 @@ class BusinessController extends SearchableController
               res.send 400, error
               next()
             else
+              role="OWNER"
               if not targetOwner
                 f = {success:false, message:"Unable to find a user.", email:req.body.newOwner}
                 res.send 200, f
                 next()
               else if not req.body.oldOwner
+                if @admins.indexOf(targetOwner.email)!=-1
+                  role="ADMIN_COLLABORATOR"
                 if !_.isArray(targetOwner.businessPrivileges)
                   targetOwner.set
-                    businessPrivileges: [{'role':'OWNER', "business":doc._id}]
+                    businessPrivileges: [{'role':role, "business":doc._id}]
                 else
-                  targetOwner.businessPrivileges.push({'role':'OWNER', "business":doc._id})
+                  targetOwner.businessPrivileges.push({'role':role, "business":doc._id})
                 targetOwner.save (e_r,di)=>
                   if e_r
                     console.log e_r  
@@ -116,12 +122,14 @@ class BusinessController extends SearchableController
                     res.send 200,f
                     next()
               else
+                if @admins.indexOf(targetOwner.email)!=-1
+                  role="ADMIN_COLLABORATOR"
                 @User.findOne {"email":req.body.oldOwner}, {},{},(e, oldOwner)=>
                   if e
                     res.send 401, e
                     next()
                   else
-                    console.log "Transferring from an owner to a new owner."
+                    
                     bp={}
                     i = -1
                     if oldOwner.businessPrivileges.length > 1
@@ -141,9 +149,9 @@ class BusinessController extends SearchableController
                         else
                           if !_.isArray(targetOwner.businessPrivileges)
                             targetOwner.set
-                              businessPrivileges: [{'role':'OWNER', "business":doc._id}]
+                              businessPrivileges: [{'role':role, "business":doc._id}]
                           else
-                            targetOwner.businessPrivileges.push({'role':'OWNER', "business":doc._id})
+                            targetOwner.businessPrivileges.push({'role':role, "business":doc._id})
                           targetOwner.save (e_r,did)=>
                             if e_r
                               console.log e_r  

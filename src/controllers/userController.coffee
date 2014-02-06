@@ -68,7 +68,7 @@ class UserController extends RestfulController
           if data
             privIds = _.without(_.pluck(data?.businessPrivileges, "business"), undefined)
             if privIds.length > 0
-              q = @eventModel.find({'business': {$in:privIds} }, {}, {lean:true})
+              q = @eventModel.find({'business': {$in:privIds}, 'nextOccurrence.start':{$gte:new Date()} }, {}, {lean:true})
               q.populate('media')
               q.exec (error,eventData) ->
                 if error
