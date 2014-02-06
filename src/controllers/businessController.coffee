@@ -29,7 +29,10 @@ class BusinessController extends SearchableController
   constructor : (@name) ->
     super(@name)
   getBusinesses:(req,res,next)=>
-    q = @model.find {}, {},{lean:true}
+    fields = @calculateGetFields(req.authApp)  
+    fields.name = 1
+    fields.location=1
+    q = @model.find {}, fields,{lean:true}
     q.populate(@populate.join(' '))
     q.exec (err, result)=>
       if err
@@ -73,7 +76,6 @@ class BusinessController extends SearchableController
       next()
 
   getUser:(req,res,next)=>
-    console.log "Getting user"
     if req.params?.id
       console.log req.params.id
       @User.find {"businessPrivileges":{$elemMatch:{"business":req.params.id, "role":"OWNER"}}}, {},{},(err, docs)=>
@@ -135,7 +137,6 @@ class BusinessController extends SearchableController
                     if oldOwner.businessPrivileges.length > 1
                       _.each oldOwner.businessPrivileges, (item, index, list)=>
                         if item.business.toString() == doc._id.toString() and item.role.toString() == "OWNER"
-                          console.log item
                           bp = item
                           i = index
                     else if oldOwner.businessPrivileges?.length == 1
