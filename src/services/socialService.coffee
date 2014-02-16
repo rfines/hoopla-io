@@ -17,6 +17,8 @@ facebookPost = (promotionRequest, cb) ->
     des = promotionRequest.description
   else
     des = promotionRequest.caption
+  console.log "***********FACEBOOK POST**************"
+  console.log promotionRequest
   wallPost = {
     message: content
     caption: promotionRequest.caption
@@ -34,7 +36,9 @@ facebookPost = (promotionRequest, cb) ->
     wallPost.accessToken = promotionRequest.promotionTarget?.accessToken
     url="me/feed/"
   graph.post "#{url}", wallPost, (err, res) ->
-          cb(err,res?.id)
+    console.log res
+    console.log err
+    cb(err,res?.id)
 
 facebookEvent = (pr, cb) ->
   if pr.title.length > 74
@@ -61,6 +65,8 @@ facebookEvent = (pr, cb) ->
     event.accessToken = pr.promotionTarget?.accessToken
     url="me/events/"
   graph.postEvent "#{url}", event, (err, res) ->
+    console.log res
+    console.log err
     cb(err, res.id)
 
 module.exports.readFacebookPostInsights = (pr,cb)=>
