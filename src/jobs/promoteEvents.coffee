@@ -17,13 +17,15 @@ module.exports.runOnce = (onComplete) ->
           postId = id.id
         else 
           postId = id
+        console.log "$$$$$$$$$$ POST ID $$$$$$$$$$$$$$$$$$"
+        console.log postId
         item.update {$set : {'status.code' : 'COMPLETE','status.postId' :postId, 'status.completedDate' : new Date(),'status.retryCount' : retryCount}}, (error) ->
+          console.log "promotion request updated to complete"
           cb(error)
   q = promotionRequest.find { 'status.code' : "WAITING",'promotionTime':{$lte :new Date()}, 'status.retryCount' : {$lt : 3}}
   q.populate('promotionTarget')
   q.populate('media')
   q.exec (errw, data) ->
-    console.log data
     async.eachLimit data, 4, promote, (errn) ->
       onComplete() if onComplete
 
